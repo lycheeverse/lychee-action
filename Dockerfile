@@ -9,7 +9,8 @@ LABEL com.github.actions.description="Quickly check links in Markdown, HTML, and
 LABEL com.github.actions.icon="external-link"
 LABEL com.github.actions.color="purple"
 
-COPY LICENSE README.md /
+COPY README.md /
+COPY LICENSE-MIT LICENSE-APACHE /
 
 COPY entrypoint.sh /entrypoint.sh
 
