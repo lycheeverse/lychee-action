@@ -1,0 +1,12 @@
+name: 'lychee link checker action'
+description: 'Quickly check links in Markdown, HTML, and text files'
+inputs:
+  args:
+    description: 'lychee arguments'
+    default: '-v README.md'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'external-link'  
+  color: 'purple'
