@@ -1,4 +1,4 @@
-# lychee action
+# lychee link checking action
 
 Quickly check links in Markdown, HTML, and text files.
 
