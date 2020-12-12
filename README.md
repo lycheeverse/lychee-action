@@ -10,7 +10,7 @@ Using with the default settings will check the `README.md` in your repository.
 
 ```yml
 - name: Link Checker
-	uses: lycheeverse/lychee-action@v1
+  uses: lycheeverse/lychee-action@v1
 ```
 
 This action uses [lychee](https://github.com/lycheeverse/lychee) for link checking.
@@ -18,9 +18,9 @@ lychee arguments can be passed to the action via the `args` parameter. If not se
 
 ```yml
 - name: Link Checker
-	uses: lycheeverse/lychee-action@v1
-	with:
-		args: -v README.md
+  uses: lycheeverse/lychee-action@v1
+  with:
+    args: -v README.md
 ```
 
 See [lychee's documentation](https://github.com/lycheeverse/lychee) for further argument details.
