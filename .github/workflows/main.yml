@@ -1,0 +1,15 @@
+on: [push]
+
+jobs:
+  test lychee action:
+    runs-on: ubuntu-latest
+    name: Test the lychee link checker action
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: link checking
+        uses: ./ # Uses an action in the root directory
+				with:
+					args: -v fitures/TEST.md
