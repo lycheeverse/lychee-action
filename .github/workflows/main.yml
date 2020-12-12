@@ -11,5 +11,5 @@ jobs:
         uses: actions/checkout@v2
       - name: link checking
         uses: ./ # Uses an action in the root directory
-				with:
-					args: -v fitures/TEST.md
+        with:
+          args: -v fitures/TEST.md
