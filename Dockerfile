@@ -1,4 +1,4 @@
-FROM lycheeverse/lychee:0.4
+FROM lycheeverse/lychee:latest
 
 LABEL maintainer="Matthias Endler <matthias-endler@gmx.net>"
 LABEL repository="https://github.com/lycheeverse/lychee-action"
