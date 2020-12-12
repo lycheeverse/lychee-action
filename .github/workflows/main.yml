@@ -1,7 +1,7 @@
 on: [push]
 
 jobs:
-  test lychee action:
+  lychee-action:
     runs-on: ubuntu-latest
     name: Test the lychee link checker action
     steps:
