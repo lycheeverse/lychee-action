@@ -8,7 +8,7 @@ LYCHEE_OUTPUT_FILENAME=${LYCHEE_OUTPUT_FILENAME:="out.md"}
 mkdir -p /tmp/lychee
 
 # Execute lychee
-lychee $* >/tmp/lychee/out 2>&1
+lychee "$@" > /tmp/lychee/out 2>&1
 exit_code=$?
 
 # If link errors were found, create a report in the designated directory
