@@ -12,4 +12,4 @@ jobs:
       - name: link checking
         uses: ./ # Uses an action in the root directory
         with:
-          args: -v fitures/TEST.md
+          args: -v fixtures/TEST.md
