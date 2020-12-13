@@ -2,7 +2,7 @@
 
 Quickly check links in Markdown, HTML, and text files.
 
-When used in conjunction with [Create Issue From File](https://github.com/peter-evans/create-issue-from-file), issues will be created when Link Checker finds connectivity problems with links.
+When used in conjunction with [Create Issue From File](https://github.com/peter-evans/create-issue-from-file), issues will be created when the action finds link problems.
 
 ## Usage
 
