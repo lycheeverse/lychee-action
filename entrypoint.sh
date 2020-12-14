@@ -12,7 +12,7 @@ lychee "$@" --output "$LYCHEE_TMP"
 exit_code=$?
 
 # If link errors were found, create a report in the designated directory
-if [ $exit_code -eq 1 ]; then
+if [ $exit_code -ne 0 ]; then
     mkdir -p "$(dirname $LYCHEE_OUT)"
     echo 'Errors were reported while checking the availability of links:' > $LYCHEE_OUT
     cat "$LYCHEE_TMP" >> $LYCHEE_OUT
