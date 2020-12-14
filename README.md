@@ -2,7 +2,6 @@
 
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-lychee%20action-blue.svg?colorA=24292e&colorB=0366d6&style=flat&longCache=true&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAM6wAADOsB5dZE0gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAERSURBVCiRhZG/SsMxFEZPfsVJ61jbxaF0cRQRcRJ9hlYn30IHN/+9iquDCOIsblIrOjqKgy5aKoJQj4O3EEtbPwhJbr6Te28CmdSKeqzeqr0YbfVIrTBKakvtOl5dtTkK+v4HfA9PEyBFCY9AGVgCBLaBp1jPAyfAJ/AAdIEG0dNAiyP7+K1qIfMdonZic6+WJoBJvQlvuwDqcXadUuqPA1NKAlexbRTAIMvMOCjTbMwl1LtI/6KWJ5Q6rT6Ht1MA58AX8Apcqqt5r2qhrgAXQC3CZ6i1+KMd9TRu3MvA3aH/fFPnBodb6oe6HM8+lYHrGdRXW8M9bMZtPXUji69lmf5Cmamq7quNLFZXD9Rq7v0Bpc1o/tp0fisAAAAASUVORK5CYII=)](https://github.com/marketplace/actions/lychee-link-checker-action)
 
-
 Quickly check links in Markdown, HTML, and text files.
 
 When used in conjunction with [Create Issue From File](https://github.com/peter-evans/create-issue-from-file), issues will be created when the action finds link problems.
@@ -31,10 +30,9 @@ See [lychee's documentation](https://github.com/lycheeverse/lychee) for further 
 #### Optional environment variables
 
 Issues with links will will be written to a file containing the error report.
-The default path is `lychee/out.md`. The path and filename may be overridden with the following variables.
+The default path is `lychee/out.md`. The path and filename may be overridden with the following variable:
 
-- `LYCHEE_OUTPUT_DIR` - The output directory the markdown error report
-- `LYCHEE_OUTPUT_FILENAME` - The error report filename
+- `LYCHEE_OUT` - The path to the output file for the markdown error report
 
 #### Receiving issues containing the error report
 
@@ -43,7 +41,7 @@ Below is an example of using this action in conjunction with [Create Issue From 
 ```yml
 on:
   schedule:
-  - cron: '0 0 1 * *'
+    - cron: "0 0 1 * *"
 name: Check markdown links
 jobs:
   linkChecker:
@@ -70,16 +68,14 @@ jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: lychee Link Checker
-      id: lc
-      uses: lycheeverse/lychee-action@v1.0.1
-    - name: Fail if there were link errors
-      run: exit ${{ steps.lc.outputs.exit_code }}
+      - uses: actions/checkout@v2
+      - name: lychee Link Checker
+        id: lc
+        uses: lycheeverse/lychee-action@v1.0.1
+      - name: Fail if there were link errors
+        run: exit ${{ steps.lc.outputs.exit_code }}
 ```
-
 
 ## Credits
 
 This action is based on [peter-evans/link-checker](https://github.com/peter-evans/link-checker) and uses lychee (written in Rust) instead of liche (written in Go) for link checking. For a comparison of both tools, check out this [comparison table](https://github.com/lycheeverse/lychee#features).
-
