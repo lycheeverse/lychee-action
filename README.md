@@ -2,7 +2,7 @@
 
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-lychee%20action-blue.svg?colorA=24292e&colorB=0366d6&style=flat&longCache=true&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAM6wAADOsB5dZE0gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAERSURBVCiRhZG/SsMxFEZPfsVJ61jbxaF0cRQRcRJ9hlYn30IHN/+9iquDCOIsblIrOjqKgy5aKoJQj4O3EEtbPwhJbr6Te28CmdSKeqzeqr0YbfVIrTBKakvtOl5dtTkK+v4HfA9PEyBFCY9AGVgCBLaBp1jPAyfAJ/AAdIEG0dNAiyP7+K1qIfMdonZic6+WJoBJvQlvuwDqcXadUuqPA1NKAlexbRTAIMvMOCjTbMwl1LtI/6KWJ5Q6rT6Ht1MA58AX8Apcqqt5r2qhrgAXQC3CZ6i1+KMd9TRu3MvA3aH/fFPnBodb6oe6HM8+lYHrGdRXW8M9bMZtPXUji69lmf5Cmamq7quNLFZXD9Rq7v0Bpc1o/tp0fisAAAAASUVORK5CYII=)](https://github.com/marketplace/actions/lychee-link-checker-action)
 
-Quickly check links in Markdown, HTML, and text files.
+Quickly check links in Markdown, HTML, and text files using [lychee].
 
 When used in conjunction with [Create Issue From File](https://github.com/peter-evans/create-issue-from-file), issues will be created when the action finds link problems.
 
@@ -15,7 +15,7 @@ Using with the default settings will check the `README.md` in your repository.
   uses: lycheeverse/lychee-action@v1
 ```
 
-This action uses [lychee](https://github.com/lycheeverse/lychee) for link checking.
+This action uses [lychee] for link checking.
 lychee arguments can be passed to the action via the `args` parameter. If not set, the default `-v README.md` will be used.
 
 ```yml
@@ -25,7 +25,9 @@ lychee arguments can be passed to the action via the `args` parameter. If not se
     args: -v README.md
 ```
 
-See [lychee's documentation](https://github.com/lycheeverse/lychee) for further argument details.
+#### Detailed arguments (`args`) information
+
+See [lychee's documentation][lychee] for further argument details.
 
 #### Optional environment variables
 
@@ -76,6 +78,14 @@ jobs:
         run: exit ${{ steps.lc.outputs.exit_code }}
 ```
 
+#### Troubleshooting and common problems
+
+See [lychee's Troubleshooting Guide](https://github.com/lycheeverse/lychee/blob/master/TROUBLESHOOTING.md)
+for solutions to common link-checking problems.
+
+
 ## Credits
 
 This action is based on [peter-evans/link-checker](https://github.com/peter-evans/link-checker) and uses lychee (written in Rust) instead of liche (written in Go) for link checking. For a comparison of both tools, check out this [comparison table](https://github.com/lycheeverse/lychee#features).
+
+[lychee]: https://github.com/lycheeverse/lychee
