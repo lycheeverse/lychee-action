@@ -1,5 +1,5 @@
 #!/bin/bash -l
-set -euxo pipefail
+set -uxo pipefail
 
 LYCHEE_OUT=${LYCHEE_OUT:="lychee/out.md"}
 LYCHEE_TMP="/tmp/lychee/out.md"
