@@ -12,7 +12,7 @@ Using with the default settings will check the `README.md` in your repository.
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1
+  uses: lycheeverse/lychee-action@v1.0.4
 ```
 
 This action uses [lychee] for link checking.
@@ -20,7 +20,7 @@ lychee arguments can be passed to the action via the `args` parameter. If not se
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1
+  uses: lycheeverse/lychee-action@v1.0.4
   with:
     args: -v README.md
 ```
@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1
+        uses: lycheeverse/lychee-action@v1.0.4
       - name: Create Issue From File
         uses: peter-evans/create-issue-from-file@v2
         with:
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: lychee Link Checker
         id: lc
-        uses: lycheeverse/lychee-action@v1
+        uses: lycheeverse/lychee-action@v1.0.4
       - name: Fail if there were link errors
         run: exit ${{ steps.lc.outputs.exit_code }}
 ```
