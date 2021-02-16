@@ -3,7 +3,7 @@ set -uxo pipefail
 
 LYCHEE_OUT=${LYCHEE_OUT:="lychee/out.md"}
 LYCHEE_TMP="/tmp/lychee/out.md"
-GITHUB_WORKFLOW_URL="https://github.com/${GITHUB_REPOSITORY}/runs/${GITHUB_RUN_ID}?check_suite_focus=true"
+GITHUB_WORKFLOW_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}?check_suite_focus=true"
 
 # Create temp dir
 mkdir -p "$(dirname $LYCHEE_TMP)"
