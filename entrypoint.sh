@@ -17,11 +17,11 @@ if [ $exit_code -ne 0 ]; then
     mkdir -p "$(dirname $LYCHEE_OUT)"
     echo 'Errors were reported while checking the availability of links.' > $LYCHEE_OUT
     echo >> $LYCHEE_OUT
-    echo "```" >> $LYCHEE_OUT
+    echo '```' >> $LYCHEE_OUT
     echo >> $LYCHEE_OUT
     cat "$LYCHEE_TMP" >> $LYCHEE_OUT
     echo >> $LYCHEE_OUT
-    echo "```" >> $LYCHEE_OUT
+    echo '```' >> $LYCHEE_OUT
     echo >> $LYCHEE_OUT
     echo "[Full Github Actions output](${GITHUB_WORKFLOW_URL})" >> $LYCHEE_OUT
 fi
