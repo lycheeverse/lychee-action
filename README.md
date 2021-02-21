@@ -16,18 +16,19 @@ Using with the default settings will check the `README.md` in your repository.
 ```
 
 This action uses [lychee] for link checking.
-lychee arguments can be passed to the action via the `args` parameter. If not set, the default `-v README.md` will be used.
+lychee arguments can be passed to the action via the `args` parameter. If not set, the defaults are
 
 ```yml
 - name: Link Checker
   uses: lycheeverse/lychee-action@v1.0.4
   with:
-    args: -v README.md
+    args: --verbose --no-progress *.md
 ```
 
 #### Detailed arguments (`args`) information
 
-See [lychee's documentation][lychee] for further argument details.
+The link checker is highly customizable.  
+See [lychee's documentation][lychee] for all possible arguments.
 
 #### Optional environment variables
 
@@ -72,17 +73,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: lychee Link Checker
-        id: lc
+        id: lychee
         uses: lycheeverse/lychee-action@v1.0.4
       - name: Fail if there were link errors
-        run: exit ${{ steps.lc.outputs.exit_code }}
+        run: exit ${{ steps.lychee.outputs.exit_code }}
 ```
 
 #### Troubleshooting and common problems
 
 See [lychee's Troubleshooting Guide](https://github.com/lycheeverse/lychee/blob/master/TROUBLESHOOTING.md)
 for solutions to common link-checking problems.
-
 
 ## Credits
 
