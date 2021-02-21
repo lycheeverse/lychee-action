@@ -15,7 +15,7 @@ jobs:
       - name: link checking
         uses: ./ # Uses an action in the root directory
         with:
-          args: --exclude 'lycheeverse/lychee-action@.*' -v README.md
+          args: --verbose --no-progress --exclude 'lycheeverse/lychee-action@.*' README.md
       
       - name: Create Issue From File
         uses: peter-evans/create-issue-from-file@v2
