@@ -3,7 +3,7 @@ description: "Quickly check links in Markdown, HTML, and text files"
 inputs:
   args:
     description: "lychee arguments"
-    default: "--verbose *.md"
+    default: "--verbose --no-progress *.md"
 runs:
   using: "docker"
   image: "Dockerfile"
