@@ -28,6 +28,7 @@ fi
 
 # Output to console
 cat "$LYCHEE_TMP"
+echo
 
 # Pass lychee exit code to next step
 echo ::set-output name=exit_code::$exit_code
