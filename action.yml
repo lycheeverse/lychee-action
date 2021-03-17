@@ -1,4 +1,4 @@
-name: "lychee link checker action"
+name: "Lychee Broken Link Checker"
 description: "Quickly check links in Markdown, HTML, and text files"
 inputs:
   args:
