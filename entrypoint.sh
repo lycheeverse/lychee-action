@@ -9,7 +9,7 @@ GITHUB_WORKFLOW_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITH
 mkdir -p "$(dirname $LYCHEE_TMP)"
 
 # Execute lychee
-lychee "$@" --output "$LYCHEE_TMP"
+lychee --output "$LYCHEE_TMP" "$@"
 exit_code=$?
 
 # If link errors were found, create a report in the designated directory
