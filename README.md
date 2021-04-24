@@ -76,7 +76,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: lychee Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.0.7
+        uses: lycheeverse/lychee-action@v1.0.8
       - name: Fail if there were link errors
         run: exit ${{ steps.lychee.outputs.exit_code }}
 ```
