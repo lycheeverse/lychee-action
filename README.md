@@ -42,7 +42,7 @@ jobs:
           labels: report, automated issue
 ```
 
-#### Detailed arguments (`args`) information
+## Detailed arguments (`args`) information
 
 This action uses [lychee] for link checking.
 lychee arguments can be passed to the action via the `args` parameter.
@@ -56,14 +56,14 @@ lychee arguments can be passed to the action via the `args` parameter.
 
 See [lychee's documentation][lychee] for all possible arguments.
 
-#### Optional environment variables
+## Optional environment variables
 
 Issues with links will be written to a file containing the error report.
 The default path is `lychee/out.md`. The path and filename may be overridden with the following variable:
 
 - `LYCHEE_OUT` - The path to the output file for the Markdown error report
 
-#### Creating a failing check for link errors
+## Creating a failing check for link errors
 
 To create a failing check when there are link errors, you can use the `exit_code` output from the action as follows.
 
@@ -81,12 +81,12 @@ jobs:
         run: exit ${{ steps.lychee.outputs.exit_code }}
 ```
 
-#### Troubleshooting and common problems
+## Troubleshooting and common problems
 
 See [lychee's Troubleshooting Guide](https://github.com/lycheeverse/lychee/blob/master/TROUBLESHOOTING.md)
 for solutions to common link-checking problems.
 
-#### Performance
+## Performance
 
 A full CI run to scan 576 links takes approximately 1 minute for the [analysis-tools-dev/static-analysis](https://github.com/analysis-tools-dev/static-analysis) repository.
 
