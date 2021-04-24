@@ -1,4 +1,4 @@
-name: check docs
+name: Links
 
 on:
   repository_dispatch:
@@ -12,11 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: link checking
+      - name: Link Checker
         uses: ./ # Uses an action in the root directory
         with:
-          args: --verbose --no-progress --exclude lycheeverse/lychee-action@.* README.md
-      
+          args: --verbose --no-progress --exclude lycheeverse/lychee-action@.* -- **/*.md **/*.html
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        
       - name: Create Issue From File
         uses: peter-evans/create-issue-from-file@v2
         with:
