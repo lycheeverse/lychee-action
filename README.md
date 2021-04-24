@@ -8,51 +8,32 @@ When used in conjunction with [Create Issue From File](https://github.com/peter-
 
 ## Usage
 
-Using with the default settings will check the `README.md` in your repository.
+Here is a full example of a Github workflow file.
+It will check all repository links once per day and create an issue in case of errors.
+Save this under `.github/workflows/links.yml`:
 
-```yml
-- name: Link Checker
-  uses: lycheeverse/lychee-action@v1.0.7
-```
+```yaml
+name: Links
 
-This action uses [lychee] for link checking.
-lychee arguments can be passed to the action via the `args` parameter. If not set, the defaults are
-
-```yml
-- name: Link Checker
-  uses: lycheeverse/lychee-action@v1.0.7
-  with:
-    args: --verbose --no-progress *.md
-```
-
-#### Detailed arguments (`args`) information
-
-The link checker is highly customizable.  
-See [lychee's documentation][lychee] for all possible arguments.
-
-#### Optional environment variables
-
-Issues with links will will be written to a file containing the error report.
-The default path is `lychee/out.md`. The path and filename may be overridden with the following variable:
-
-- `LYCHEE_OUT` - The path to the output file for the markdown error report
-
-#### Receiving issues containing the error report
-
-Below is an example of using this action in conjunction with [Create Issue From File](https://github.com/peter-evans/create-issue-from-file). The workflow executes on a schedule every month. Issues will be created when Link Checker finds connectivity problems with links.
-
-```yml
 on:
+  repository_dispatch:
+  workflow_dispatch:
   schedule:
-    - cron: "0 0 1 * *"
-name: Check markdown links
+    - cron: "00 18 * * *"
+
 jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.0.7
+        uses: lycheeverse/lychee-action@1.0.8
+        with:
+          args: --verbose --no-progress **/*.md **/*.html
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        
       - name: Create Issue From File
         uses: peter-evans/create-issue-from-file@v2
         with:
@@ -60,6 +41,27 @@ jobs:
           content-filepath: ./lychee/out.md
           labels: report, automated issue
 ```
+
+#### Detailed arguments (`args`) information
+
+This action uses [lychee] for link checking.
+lychee arguments can be passed to the action via the `args` parameter.
+
+```yml
+- name: Link Checker
+  uses: lycheeverse/lychee-action@v1.0.8
+  with:
+    args: --verbose --no-progress *.md
+```
+
+See [lychee's documentation][lychee] for all possible arguments.
+
+#### Optional environment variables
+
+Issues with links will be written to a file containing the error report.
+The default path is `lychee/out.md`. The path and filename may be overridden with the following variable:
+
+- `LYCHEE_OUT` - The path to the output file for the Markdown error report
 
 #### Creating a failing check for link errors
 
