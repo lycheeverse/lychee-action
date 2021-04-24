@@ -94,4 +94,14 @@ A full CI run to scan 576 links takes approximately 1 minute for the [analysis-t
 
 This action is based on [peter-evans/link-checker](https://github.com/peter-evans/link-checker) and uses lychee (written in Rust) instead of liche (written in Go) for link checking. For a comparison of both tools, check out this [comparison table](https://github.com/lycheeverse/lychee#features).
 
+## License
+
+lychee is licensed under either of
+
+- Apache License, Version 2.0, (LICENSE-APACHE or
+  http://www.apache.org/licenses/LICENSE-2.0)
+- MIT license (LICENSE-MIT or http://opensource.org/licenses/MIT)
+
+at your option.
+
 [lychee]: https://github.com/lycheeverse/lychee
