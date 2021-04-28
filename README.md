@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@1.0.8
+        uses: lycheeverse/lychee-action@v1.0.8
         with:
           args: --verbose --no-progress **/*.md **/*.html
         env:
