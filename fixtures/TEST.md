@@ -19,6 +19,4 @@ Test HTTP and HTTPS for the same site.
 http://spinroot.com/cobra/
 https://spinroot.com/cobra/
 
-https://www.peerlyst.com/posts/a-list-of-static-analysis-tools-for-c-c-peerlyst 
-
 test@example.com
