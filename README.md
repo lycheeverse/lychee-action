@@ -63,24 +63,6 @@ The default path is `lychee/out.md`. The path and filename may be overridden wit
 
 - `LYCHEE_OUT` - The path to the output file for the Markdown error report
 
-## Creating a failing check for link errors
-
-To create a failing check when there are link errors, you can use the `exit_code` output from the action as follows.
-
-```yml
-on: push
-jobs:
-  linkChecker:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: lychee Link Checker
-        id: lychee
-        uses: lycheeverse/lychee-action@v1.0.8
-      - name: Fail if there were link errors
-        run: exit ${{ steps.lychee.outputs.exit_code }}
-```
-
 ## Troubleshooting and common problems
 
 See [lychee's Troubleshooting Guide](https://github.com/lycheeverse/lychee/blob/master/TROUBLESHOOTING.md)
