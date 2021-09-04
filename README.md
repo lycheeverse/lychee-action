@@ -81,8 +81,8 @@ This action is based on [peter-evans/link-checker](https://github.com/peter-evan
 lychee is licensed under either of
 
 - Apache License, Version 2.0, (LICENSE-APACHE or
-  http://www.apache.org/licenses/LICENSE-2.0)
-- MIT license (LICENSE-MIT or http://opensource.org/licenses/MIT)
+  https://www.apache.org/licenses/LICENSE-2.0)
+- MIT license (LICENSE-MIT or https://opensource.org/licenses/MIT)
 
 at your option.
 
