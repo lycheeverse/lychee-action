@@ -1,4 +1,3 @@
-This link should be ignored as it is not a fully qualified URL.
 ![Logo](awesome.png)
 
 ![Anchors should be ignored](#awesome)
