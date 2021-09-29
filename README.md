@@ -72,6 +72,28 @@ for solutions to common link-checking problems.
 
 A full CI run to scan 576 links takes approximately 1 minute for the [analysis-tools-dev/static-analysis](https://github.com/analysis-tools-dev/static-analysis) repository.
 
+## Security and Updates
+
+It is recommended to pin lychee-action to a fixed version [for security reasons](https://francoisbest.com/posts/2020/the-security-of-github-actions).
+You can use dependabot to automatically keep your Github actions up-to-date.
+This is a great way to pin lychee-action, while still receiving updates in the future. 
+It's a relatively easy thing to do.
+
+Create a file named `.github/dependabot.yml` with the following contents:
+
+```yml
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: ".github/workflows"
+    schedule:
+      interval: "daily"
+```
+
+When you add or update the `dependabot.yml` file, this triggers an immediate check for version updates.
+Please see [the documentation](https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+) for all configuration options.
+
 ## Credits
 
 This action is based on [peter-evans/link-checker](https://github.com/peter-evans/link-checker) and uses lychee (written in Rust) instead of liche (written in Go) for link checking. For a comparison of both tools, check out this [comparison table](https://github.com/lycheeverse/lychee#features).
