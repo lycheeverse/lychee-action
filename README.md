@@ -25,7 +25,7 @@ jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@1e204e9a9253d643386038d443f96446fa156a97
 
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.1.0
@@ -33,7 +33,7 @@ jobs:
           args: --verbose --no-progress **/*.md **/*.html
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        
+
       - name: Create Issue From File
         uses: peter-evans/create-issue-from-file@v3
         with:
@@ -76,7 +76,7 @@ A full CI run to scan 576 links takes approximately 1 minute for the [analysis-t
 
 It is recommended to pin lychee-action to a fixed version [for security reasons](https://francoisbest.com/posts/2020/the-security-of-github-actions).
 You can use dependabot to automatically keep your Github actions up-to-date.
-This is a great way to pin lychee-action, while still receiving updates in the future. 
+This is a great way to pin lychee-action, while still receiving updates in the future.
 It's a relatively easy thing to do.
 
 Create a file named `.github/dependabot.yml` with the following contents:
