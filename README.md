@@ -94,6 +94,19 @@ When you add or update the `dependabot.yml` file, this triggers an immediate che
 Please see [the documentation](https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 ) for all configuration options.
 
+### Security tip
+
+For additional security when relying on automation to update actions you can pin the action to a SHA-256 rather than the semver version so as to avoid tag spoofing
+Dependabot will still be able to automatically update this.
+
+For example:
+
+```yml
+- name: Link Checker
+  uses: lycheeverse/lychee-action@5d7c1537c3b260f2c718b64eb36a6db6a2430e9b #1.1.0
+  #...
+```
+
 ## Credits
 
 This action is based on [peter-evans/link-checker](https://github.com/peter-evans/link-checker) and uses lychee (written in Rust) instead of liche (written in Go) for link checking. For a comparison of both tools, check out this [comparison table](https://github.com/lycheeverse/lychee#features).
