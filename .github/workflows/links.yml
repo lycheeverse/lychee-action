@@ -10,7 +10,7 @@ jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
 
       - name: Link Checker
         uses: ./ # Uses an action in the root directory
@@ -18,7 +18,7 @@ jobs:
           args: --verbose --no-progress --exclude lycheeverse/lychee-action@.* -- **/*.md **/*.html
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        
+
       - name: Create Issue From File
         uses: peter-evans/create-issue-from-file@v2
         with:

@@ -33,7 +33,7 @@ jobs:
           args: --verbose --no-progress **/*.md **/*.html
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        
+
       - name: Create Issue From File
         uses: peter-evans/create-issue-from-file@v3
         with:
@@ -76,7 +76,7 @@ A full CI run to scan 576 links takes approximately 1 minute for the [analysis-t
 
 It is recommended to pin lychee-action to a fixed version [for security reasons](https://francoisbest.com/posts/2020/the-security-of-github-actions).
 You can use dependabot to automatically keep your Github actions up-to-date.
-This is a great way to pin lychee-action, while still receiving updates in the future. 
+This is a great way to pin lychee-action, while still receiving updates in the future.
 It's a relatively easy thing to do.
 
 Create a file named `.github/dependabot.yml` with the following contents:
@@ -93,6 +93,19 @@ updates:
 When you add or update the `dependabot.yml` file, this triggers an immediate check for version updates.
 Please see [the documentation](https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 ) for all configuration options.
+
+### Security tip
+
+For additional security when relying on automation to update actions you can pin the action to a SHA-256 rather than the semver version so as to avoid tag spoofing
+Dependabot will still be able to automatically update this.
+
+For example:
+
+```yml
+- name: Link Checker
+  uses: lycheeverse/lychee-action@5d7c1537c3b260f2c718b64eb36a6db6a2430e9b #1.1.0
+  #...
+```
 
 ## Credits
 
