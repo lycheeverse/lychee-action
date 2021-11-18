@@ -9,20 +9,13 @@ GITHUB_WORKFLOW_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITH
 mkdir -p "$(dirname $LYCHEE_TMP)"
 
 # Execute lychee
-lychee --output "$LYCHEE_TMP" "$@"
+lychee --format markdown --output "$LYCHEE_TMP" "$@"
 exit_code=$?
 
 # If link errors were found, create a report in the designated directory
 if [ $exit_code -ne 0 ]; then
     mkdir -p "$(dirname $LYCHEE_OUT)"
-    echo 'Errors were reported while checking the availability of links.' > $LYCHEE_OUT
-    echo >> $LYCHEE_OUT
-    echo '```' >> $LYCHEE_OUT
-    echo >> $LYCHEE_OUT
     cat "$LYCHEE_TMP" >> $LYCHEE_OUT
-    echo >> $LYCHEE_OUT
-    echo '```' >> $LYCHEE_OUT
-    echo >> $LYCHEE_OUT
     echo "[Full Github Actions output](${GITHUB_WORKFLOW_URL})" >> $LYCHEE_OUT
 fi
 
