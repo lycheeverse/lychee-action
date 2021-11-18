@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.1.0
+        uses: lycheeverse/lychee-action@v1.1.1
         with:
           args: --verbose --no-progress **/*.md **/*.html
         env:
@@ -49,7 +49,7 @@ lychee arguments can be passed to the action via the `args` parameter.
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1.1.0
+  uses: lycheeverse/lychee-action@v1.1.1
   with:
     args: --verbose --no-progress *.md
 ```
@@ -103,7 +103,7 @@ For example:
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@5d7c1537c3b260f2c718b64eb36a6db6a2430e9b #1.1.0
+  uses: lycheeverse/lychee-action@cb79c9607b37671965f8dbb54cae47795758a440 #1.1.1
   #...
 ```
 
