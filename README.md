@@ -8,7 +8,8 @@ When used in conjunction with [Create Issue From File](https://github.com/peter-
 
 ## Usage
 
-Here is a full example of a Github workflow file.
+Here is a full example of a GitHub workflow file:
+
 It will check all repository links once per day and create an issue in case of errors.
 Save this under `.github/workflows/links.yml`:
 
@@ -40,6 +41,37 @@ jobs:
           title: Link Checker Report
           content-filepath: ./lychee/out.md
           labels: report, automated issue
+```
+
+Alternative approach:
+
+It will check all repository links during any Git push event and for all Pull Requests. If there's an error, it will fail the action.
+This has the benefit of ensuring that during a Pull Request, no link is added that is broken and any existing link will be caught if they become broken.
+Save this under `.github/workflows/links.yml`:
+
+```yaml
+name: Links
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  linkChecker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Link Checker
+        id: checker
+        uses: lycheeverse/lychee-action@v1.1.1
+        with:
+          args: --verbose --no-progress **/*.md **/*.html
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Fail if there were link errors
+        run: exit ${{ steps.checker.outputs.exit_code }}
 ```
 
 ## Detailed arguments (`args`) information
