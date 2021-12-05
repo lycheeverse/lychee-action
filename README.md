@@ -63,7 +63,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        id: checker
+        id: lychee
         uses: lycheeverse/lychee-action@v1.1.1
         with:
           args: --verbose --no-progress **/*.md **/*.html
@@ -71,7 +71,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Fail if there were link errors
-        run: exit ${{ steps.checker.outputs.exit_code }}
+        run: exit ${{ steps.lychee.outputs.exit_code }}
 ```
 
 ## Detailed arguments (`args`) information
