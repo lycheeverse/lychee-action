@@ -3,7 +3,20 @@ description: "Quickly check links in Markdown, HTML, and text files"
 inputs:
   args:
     description: "lychee arguments"
-    default: "--verbose --no-progress *.md"
+    default: "--verbose --no-progress **/*.md **/*.html"
+    required: false
+  format:
+    description: "output format (e.g. json)"
+    default: "markdown"
+    required: false
+  output:
+    description: "output file"
+    default: "lychee/out.md"
+    required: false
+  fail:
+    description: "fail entire pipeline on error (exit code not 0)"
+    default: false
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"

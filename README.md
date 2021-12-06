@@ -43,14 +43,16 @@ jobs:
           labels: report, automated issue
 ```
 
-Alternative approach:
+### Alternative approach:
 
-It will check all repository links during any Git push event and for all Pull Requests. If there's an error, it will fail the action.
-This has the benefit of ensuring that during a Pull Request, no link is added that is broken and any existing link will be caught if they become broken.
-Save this under `.github/workflows/links.yml`:
+This will check all repository links during any git push event and for all pull
+requests. If there's an error, it will fail the action. This has the benefit of
+ensuring that during a Pull Request, no link is added that is broken and any
+existing link will be caught if they become broken. Save this under
+`.github/workflows/links-fail-fast.yml`:
 
 ```yaml
-name: Links
+name: Links (Fail Fast)
 
 on:
   push:
@@ -63,15 +65,12 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        id: lychee
         uses: lycheeverse/lychee-action@v1.1.1
         with:
           args: --verbose --no-progress **/*.md **/*.html
+          fail: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-      - name: Fail if there were link errors
-        run: exit ${{ steps.lychee.outputs.exit_code }}
 ```
 
 ## Detailed arguments (`args`) information

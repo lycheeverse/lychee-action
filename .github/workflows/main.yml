@@ -8,10 +8,33 @@ jobs:
     name: Test the lychee link checker action
     steps:
       # To use this repository's private action,
-      # you must check out the repository
+      # we must check out the repository
       - name: Checkout
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
-      - name: link checking
-        uses: ./ # Uses an action in the root directory
+      - name: test defaults
+        uses: ./
+      - name: test globs
+        uses: ./
+        with:
+          args: --verbose --no-progress **/*.md **/*.html
+          fail: true
+      - name: test workflow inputs
+        uses: ./
         with:
           args: -v fixtures/TEST.md
+          format: json
+          output: /tmp/foo.json
+          fail: true
+      # TODO: Enable on lychee >= 0.8.2
+      #- name: directory
+      #  uses: ./
+      #  with:
+      #    args: .
+      #    fail: true
+      - name: test format override
+        uses: ./
+        with:
+          args: --format markdown -v fixtures/TEST.md
+          format: doesnotexist # gets ignored if format set in args
+          output: /tmp/foo.txt
+          fail: true
