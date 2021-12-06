@@ -5,6 +5,7 @@ on:
 jobs:
   lychee-action:
     runs-on: ubuntu-latest
+    continue-on-error: true
     name: Test the lychee link checker action
     steps:
       # To use this repository's private action,
@@ -25,12 +26,12 @@ jobs:
           format: json
           output: /tmp/foo.json
           fail: true
-      # TODO: Enable on lychee >= 0.8.2
+      # Works with lychee >= 0.8.2
       - name: directory
         uses: ./
         with:
           args: .
-          fail: false
+          fail: true
       - name: test format override
         uses: ./
         with:
