@@ -10,7 +10,7 @@ mkdir -p "$(dirname $LYCHEE_TMP)"
 ARGS="${INPUT_ARGS}"
 FORMAT=""
 # Backwards compatibility:
-# If `format`` occurs in args, ignore the value from `INPUT_FORMAT`
+# If `format` occurs in args, ignore the value from `INPUT_FORMAT`
 [[ "$ARGS" =~ "--format " ]] || FORMAT="--format ${INPUT_FORMAT}"
 
 # Execute lychee
