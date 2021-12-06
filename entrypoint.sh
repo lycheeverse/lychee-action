@@ -11,7 +11,7 @@ mkdir -p "$(dirname $LYCHEE_TMP)"
 ARGS="$@"
 [[ "$ARGS" =~ "--format " ]] || ARGS="$ARGS --format markdown"
 # Execute lychee
-lychee --output "$LYCHEE_TMP" "$ARGS"
+lychee --output "$LYCHEE_TMP" $ARGS
 exit_code=$?
 
 # If link errors were found, create a report in the designated directory
