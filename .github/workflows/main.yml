@@ -26,12 +26,12 @@ jobs:
           format: json
           output: /tmp/foo.json
           fail: true
-      # Works with lychee >= 0.8.2
       - name: directory
         uses: ./
         with:
           args: .
-          fail: true
+          # TODO: Set to `true` when upgrading to lychee 0.8.2+
+          fail: false
       - name: test format override
         uses: ./
         with:
