@@ -26,11 +26,11 @@ jobs:
           output: /tmp/foo.json
           fail: true
       # TODO: Enable on lychee >= 0.8.2
-      #- name: directory
-      #  uses: ./
-      #  with:
-      #    args: .
-      #    fail: true
+      - name: directory
+        uses: ./
+        with:
+          args: .
+          fail: true
       - name: test format override
         uses: ./
         with:
