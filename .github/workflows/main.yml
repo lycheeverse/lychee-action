@@ -26,6 +26,8 @@ jobs:
           format: json
           output: /tmp/foo.json
           fail: true
+      - name: show permissions and number of lines of output json file
+        run: ls -l /tmp/foo.json && wc -l /tmp/foo.json
       - name: directory
         uses: ./
         with:
@@ -39,3 +41,5 @@ jobs:
           format: doesnotexist # gets ignored if format set in args
           output: /tmp/foo.txt
           fail: true
+      - name: show permissions and number of lines of output txt file
+        run: ls -l /tmp/foo.txt && wc -l /tmp/foo.txt
