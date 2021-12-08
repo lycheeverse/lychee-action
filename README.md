@@ -29,11 +29,13 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.1.1
+        id: lychee
+        uses: lycheeverse/lychee-action@v1.2.0
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Create Issue From File
+        if: ${{ steps.lychee.outputs.exit_code != 0 }}
         uses: peter-evans/create-issue-from-file@v3
         with:
           title: Link Checker Report
@@ -63,7 +65,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.1.1
+        uses: lycheeverse/lychee-action@v1.2.0
         with:
           fail: true
         env:
