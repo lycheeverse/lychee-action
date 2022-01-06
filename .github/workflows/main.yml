@@ -18,7 +18,7 @@ jobs:
       - name: test OS globs
         uses: ./
         with:
-          args: --verbose --no-progress **/*.md **/*.html
+          args: --verbose --no-progress **/*.md
           fail: true
       - name: test lychee globs (quoted)
         uses: ./
