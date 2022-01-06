@@ -18,12 +18,12 @@ jobs:
       - name: test OS globs
         uses: ./
         with:
-          args: --verbose --no-progress ./**/*.md
+          args: --verbose --no-progress **/*.md
           fail: true
       - name: test lychee globs (quoted)
         uses: ./
         with:
-          args: --verbose --no-progress './**/*.html'
+          args: --verbose --no-progress './**/*.md' './**/*.html'
           fail: true
       - name: test workflow inputs
         uses: ./
