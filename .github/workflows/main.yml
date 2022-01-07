@@ -23,7 +23,7 @@ jobs:
       - name: test lychee globs (quoted)
         uses: ./
         with:
-          args: --verbose --no-progress "./**/*.md"
+          args: --verbose --no-progress -- "./**/*.md"
           fail: true
       - name: test workflow inputs
         uses: ./
