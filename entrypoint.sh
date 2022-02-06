@@ -14,7 +14,7 @@ FORMAT=""
 [[ "$ARGS" =~ "--format " ]] || FORMAT="--format ${INPUT_FORMAT}"
 
 # Execute lychee
-lychee ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
+eval lychee ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
 exit_code=$?
 
 # If link errors were found, create a report in the designated directory
