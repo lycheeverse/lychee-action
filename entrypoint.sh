@@ -1,5 +1,4 @@
 #!/bin/bash -l
-set -uxo pipefail
 
 LYCHEE_TMP="/tmp/lychee/out.md"
 GITHUB_WORKFLOW_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}?check_suite_focus=true"
