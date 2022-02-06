@@ -83,7 +83,7 @@ On top of that, some other inputs are supported: `format`, `output`, and `fail`.
   uses: lycheeverse/lychee-action@v1.1.1
   with:
     # Check all markdown and html files in repo (default)
-    args: --verbose --no-progress **/*.md **/*.html
+    args: --verbose --no-progress './**/*.md' './**/*.html'
     # Use json as output format (instead of markdown)
     format: json
     # Use different output filename
@@ -108,7 +108,7 @@ The default path is `lychee/out.md`. The path and filename may be overridden wit
 
 ## Troubleshooting and common problems
 
-See [lychee's Troubleshooting Guide](https://github.com/lycheeverse/lychee/blob/master/TROUBLESHOOTING.md)
+See [lychee's Troubleshooting Guide](https://github.com/lycheeverse/lychee/blob/master/docs/TROUBLESHOOTING.md)
 for solutions to common link-checking problems.
 
 ## Performance

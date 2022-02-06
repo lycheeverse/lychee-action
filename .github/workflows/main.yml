@@ -14,12 +14,18 @@ jobs:
       # we must check out the repository
       - name: Checkout
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
-      - name: test defaults
-        uses: ./
+      # `lycheeverse/lychee-action@...` gets classified as an e-mail address,
+      # causing this test to fail.
+      # TODO: Reactive once this issue is fixed upstream:
+      # https://github.com/robinst/linkify/issues/29
+      #- name: test defaults
+      #  uses: ./
+      #  with:
+      #    fail: true
       - name: test globs
         uses: ./
         with:
-          args: --verbose --no-progress **/*.md **/*.html
+          args: --exclude-mail --verbose --no-progress './**/*.md' './**/*.html'
           fail: true
       - name: test workflow inputs
         uses: ./
