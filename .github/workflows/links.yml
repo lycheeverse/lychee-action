@@ -15,7 +15,7 @@ jobs:
       - name: Link Checker
         uses: ./ # Uses an action in the root directory
         with:
-          args: --verbose --no-progress --exclude lycheeverse/lychee-action@.* -- **/*.md **/*.html
+          args: --verbose --no-progress --exclude lycheeverse/lychee-action@.* -- './**/*.md' './**/*.html'
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
