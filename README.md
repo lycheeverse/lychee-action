@@ -30,7 +30,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.2.0
+        uses: lycheeverse/lychee-action@v1.2.1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -65,7 +65,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.2.0
+        uses: lycheeverse/lychee-action@v1.2.1
         with:
           fail: true
         env:
@@ -134,8 +134,7 @@ updates:
 ```
 
 When you add or update the `dependabot.yml` file, this triggers an immediate check for version updates.
-Please see [the documentation](https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-) for all configuration options.
+Please see [the documentation](https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates) for all configuration options.
 
 ### Security tip
 
