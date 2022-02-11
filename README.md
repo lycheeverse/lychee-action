@@ -80,7 +80,7 @@ On top of that, some other inputs are supported: `format`, `output`, and `fail`.
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1.1.1
+  uses: lycheeverse/lychee-action@v1.3.0
   with:
     # Check all markdown and html files in repo (default)
     args: --verbose --no-progress './**/*.md' './**/*.html'
