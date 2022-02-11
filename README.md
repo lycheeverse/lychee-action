@@ -30,7 +30,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.2.1
+        uses: lycheeverse/lychee-action@v1.3.0
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -65,7 +65,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.2.1
+        uses: lycheeverse/lychee-action@v1.3.0
         with:
           fail: true
         env:
