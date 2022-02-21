@@ -20,7 +20,7 @@ exit_code=$?
 # If link errors were found, create a report in the designated directory
 if [ $exit_code -ne 0 ]; then
     mkdir -p "$(dirname -- "${INPUT_OUTPUT}")"
-    cat "${LYCHEE_TMP}" >> "${INPUT_OUTPUT}"
+    cat "${LYCHEE_TMP}" > "${INPUT_OUTPUT}"
     echo "[Full Github Actions output](${GITHUB_WORKFLOW_URL})" >> "${INPUT_OUTPUT}"
 fi
 
