@@ -83,7 +83,7 @@ On top of that, some other inputs are supported: `format`, `output`, and `fail`.
   uses: lycheeverse/lychee-action@v1.3.0
   with:
     # Check all markdown and html files in repo (default)
-    args: --verbose --no-progress './**/*.md' './**/*.html'
+    args: "'./**/*.md' './**/*.html' --verbose --no-progress"
     # Use json as output format (instead of markdown)
     format: json
     # Use different output filename
