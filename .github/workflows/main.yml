@@ -37,9 +37,8 @@ jobs:
       - name: directory
         uses: ./
         with:
-          args: .
-          # TODO: Set to `true` when upgrading to lychee 0.8.2+
-          fail: false
+          args: --exclude-mail .
+          fail: true
       - name: test format override
         uses: ./
         with:
