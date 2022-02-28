@@ -17,6 +17,10 @@ FORMAT=""
 eval lychee ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
 exit_code=$?
 
+if [ ! -f "${LYCHEE_TMP}" ]; then
+    echo "No output. Check pipeline run to see if lychee panicked." > "${LYCHEE_TMP}"
+fi
+
 # If link errors were found, create a report in the designated directory
 if [ $exit_code -ne 0 ]; then
     mkdir -p "$(dirname -- "${INPUT_OUTPUT}")"
