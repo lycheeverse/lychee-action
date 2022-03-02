@@ -7,7 +7,17 @@ inputs:
     required: false
   debug:
     description: "Enable debug output in action (set -x). Helpful for troubleshooting."
-    default: false
+  format:
+    description: "output format (e.g. json)"
+    default: "markdown"
+    required: false
+  output:
+    description: "output file"
+    default: "lychee/out.md"
+    required: false
+  fail-if-empty:
+    description: "fail entire pipeline if no links were found"
+    default: true
     required: false
   fail:
     description: "Fail entire pipeline on error (i.e. when lychee exit code is not 0)"
