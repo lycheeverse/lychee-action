@@ -15,7 +15,7 @@ inputs:
     required: false
   fail:
     description: "fail entire pipeline on error (exit code not 0)"
-    default: false
+    default: true
     required: false
 runs:
   using: "docker"

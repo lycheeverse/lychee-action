@@ -20,29 +20,23 @@ jobs:
       # https://github.com/robinst/linkify/issues/29
       #- name: test defaults
       #  uses: ./
-      #  with:
-      #    fail: true
       - name: test globs
         uses: ./
         with:
           args: --exclude-mail --verbose --no-progress './**/*.md' './**/*.html'
-          fail: true
       - name: test workflow inputs
         uses: ./
         with:
           args: -v fixtures/TEST.md
           format: json
           output: /tmp/foo.json
-          fail: true
       - name: directory
         uses: ./
         with:
           args: --exclude-mail .
-          fail: true
       - name: test format override
         uses: ./
         with:
           args: --format markdown -v fixtures/TEST.md
           format: doesnotexist # gets ignored if format set in args
           output: /tmp/foo.txt
-          fail: true
