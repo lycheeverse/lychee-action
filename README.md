@@ -31,7 +31,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.3.2
+        uses: lycheeverse/lychee-action@v1.4.0
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -66,7 +66,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.3.2
+        uses: lycheeverse/lychee-action@v1.4.0
         with:
           fail: true
         env:
@@ -81,7 +81,7 @@ On top of that, some other inputs are supported: `format`, `output`, and `fail`.
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1.3.2
+  uses: lycheeverse/lychee-action@v1.4.0
   with:
     # Check all markdown and html files in repo (default)
     args: --verbose --no-progress './**/*.md' './**/*.html'
@@ -119,7 +119,6 @@ Just replace `org` with your organisation name and `repo` with the repository na
 It will look like this:
 
 [![Check Links](https://github.com/lycheeverse/lychee-action/actions/workflows/links.yml/badge.svg)](https://github.com/lycheeverse/lychee-action/actions/workflows/links.yml)
-
 
 ## Troubleshooting and common problems
 
