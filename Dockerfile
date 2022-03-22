@@ -1,4 +1,4 @@
-FROM lycheeverse/lychee:0.9.0@sha256:68c5d76e0e87c6267cf2954b5e1d9b5765a47a5d7ae352e227ecbfb16db99f71
+FROM lycheeverse/lychee:0.9.0@sha256:d5b7a864beb60cb56d0eb0034fcabf2ede343ddef1c64d6f69b5493a57fc38c3
 
 LABEL maintainer="Matthias Endler <matthias-endler@gmx.net>"
 LABEL repository="https://github.com/lycheeverse/lychee-action"
