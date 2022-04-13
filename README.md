@@ -148,7 +148,7 @@ updates:
 ```
 
 When you add or update the `dependabot.yml` file, this triggers an immediate check for version updates.
-Please see [the documentation](https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates) for all configuration options.
+Please see [the documentation](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file) for all configuration options.
 
 ### Security tip
 
