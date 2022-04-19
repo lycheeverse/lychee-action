@@ -25,7 +25,10 @@ fi
 if [ $exit_code -ne 0 ]; then
     mkdir -p "$(dirname -- "${INPUT_OUTPUT}")"
     cat "${LYCHEE_TMP}" > "${INPUT_OUTPUT}"
-    echo "[Full Github Actions output](${GITHUB_WORKFLOW_URL})" >> "${INPUT_OUTPUT}"
+
+    if [ "${INPUT_FORMAT}" == "markdown" ]; then
+        echo "[Full Github Actions output](${GITHUB_WORKFLOW_URL})" >> "${INPUT_OUTPUT}"
+    fi
 fi
 
 # Output to console
