@@ -93,7 +93,7 @@ On top of that, some other inputs are supported: `format`, `output`, and `fail`.
     fail: true
 ```
 
-See [lychee's documentation][lychee] for all possible arguments.
+See [lychee's documentation][lychee-args] for all possible arguments.
 
 ## Excluding links from getting checked
 
@@ -178,3 +178,4 @@ lychee is licensed under either of
 at your option.
 
 [lychee]: https://github.com/lycheeverse/lychee
+[lychee-args]: https://github.com/lycheeverse/lychee#commandline-parameters
