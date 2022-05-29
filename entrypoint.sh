@@ -36,7 +36,7 @@ cat "${LYCHEE_TMP}"
 echo
 
 if [ "${INPUT_FORMAT}" == "markdown" ]; then
-  if [ "${INPUT_JOB_SUMMARY}" = true ]; then
+  if [ "${INPUT_JOBSUMMARY}" = true ]; then
     cat "${LYCHEE_TMP}" > "${GITHUB_STEP_SUMMARY}"
   fi
 fi
