@@ -1,4 +1,4 @@
-on: 
+on:
   - repository_dispatch
   - workflow_dispatch
   - push
@@ -14,14 +14,14 @@ jobs:
       # we must check out the repository
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
-      # `lycheeverse/lychee-action@...` gets classified as an e-mail address,
-      # causing this test to fail.
-      # TODO: Reactive once this issue is fixed upstream:
-      # https://github.com/robinst/linkify/issues/29
-      #- name: test defaults
-      #  uses: ./
-      #  with:
-      #    fail: true
+      - name: test defaults
+        uses: ./
+        with:
+          fail: true
+      - name: test explicit lychee version
+        uses: ./
+        with:
+          lycheeVersion: 0.9.0
       - name: test globs
         uses: ./
         with:

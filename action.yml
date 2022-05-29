@@ -21,9 +21,31 @@ inputs:
     description: "write Github job summary at the end of the job (written on Markdown output only)"
     default: true
     required: false
+  lycheeVersion:
+    description: "use custom version of lychee link checker"
+    default: 0.9.0
+    required: false
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: "composite"
+  steps:
+    - name: install lychee
+      run: |
+        curl -LO 'https://github.com/lycheeverse/lychee/releases/download/v${{ inputs.LYCHEEVERSION }}/lychee-v${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz'
+        tar -xvzf lychee-v${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz
+        chmod 755 lychee
+        mv lychee /usr/local/bin/lychee
+      shell: bash
+    - run: ${{ github.action_path }}/entrypoint.sh
+      env:
+        #https://github.com/actions/runner/issues/665
+        INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        INPUT_ARGS: ${{ inputs.ARGS }}
+        INPUT_FORMAT: ${{ inputs.FORMAT }}
+        INPUT_OUTPUT: ${{ inputs.OUTPUT }}
+        INPUT_FAIL: ${{ inputs.FAIL }}
+        INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
+      shell: bash
+
 branding:
   icon: "external-link"
   color: "purple"
