@@ -35,6 +35,12 @@ fi
 cat "${LYCHEE_TMP}"
 echo
 
+if [ "${INPUT_FORMAT}" == "markdown" ]; then
+  if [ "${INPUT_JOBSUMMARY}" = true ]; then
+    cat "${LYCHEE_TMP}" > "${GITHUB_STEP_SUMMARY}"
+  fi
+fi
+
 # Pass lychee exit code to next step
 echo ::set-output name=exit_code::$exit_code
 
