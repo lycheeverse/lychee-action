@@ -23,7 +23,7 @@ inputs:
     required: false
   lycheeVersion:
     description: "use custom version of lychee link checker"
-    default: 0.9.0
+    default: 0.10.0
     required: false
 runs:
   using: "composite"
