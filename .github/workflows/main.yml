@@ -5,7 +5,7 @@ on:
   - pull_request
 
 jobs:
-  lychee-action:
+  lychee-linux:
     runs-on: ubuntu-latest
     continue-on-error: true
     name: Test the lychee link checker action
@@ -46,3 +46,27 @@ jobs:
           format: doesnotexist # gets ignored if format set in args
           output: /tmp/foo.txt
           fail: true
+
+  lychee-windows:
+    runs-on: windows-latest
+    name: Test the lychee link checker action on Windows
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - name: test defaults
+        uses: ./
+        with:
+          fail: true
+          lycheePackage: windows-x86_64.exe
+
+  lychee-macos:
+    runs-on: macos-latest
+    name: Test the lychee link checker action on macOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - name: test defaults
+        uses: ./
+        with:
+          fail: true
+          lycheePackage: macos-x86_64.dmg

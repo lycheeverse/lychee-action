@@ -25,13 +25,18 @@ inputs:
     description: "use custom version of lychee link checker"
     default: 0.9.0
     required: false
+  lycheePackage:
+    description: "lychee binary release package (see https://github.com/lycheeverse/lychee/releases for options)"
+    default: x86_64-unknown-linux-gnu.tar.gz
+    required: false
+
 runs:
   using: "composite"
   steps:
     - name: install lychee
       run: |
-        curl -LO 'https://github.com/lycheeverse/lychee/releases/download/v${{ inputs.LYCHEEVERSION }}/lychee-v${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz'
-        tar -xvzf lychee-v${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz
+        curl -LO 'https://github.com/lycheeverse/lychee/releases/download/v${{ inputs.LYCHEEVERSION }}/lychee-v${{ inputs.LYCHEEVERSION }}-${{ inputs.LYCHEEPACKAGE }}'
+        tar -xvzf lychee-v${{ inputs.LYCHEEVERSION }}-${{ inputs.LYCHEEPACKAGE }}
         chmod 755 lychee
         mv lychee /usr/local/bin/lychee
       shell: bash

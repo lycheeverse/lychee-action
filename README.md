@@ -83,13 +83,14 @@ See [lychee's documentation][lychee-args] for all possible arguments.
 
 On top of that, the action also supports some additional arguments.
 
-| Argument      | Description                                                                      |
-| ------------- | -------------------------------------------------------------------------------- |
-| format        | Summary output format (markdown, json,...)                                       |
-| output        | Summary output file path                                                         |
-| fail          | Fail entire pipeline on error (i.e. when lychee exit code is not 0)              |
-| jobSummary    | Write Github job summary at the end of the job (written on Markdown output only) |
-| lycheeVersion | Overwrite the lychee version to be used                                          |
+| Argument      | Description                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------------- |
+| format        | Summary output format (markdown, json,...)                                                        |
+| output        | Summary output file path                                                                          |
+| fail          | Fail entire pipeline on error (i.e. when lychee exit code is not 0)                               |
+| jobSummary    | Write Github job summary at the end of the job (written on Markdown output only)                  |
+| lycheeVersion | Overwrite lychee version to be used                                                               |
+| lycheePackage | Overwrite lychee [package release for different architectures][release] (e.g. windows-x86_64.exe) |
 
 See [action.yml](./action.yml) for a full list of supported arguments.
 
@@ -197,3 +198,4 @@ at your option.
 [troubleshooting]: https://github.com/lycheeverse/lychee/blob/master/docs/TROUBLESHOOTING.md
 [security]: https://francoisbest.com/posts/2020/the-security-of-github-actions
 [dependabot]: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+[release]: https://github.com/lycheeverse/lychee/releases
