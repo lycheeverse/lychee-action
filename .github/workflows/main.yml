@@ -46,3 +46,10 @@ jobs:
           format: doesnotexist # gets ignored if format set in args
           output: /tmp/foo.txt
           fail: true
+      - name: test create issue
+        uses: ./
+        with:
+          args: invalid
+          issueRepository: lycheeverse/lychee-issue-dummy
+          issueNumber: 1
+          issueLabels: test, some, labels

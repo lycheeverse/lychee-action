@@ -6,36 +6,54 @@ inputs:
     default: "--verbose --no-progress './**/*.md' './**/*.html'"
     required: false
   format:
-    description: "summary output format (e.g. json)"
+    description: "Summary output format (e.g. json)"
     default: "markdown"
     required: false
   output:
-    description: "summary output file path"
+    description: "Summary output file path"
     default: "lychee/out.md"
     required: false
   fail:
-    description: "fail entire pipeline on error (i.e. when lychee exit code is not 0)"
+    description: "Fail entire pipeline on error (i.e. when lychee exit code is not 0)"
     default: false
     required: false
   jobSummary:
-    description: "write Github job summary at the end of the job (written on Markdown output only)"
+    description: "Write Github job summary at the end of the job (written on Markdown output only)"
     default: true
     required: false
   lycheeVersion:
-    description: "use custom version of lychee link checker"
+    description: "Use custom version of lychee link checker"
     default: 0.10.0
     required: false
+  createIssue:
+    description: "Create Github issue if link check fails"
+    default: true
+    required: false
+  issueTitle:
+    description: "Title of Github issue which will be created if link check fails"
+    default: Link Checker Report
+    required: false
+  issueLabels:
+    description: "Attach labels to Github issue"
+    default: links, report, automated issue
+    required: false
+  issueRepository:
+    description: 'The target GitHub repository for creating issues'
+    default: ${{ github.repository }}
+  issueNumber:
+    description: 'The issue number of an existing issue to update'
+
 runs:
   using: "composite"
   steps:
-    - name: install lychee
-      run: |
+    - run: |
         curl -LO 'https://github.com/lycheeverse/lychee/releases/download/v${{ inputs.LYCHEEVERSION }}/lychee-v${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz'
         tar -xvzf lychee-v${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz
         chmod 755 lychee
         mv lychee /usr/local/bin/lychee
       shell: bash
-    - run: ${{ github.action_path }}/entrypoint.sh
+    - id: lychee
+      run: ${{ github.action_path }}/entrypoint.sh
       env:
         #https://github.com/actions/runner/issues/665
         INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
@@ -45,6 +63,14 @@ runs:
         INPUT_FAIL: ${{ inputs.FAIL }}
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
       shell: bash
+    - if: inputs.CREATEISSUE && steps.lychee.outputs.exit_code != 0
+      uses: peter-evans/create-issue-from-file@v4
+      with:
+        title: ${{ inputs.ISSUETITLE }}
+        labels: ${{ inputs.ISSUELABELS }}
+        repository: ${{ inputs.ISSUEREPOSITORY }}
+        issue-number: ${{ inputs.ISSUENUMBER }}
+        content-filepath: ${{ inputs.OUTPUT }}
 
 branding:
   icon: "external-link"

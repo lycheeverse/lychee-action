@@ -32,18 +32,19 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Link Checker
-        id: lychee
         uses: lycheeverse/lychee-action@v1.5.0
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Create Issue From File
-        if: steps.lychee.outputs.exit_code != 0
-        uses: peter-evans/create-issue-from-file@v3
-        with:
-          title: Link Checker Report
-          content-filepath: ./lychee/out.md
-          labels: report, automated issue
+```
+
+Issue creation can optionally be disabled
+
+```yaml
+- name: Link Checker
+  uses: lycheeverse/lychee-action@v1.5.0
+  with:
+    createIssue: false
 ```
 
 ### Alternative approach:

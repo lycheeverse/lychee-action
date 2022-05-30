@@ -16,12 +16,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         with:
           args: --user-agent "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0" --verbose --exclude spinroot.com --no-progress './**/*.md' './**/*.html'
+          issueTitle: Link Checker Report
+          issueLabels: report, automated issue
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-      - name: Create Issue From File
-        uses: peter-evans/create-issue-from-file@v4
-        with:
-          title: Link Checker Report
-          content-filepath: ./lychee/out.md
-          labels: report, automated issue
