@@ -5,51 +5,72 @@ on:
   - pull_request
 
 jobs:
-  lychee-action:
+  defaults:
     runs-on: ubuntu-latest
-    continue-on-error: true
-    name: Test the lychee link checker action
+    name: Test default action usage
     steps:
       # To use this repository's private action,
       # we must check out the repository
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
-      - name: test defaults
-        uses: ./
+      - uses: ./
         with:
           fail: true
-      - name: test explicit lychee version
-        uses: ./
+
+  explicit:
+    runs-on: ubuntu-latest
+    name: test explicit lychee version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - uses: ./
         with:
           lycheeVersion: 0.9.0
-      - name: test globs
-        uses: ./
+
+  globs:
+    runs-on: ubuntu-latest
+    name: test globs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - uses: ./
         with:
           args: --exclude-mail --verbose --no-progress './**/*.md' './**/*.html'
-          fail: true
-      - name: test workflow inputs
-        uses: ./
+          fail: true         
+
+  workflow-inputs:
+    runs-on: ubuntu-latest
+    name: test workflow inputs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - uses: ./
         with:
           args: -v fixtures/TEST.md
           format: json
           output: /tmp/foo.json
           fail: true
-      - name: directory
-        uses: ./
+
+  directory:
+    runs-on: ubuntu-latest
+    name: directory
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - uses: ./
         with:
           args: --exclude-mail .
           fail: true
-      - name: test format override
-        uses: ./
+
+  format-override:
+    runs-on: ubuntu-latest
+    name: test format override
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - uses: ./
         with:
           args: --format markdown -v fixtures/TEST.md
           format: doesnotexist # gets ignored if format set in args
           output: /tmp/foo.txt
           fail: true
-      - name: test create issue
-        uses: ./
-        with:
-          args: invalid
-          issueRepository: lycheeverse/lychee-issue-dummy
-          issueNumber: 1
-          issueLabels: test, some, labels
