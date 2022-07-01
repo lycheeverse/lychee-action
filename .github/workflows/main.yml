@@ -19,7 +19,7 @@ jobs:
 
   explicit:
     runs-on: ubuntu-latest
-    name: test explicit lychee version
+    name: Test explicit lychee version
     steps:
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
@@ -29,7 +29,7 @@ jobs:
 
   globs:
     runs-on: ubuntu-latest
-    name: test globs
+    name: Test globs
     steps:
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
@@ -40,7 +40,7 @@ jobs:
 
   workflow-inputs:
     runs-on: ubuntu-latest
-    name: test workflow inputs
+    name: Test workflow inputs
     steps:
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
@@ -53,7 +53,7 @@ jobs:
 
   directory:
     runs-on: ubuntu-latest
-    name: directory
+    name: Test directory
     steps:
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
@@ -64,7 +64,7 @@ jobs:
 
   format-override:
     runs-on: ubuntu-latest
-    name: test format override
+    name: Test format override
     steps:
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
@@ -74,3 +74,16 @@ jobs:
           format: doesnotexist # gets ignored if format set in args
           output: /tmp/foo.txt
           fail: true
+
+  create-issue:
+    runs-on: ubuntu-latest
+    name: Test create issue
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - uses: ./
+        with:
+          args: invalid
+          issueRepository: lycheeverse/lychee-issue-dummy
+          issueNumber: 1
+          issueLabels: test, some, labels
