@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.5.0
+        uses: lycheeverse/lychee-action@v2.0.0
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -42,7 +42,7 @@ Issue creation can optionally be disabled
 
 ```yaml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1.5.0
+  uses: lycheeverse/lychee-action@v2.0.0
   with:
     createIssue: false
 ```
