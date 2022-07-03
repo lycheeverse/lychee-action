@@ -11,7 +11,7 @@ inputs:
     required: false
   output:
     description: "Summary output file path"
-    default: "lychee/out.md"
+    default: "summary.md"
     required: false
   fail:
     description: "Fail entire pipeline on error (i.e. when lychee exit code is not 0)"
@@ -52,6 +52,7 @@ runs:
         chmod 755 lychee
         mv lychee /usr/local/bin/lychee
       shell: bash
+
     - id: lychee
       run: ${{ github.action_path }}/entrypoint.sh
       env:
@@ -63,6 +64,7 @@ runs:
         INPUT_FAIL: ${{ inputs.FAIL }}
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
       shell: bash
+
     - if: inputs.CREATEISSUE && steps.lychee.outputs.exit_code != 0
       uses: peter-evans/create-issue-from-file@v4
       with:
