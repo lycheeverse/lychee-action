@@ -38,7 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Create Issue From File
-        if: failure()
+        if: ${{ failure() && steps.lychee.outcome == 'failure' }}
         uses: peter-evans/create-issue-from-file@v3
         with:
           title: Link Checker Report
