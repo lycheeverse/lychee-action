@@ -5,10 +5,6 @@
 
 Quickly check links in Markdown, HTML, and text files using [lychee].
 
-When used in conjunction with [Create Issue From
-File](https://github.com/peter-evans/create-issue-from-file), issues will be
-created when the action finds link problems.
-
 ## Usage
 
 Here is a full example of a GitHub workflow file:
@@ -182,6 +178,8 @@ This action is based on
 lychee (written in Rust) instead of liche (written in Go) for link checking. For
 a comparison of both tools, check out this [comparison
 table](https://github.com/lycheeverse/lychee#features).
+We also use [create-issue-from-file](https://github.com/peter-evans/create-issue-from-file)
+to create issues.
 
 ## License
 
