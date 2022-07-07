@@ -82,14 +82,14 @@ lychee arguments can be passed to the action via the `args` parameter.
 
 On top of that, the action also supports some additional arguments.
 
-| Argument      | Examples                | Description                                                                      |
-| ------------- | ----------------------- |--------------------------------------------------------------------------------- |
-| args          | `--cache`, `--insecure` | See [lychee's documentation][lychee-args] for all possible arguments and values  |
-| format        | `markdown`, `json`      | Summary output format                                                            |
-| output        | `lychee/results.md`     | Summary output file path                                                         |
-| fail          | `true`                  | Fail entire pipeline on error (i.e. when lychee exit code is not 0)              |
-| jobSummary    | `true`                  | Write Github job summary at the end of the job (written on Markdown output only) |
-| lycheeVersion | `0.10.0`                | Overwrite the lychee version to be used                                          |
+| Argument      | Examples                | Description                                                              |
+| ------------- | ----------------------- |------------------------------------------------------------------------- |
+| args          | `--cache`, `--insecure` | See [lychee's documentation][lychee-args] for all arguments and values   |
+| format        | `markdown`, `json`      | Summary output format                                                    |
+| output        | `lychee/results.md`     | Summary output file path                                                 |
+| fail          | `false`                 | Fail workflow run on error (i.e. when lychee exit code is not 0)         |
+| jobSummary    | `false`                 | Write Github job summary (on Markdown output only)                       |
+| lycheeVersion | `0.10.0`                | Overwrite the lychee version to be used                                  |
 
 See [action.yml](./action.yml) for a full list of supported arguments and their default values.
 
