@@ -83,15 +83,15 @@ See [lychee's documentation][lychee-args] for all possible arguments.
 
 On top of that, the action also supports some additional arguments.
 
-| Argument      | Description                                                                      |
-| ------------- | -------------------------------------------------------------------------------- |
-| format        | Summary output format (markdown, json,...)                                       |
-| output        | Summary output file path                                                         |
-| fail          | Fail entire pipeline on error (i.e. when lychee exit code is not 0)              |
-| jobSummary    | Write Github job summary at the end of the job (written on Markdown output only) |
-| lycheeVersion | Overwrite the lychee version to be used                                          |
+| Argument      | Examples           | Description                                                                      |
+| ------------- | ------------------ |--------------------------------------------------------------------------------- |
+| format        | `markdown`, `json` | Summary output format                                                            |
+| output        | *file path*        | Summary output file path                                                         |
+| fail          | `true`             | Fail entire pipeline on error (i.e. when lychee exit code is not 0)              |
+| jobSummary    | `true`             | Write Github job summary at the end of the job (written on Markdown output only) |
+| lycheeVersion | `0.10.0`           | Overwrite the lychee version to be used                                          |
 
-See [action.yml](./action.yml) for a full list of supported arguments.
+See [action.yml](./action.yml) for a full list of supported arguments and their default values.
 
 ### Example of argument passing
 
