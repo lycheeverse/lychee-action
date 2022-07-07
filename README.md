@@ -79,19 +79,19 @@ jobs:
 
 This action uses [lychee] for link checking.
 lychee arguments can be passed to the action via the `args` parameter.
-See [lychee's documentation][lychee-args] for all possible arguments.
 
 On top of that, the action also supports some additional arguments.
 
-| Argument      | Description                                                                      |
-| ------------- | -------------------------------------------------------------------------------- |
-| format        | Summary output format (markdown, json,...)                                       |
-| output        | Summary output file path                                                         |
-| fail          | Fail entire pipeline on error (i.e. when lychee exit code is not 0)              |
-| jobSummary    | Write Github job summary at the end of the job (written on Markdown output only) |
-| lycheeVersion | Overwrite the lychee version to be used                                          |
+| Argument      | Examples                | Description                                                                     |
+| ------------- | ----------------------- |-------------------------------------------------------------------------------- |
+| args          | `--cache`, `--insecure` | See [lychee's documentation][lychee-args] for all arguments and values          |
+| format        | `markdown`, `json`      | Summary output format                                                           |
+| output        | `lychee/results.md`     | Summary output file path                                                        |
+| fail          | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0) |
+| jobSummary    | `false`                 | Write Github job summary (on Markdown output only)                              |
+| lycheeVersion | `0.10.0`                | Overwrite the lychee version to be used                                         |
 
-See [action.yml](./action.yml) for a full list of supported arguments.
+See [action.yml](./action.yml) for a full list of supported arguments and their default values.
 
 ### Example of argument passing
 
@@ -194,6 +194,7 @@ at your option.
 
 [lychee]: https://github.com/lycheeverse/lychee
 [lychee-args]: https://github.com/lycheeverse/lychee#commandline-parameters
+[lychee-exit]: https://github.com/lycheeverse/lychee#exit-codes
 [troubleshooting]: https://github.com/lycheeverse/lychee/blob/master/docs/TROUBLESHOOTING.md
 [security]: https://francoisbest.com/posts/2020/the-security-of-github-actions
 [dependabot]: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
