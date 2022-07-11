@@ -2,42 +2,48 @@ name: "Lychee Broken Link Checker"
 description: "Quickly check links in Markdown, HTML, and text files"
 inputs:
   args:
-    description: "lychee arguments"
+    description: "Lychee arguments (https://github.com/lycheeverse/lychee#commandline-parameters)"
     default: "--verbose --no-progress './**/*.md' './**/*.html'"
     required: false
   format:
-    description: "summary output format (e.g. json)"
+    description: "Summary output format (e.g. json)"
     default: "markdown"
     required: false
   output:
-    description: "summary output file path"
+    description: "Summary output file path"
     default: "lychee/out.md"
     required: false
   fail:
-    description: "fail entire pipeline on error (i.e. when lychee exit code is not 0)"
+    description: "Fail entire pipeline on error (i.e. when lychee exit code is not 0)"
     default: false
     required: false
   jobSummary:
-    description: "write Github job summary at the end of the job (written on Markdown output only)"
+    description: "Write Github job summary at the end of the job (written on Markdown output only)"
     default: true
     required: false
   lycheeVersion:
-    description: "use custom version of lychee link checker"
+    description: "Use custom version of lychee link checker"
     default: 0.10.0
     required: false
+outputs:
+  exit_code:
+    description: "Lychee exit code"
+    value: ${{ steps.lychee.outputs.exit_code }}
 runs:
   using: "composite"
   steps:
-    - name: install lychee
+    - name: Install lychee
       run: |
         curl -LO 'https://github.com/lycheeverse/lychee/releases/download/v${{ inputs.LYCHEEVERSION }}/lychee-v${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz'
         tar -xvzf lychee-v${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz
         chmod 755 lychee
         mv lychee /usr/local/bin/lychee
       shell: bash
-    - run: ${{ github.action_path }}/entrypoint.sh
+    - name: Run lychee
+      run: ${{ github.action_path }}/entrypoint.sh
+      id: lychee
       env:
-        #https://github.com/actions/runner/issues/665
+        # https://github.com/actions/runner/issues/665
         INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         INPUT_ARGS: ${{ inputs.ARGS }}
         INPUT_FORMAT: ${{ inputs.FORMAT }}
@@ -45,7 +51,6 @@ runs:
         INPUT_FAIL: ${{ inputs.FAIL }}
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
       shell: bash
-
 branding:
   icon: "external-link"
   color: "purple"
