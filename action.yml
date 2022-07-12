@@ -27,7 +27,7 @@ inputs:
     required: false
 outputs:
   exit_code:
-    description: "Lychee exit code"
+    description: "The exit code returned from Lychee"
     value: ${{ steps.lychee.outputs.exit_code }}
 runs:
   using: "composite"
