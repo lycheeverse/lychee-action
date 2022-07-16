@@ -109,6 +109,25 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
     fail: true
 ```
 
+## Utilising the cache feature
+
+In order to mitigate issues regarding rate limiting or to reduce stress on external resources, one can setup lychee's cache similar to this:
+
+```yml
+- name: Restore lychee cache
+  uses: actions/cache@v3
+  with:
+    path: .lycheecache
+    key: cache-lychee-${{ github.sha }}
+    restore-keys: cache-lychee-
+
+- name: Run lychee
+  uses: lycheeverse/lychee-action@v1.5.0
+  with:
+    args: '--cache --max-cache-age 1d'
+    lycheeVersion: 0.11.0
+```
+
 ## Excluding links from getting checked
 
 Add a `.lycheeignore` file to the root of your repository to exclude links from
