@@ -128,6 +128,13 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
     lycheeVersion: 0.11.0
 ```
 
+Note that there is no need for another step at the end to store the cache.
+There will automatically be a `Post` step (generated from the used `actions/cache` action) taking care of that.
+It will compare and save the cache based on the given key.
+So in this setup, as long as a user triggers the CI run from the same commit, it will be the same key. The first run will save the cache, subsequent runs will not update it (because it's the same commit hash).
+For restoring the cache, the most recent available one is used (commit hash doesn't matter).
+
+
 ## Excluding links from getting checked
 
 Add a `.lycheeignore` file to the root of your repository to exclude links from
