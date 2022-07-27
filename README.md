@@ -125,7 +125,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
   uses: lycheeverse/lychee-action@v1.5.0
   with:
     args: '--cache --max-cache-age 1d'
-    lycheeVersion: 0.11.0
+    lycheeVersion: 0.10.1
 ```
 
 Note that there is no need for another step at the end to store the cache.
