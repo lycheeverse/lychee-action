@@ -89,7 +89,7 @@ On top of that, the action also supports some additional arguments.
 | output        | `lychee/results.md`     | Summary output file path                                                        |
 | fail          | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0) |
 | jobSummary    | `false`                 | Write Github job summary (on Markdown output only)                              |
-| lycheeVersion | `0.10.0`                | Overwrite the lychee version to be used                                         |
+| lycheeVersion | `0.10.1`                | Overwrite the lychee version to be used                                         |
 
 See [action.yml](./action.yml) for a full list of supported arguments and their default values.
 
@@ -108,6 +108,31 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
     # Fail action on broken links
     fail: true
 ```
+
+## Utilising the cache feature
+
+In order to mitigate issues regarding rate limiting or to reduce stress on external resources, one can setup lychee's cache similar to this:
+
+```yml
+- name: Restore lychee cache
+  uses: actions/cache@v3
+  with:
+    path: .lycheecache
+    key: cache-lychee-${{ github.sha }}
+    restore-keys: cache-lychee-
+
+- name: Run lychee
+  uses: lycheeverse/lychee-action@v1.5.1
+  with:
+    args: '--cache --max-cache-age 1d'
+```
+
+Note that there is no need for another step at the end to store the cache.
+There will automatically be a `Post` step (generated from the used `actions/cache` action) taking care of that.
+It will compare and save the cache based on the given key.
+So in this setup, as long as a user triggers the CI run from the same commit, it will be the same key. The first run will save the cache, subsequent runs will not update it (because it's the same commit hash).
+For restoring the cache, the most recent available one is used (commit hash doesn't matter).
+
 
 ## Excluding links from getting checked
 
