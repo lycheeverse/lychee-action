@@ -33,7 +33,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.5.0
+        uses: lycheeverse/lychee-action@v1.5.1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -68,7 +68,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.5.0
+        uses: lycheeverse/lychee-action@v1.5.1
         with:
           fail: true
         env:
@@ -97,7 +97,7 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1.5.0
+  uses: lycheeverse/lychee-action@v1.5.1
   with:
     # Check all markdown and html files in repo (default)
     args: --verbose --no-progress './**/*.md' './**/*.html'
