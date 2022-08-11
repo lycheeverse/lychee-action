@@ -33,6 +33,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
+        # If you always want to use the latest features, you can replace the version lycheeverse/lychee-action@v1
         uses: lycheeverse/lychee-action@v1.5.1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -68,6 +69,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Link Checker
+        # If you always want to use the latest features, you can replace the version lycheeverse/lychee-action@v1
         uses: lycheeverse/lychee-action@v1.5.1
         with:
           fail: true
@@ -97,6 +99,7 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
 
 ```yml
 - name: Link Checker
+  # If you always want to use the latest features, you can replace the version lycheeverse/lychee-action@v1
   uses: lycheeverse/lychee-action@v1.5.1
   with:
     # Check all markdown and html files in repo (default)
@@ -122,6 +125,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
     restore-keys: cache-lychee-
 
 - name: Run lychee
+  # If you always want to use the latest features, you can replace the version lycheeverse/lychee-action@v1
   uses: lycheeverse/lychee-action@v1.5.1
   with:
     args: '--cache --max-cache-age 1d'
