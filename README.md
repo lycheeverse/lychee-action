@@ -5,8 +5,7 @@
 
 Quickly check links in Markdown, HTML, and text files using [lychee].
 
-When used in conjunction with [Create Issue From
-File](https://github.com/peter-evans/create-issue-from-file), issues will be
+When used in conjunction with the [Create Issue From File] action, issues will be
 created when the action finds link problems.
 
 ## Usage
@@ -200,21 +199,19 @@ For example:
 
 ## Credits
 
-This action is based on
-[peter-evans/link-checker](https://github.com/peter-evans/link-checker) and uses
-lychee (written in Rust) instead of liche (written in Go) for link checking. For
-a comparison of both tools, check out this [comparison
-table](https://github.com/lycheeverse/lychee#features).
+This action is based on the deprecated [peter-evans/link-checker] and uses
+[lychee] (written in Rust) instead of liche (written in Go) for link checking.
 
 ## License
 
 lychee is licensed under either of
 
-- Apache License, Version 2.0, (LICENSE-APACHE or
-  https://www.apache.org/licenses/LICENSE-2.0)
-- MIT license (LICENSE-MIT or https://choosealicense.com/licenses/mit/)
+- [Apache License, Version 2.0] ([LICENSE-APACHE](./LICENSE-APACHE))
+- [MIT License] ([LICENSE-MIT](./LICENSE-MIT))
 
 at your option.
+
+
 
 [lychee]: https://github.com/lycheeverse/lychee
 [lychee-args]: https://github.com/lycheeverse/lychee#commandline-parameters
@@ -222,3 +219,7 @@ at your option.
 [troubleshooting]: https://github.com/lycheeverse/lychee/blob/master/docs/TROUBLESHOOTING.md
 [security]: https://francoisbest.com/posts/2020/the-security-of-github-actions
 [dependabot]: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+[peter-evans/link-checker]: https://github.com/peter-evans/link-checker
+[Create Issue From File]: https://github.com/peter-evans/create-issue-from-file
+[Apache License, Version 2.0]: https://www.apache.org/licenses/LICENSE-2.0
+[MIT License]: https://choosealicense.com/licenses/mit
