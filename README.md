@@ -45,6 +45,9 @@ jobs:
           labels: report, automated issue
 ```
 
+If you always want to use the latest features but avoid breaking changes, you can replace the version with  
+`lycheeverse/lychee-action@v1`.
+
 ### Alternative approach:
 
 This will check all repository links during any git push event and for all pull
