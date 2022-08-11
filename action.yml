@@ -5,17 +5,13 @@ inputs:
     description: "Lychee arguments (https://github.com/lycheeverse/lychee#commandline-parameters)"
     default: "--verbose --no-progress './**/*.md' './**/*.html'"
     required: false
-  format:
-    description: "Summary output format (e.g. json)"
-    default: "markdown"
-    required: false
-  output:
-    description: "Summary output file path"
-    default: "lychee/out.md"
-    required: false
   fail:
     description: "Fail entire pipeline on error (i.e. when lychee exit code is not 0)"
     default: false
+    required: false
+  format:
+    description: "Summary output format (e.g. json)"
+    default: "markdown"
     required: false
   jobSummary:
     description: "Write Github job summary at the end of the job (written on Markdown output only)"
@@ -24,6 +20,10 @@ inputs:
   lycheeVersion:
     description: "Use custom version of lychee link checker"
     default: 0.10.1
+    required: false
+  output:
+    description: "Summary output file path"
+    default: "lychee/out.md"
     required: false
 outputs:
   exit_code:
