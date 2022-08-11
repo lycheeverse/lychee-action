@@ -46,3 +46,7 @@ jobs:
           format: doesnotexist # gets ignored if format set in args
           output: /tmp/foo.txt
           fail: true
+      - name: test debug
+        uses: ./
+        with:
+          debug: true
