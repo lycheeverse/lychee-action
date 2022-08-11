@@ -5,8 +5,8 @@
 
 Quickly check links in Markdown, HTML, and text files using [lychee].
 
-When used in conjunction with the [Create Issue From File] action, issues will be
-created when the action finds link problems.
+When used in conjunction with [Create Issue From File], issues will be
+opened when the action finds link problems.
 
 ## Usage
 
