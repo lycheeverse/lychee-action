@@ -48,7 +48,7 @@ if [ "${INPUT_FORMAT}" == "markdown" ]; then
 fi
 
 # Pass lychee exit code to next step
-echo "exit_code=$exit_code" >> $GITHUB_STATE
+echo "lychee_exit_code=$exit_code" >> $GITHUB_ENV
 
 # If `fail` is set to `true`, propagate the real exit value to the workflow
 # runner. This will cause the pipeline to fail on exit != 0.
