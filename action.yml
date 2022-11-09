@@ -27,7 +27,7 @@ inputs:
     required: false
   output:
     description: "Summary output file path"
-    default: "lychee/output.md"
+    default: "lychee/out.md"
     required: false
 outputs:
   exit_code:
