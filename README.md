@@ -32,7 +32,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.5.1
+        uses: lycheeverse/lychee-action@v1.5.3
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -70,7 +70,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.5.1
+        uses: lycheeverse/lychee-action@v1.5.3
         with:
           fail: true
         env:
@@ -85,7 +85,7 @@ lychee arguments can be passed to the action via the `args` parameter.
 On top of that, the action also supports some additional arguments.
 
 | Argument      | Examples                | Description                                                                      |
-| ------------- | ----------------------- |--------------------------------------------------------------------------------- |
+| ------------- | ----------------------- | -------------------------------------------------------------------------------- |
 | args          | `--cache`, `--insecure` | See [lychee's documentation][lychee-args] for all arguments and values.          |
 | debug         | `false`                 | Enable debug output in action (set -x). Helpful for troubleshooting.             |
 | fail          | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0). |
@@ -100,7 +100,7 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1.5.1
+  uses: lycheeverse/lychee-action@v1.5.3
   with:
     # Check all markdown and html files in repo (default)
     args: --verbose --no-progress './**/*.md' './**/*.html'
@@ -125,9 +125,9 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
     restore-keys: cache-lychee-
 
 - name: Run lychee
-  uses: lycheeverse/lychee-action@v1.5.1
+  uses: lycheeverse/lychee-action@v1.5.3
   with:
-    args: '--cache --max-cache-age 1d'
+    args: "--cache --max-cache-age 1d"
 ```
 
 Note that there is no need for another step at the end to store the cache.
@@ -135,7 +135,6 @@ There will automatically be a `Post` step (generated from the used `actions/cach
 It will compare and save the cache based on the given key.
 So in this setup, as long as a user triggers the CI run from the same commit, it will be the same key. The first run will save the cache, subsequent runs will not update it (because it's the same commit hash).
 For restoring the cache, the most recent available one is used (commit hash doesn't matter).
-
 
 ## Excluding links from getting checked
 
@@ -198,7 +197,7 @@ For example:
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@4a5af7cd2958a2282cefbd9c10f63bdb89982d76     # for v1.5.1
+  uses: lycheeverse/lychee-action@0fcec0b45a1cc548fd8b6d9e859b1f8a2cc156ce # for v1.5.3
 ```
 
 ## Credits
@@ -215,8 +214,6 @@ lychee is licensed under either of
 
 at your option.
 
-
-
 [lychee]: https://github.com/lycheeverse/lychee
 [lychee-args]: https://github.com/lycheeverse/lychee#commandline-parameters
 [lychee-exit]: https://github.com/lycheeverse/lychee#exit-codes
@@ -224,6 +221,6 @@ at your option.
 [security]: https://francoisbest.com/posts/2020/the-security-of-github-actions
 [dependabot]: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 [peter-evans/link-checker]: https://github.com/peter-evans/link-checker
-[Create Issue From File]: https://github.com/peter-evans/create-issue-from-file
-[Apache License, Version 2.0]: https://www.apache.org/licenses/LICENSE-2.0
-[MIT License]: https://choosealicense.com/licenses/mit
+[create issue from file]: https://github.com/peter-evans/create-issue-from-file
+[apache license, version 2.0]: https://www.apache.org/licenses/LICENSE-2.0
+[mit license]: https://choosealicense.com/licenses/mit
