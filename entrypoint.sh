@@ -10,9 +10,6 @@ fi
 LYCHEE_TMP="$(mktemp)"
 GITHUB_WORKFLOW_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}?check_suite_focus=true"
 
-# Create temp dir
-mkdir -p "$(dirname $LYCHEE_TMP)"
-
 ARGS="${INPUT_ARGS}"
 FORMAT=""
 # Backwards compatibility:
