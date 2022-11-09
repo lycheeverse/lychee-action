@@ -7,7 +7,7 @@ if [ "${INPUT_DEBUG}" = true ]; then
   set -x
 fi
 
-LYCHEE_TMP="/tmp/lychee/out.md"
+LYCHEE_TMP="$(mktemp)"
 GITHUB_WORKFLOW_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}?check_suite_focus=true"
 
 # Create temp dir
