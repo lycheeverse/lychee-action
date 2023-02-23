@@ -32,7 +32,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.6.0
+        uses: lycheeverse/lychee-action@v1.6.1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -70,7 +70,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@vv1.6.0
+        uses: lycheeverse/lychee-action@vv1.6.1
         with:
           fail: true
         env:
@@ -91,7 +91,7 @@ On top of that, the action also supports some additional arguments.
 | fail          | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0). |
 | format        | `markdown`, `json`      | Summary output format.                                                           |
 | jobSummary    | `false`                 | Write Github job summary (on Markdown output only).                              |
-| lycheeVersion | `0.11.0`                | Overwrite the lychee version to be used.                                         |
+| lycheeVersion | `0.11.1`                | Overwrite the lychee version to be used.                                         |
 | output        | `lychee/results.md`     | Summary output file path.                                                        |
 
 See [action.yml](./action.yml) for a full list of supported arguments and their default values.
@@ -100,7 +100,7 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@vv1.6.0
+  uses: lycheeverse/lychee-action@vv1.6.1
   with:
     # Check all markdown and html files in repo (default)
     args: --verbose --no-progress './**/*.md' './**/*.html'
@@ -125,7 +125,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
     restore-keys: cache-lychee-
 
 - name: Run lychee
-  uses: lycheeverse/lychee-action@vv1.6.0
+  uses: lycheeverse/lychee-action@vv1.6.1
   with:
     args: "--cache --max-cache-age 1d"
 ```
@@ -197,7 +197,7 @@ For example:
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@0682ed617509a52424db04e7502c1dc3df28b469 # for vv1.6.0
+  uses: lycheeverse/lychee-action@0682ed617509a52424db04e7502c1dc3df28b469 # for vv1.6.1
 ```
 
 ## Credits
