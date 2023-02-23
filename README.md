@@ -70,7 +70,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@vv1.6.1
+        uses: lycheeverse/lychee-action@v1.6.1
         with:
           fail: true
         env:
@@ -100,7 +100,7 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@vv1.6.1
+  uses: lycheeverse/lychee-action@v1.6.1
   with:
     # Check all markdown and html files in repo (default)
     args: --verbose --no-progress './**/*.md' './**/*.html'
@@ -125,7 +125,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
     restore-keys: cache-lychee-
 
 - name: Run lychee
-  uses: lycheeverse/lychee-action@vv1.6.1
+  uses: lycheeverse/lychee-action@v1.6.1
   with:
     args: "--cache --max-cache-age 1d"
 ```
