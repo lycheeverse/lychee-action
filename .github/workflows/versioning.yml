@@ -1,0 +1,15 @@
+name: Keep major version tags up-to-date
+
+on:
+  release:
+    types: [published, edited]
+
+jobs:
+  actions-tagger:
+    name: Tag GitHub Action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Actions-R-Us/actions-tagger@v2
+        with:
+          publish_latest_tag: false
+          prefer_branch_releases: false
