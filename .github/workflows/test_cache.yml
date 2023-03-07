@@ -27,7 +27,7 @@ jobs:
             --verbose
             --no-progress
             './**/*.md'
-            './**/*.html'"
+            './**/*.html'
           # Fail the action on broken links.
           # If the pipeline fails, the cache will _not_ be stored
           fail: true
