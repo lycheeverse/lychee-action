@@ -25,7 +25,12 @@ jobs:
       - name: test globs
         uses: ./
         with:
-          args: --exclude-mail --verbose --no-progress './**/*.md' './**/*.html'
+          args: >-
+            --exclude-mail
+            --verbose
+            --no-progress
+            './**/*.md'
+            './**/*.html'
           fail: true
       - name: test workflow inputs
         uses: ./
