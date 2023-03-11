@@ -130,11 +130,32 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
     args: "--cache --max-cache-age 1d"
 ```
 
-Note that there is no need for another step at the end to store the cache.
-There will automatically be a `Post` step (generated from the used `actions/cache` action) taking care of that.
 It will compare and save the cache based on the given key.
 So in this setup, as long as a user triggers the CI run from the same commit, it will be the same key. The first run will save the cache, subsequent runs will not update it (because it's the same commit hash).
 For restoring the cache, the most recent available one is used (commit hash doesn't matter).
+
+If you need more control over when caches are restored and saved, you can split the cache step and e.g. ensure to always save the cache (also when the link check step fails):
+```yml
+- name: Restore lychee cache
+  id: restore-cache
+  uses: actions/cache/restore@v3
+  with:
+    path: .lycheecache
+    key: cache-lychee-${{ github.sha }}
+    restore-keys: cache-lychee-
+
+- name: Run lychee
+  uses: lycheeverse/lychee-action@v1.6.1
+  with:
+    args: "--cache --max-cache-age 1d"
+
+- name: Save lychee cache
+  uses: actions/cache/save@v3
+  if: always()
+  with:
+    path: .lycheecache
+    key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+```
 
 ## Excluding links from getting checked
 
