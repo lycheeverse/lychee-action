@@ -218,7 +218,7 @@ For example:
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@d322e38893906cef8788eefe9c63694c562c7dfa # for v1.6.1
+  uses: lycheeverse/lychee-action@01d72a032635cc56bf23e901b9d5fb3272419ca1 # for v1.7.0
 ```
 
 ## Credits
