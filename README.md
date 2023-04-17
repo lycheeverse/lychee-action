@@ -91,7 +91,7 @@ On top of that, the action also supports some additional arguments.
 | fail          | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0). |
 | format        | `markdown`, `json`      | Summary output format.                                                           |
 | jobSummary    | `false`                 | Write Github job summary (on Markdown output only).                              |
-| lycheeVersion | `0.11.1`                | Overwrite the lychee version to be used.                                         |
+| lycheeVersion | `0.12.0`                | Overwrite the lychee version to be used.                                         |
 | output        | `lychee/results.md`     | Summary output file path.                                                        |
 
 See [action.yml](./action.yml) for a full list of supported arguments and their default values.
