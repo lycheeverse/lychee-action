@@ -45,6 +45,8 @@ jobs:
           labels: report, automated issue
 ```
 
+(You don't need to configure the `GITHUB_TOKEN` yourself; it is automatically set by Github.)
+
 If you always want to use the latest features but avoid breaking changes, you can replace the version with  
 `lycheeverse/lychee-action@v1`.
 
