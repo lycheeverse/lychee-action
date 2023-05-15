@@ -32,7 +32,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.7.0
+        uses: lycheeverse/lychee-action@v1.8.0
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -72,7 +72,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.7.0
+        uses: lycheeverse/lychee-action@v1.8.0
         with:
           fail: true
         env:
@@ -102,7 +102,7 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1.7.0
+  uses: lycheeverse/lychee-action@v1.8.0
   with:
     # Check all markdown and html files in repo (default)
     args: --verbose --no-progress './**/*.md' './**/*.html'
@@ -127,7 +127,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
     restore-keys: cache-lychee-
 
 - name: Run lychee
-  uses: lycheeverse/lychee-action@v1.7.0
+  uses: lycheeverse/lychee-action@v1.8.0
   with:
     args: "--cache --max-cache-age 1d"
 ```
@@ -147,7 +147,7 @@ If you need more control over when caches are restored and saved, you can split 
     restore-keys: cache-lychee-
 
 - name: Run lychee
-  uses: lycheeverse/lychee-action@v1.7.0
+  uses: lycheeverse/lychee-action@v1.8.0
   with:
     args: "--cache --max-cache-age 1d"
 
