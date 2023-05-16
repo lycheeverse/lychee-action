@@ -47,7 +47,7 @@ jobs:
 
 (You don't need to configure the `GITHUB_TOKEN` yourself; it is automatically set by Github.)
 
-If you always want to use the latest features but avoid breaking changes, you can replace the version with  
+If you always want to use the latest features but avoid breaking changes, you can replace the version with
 `lycheeverse/lychee-action@v1`.
 
 ### Alternative approach:
@@ -129,7 +129,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
 - name: Run lychee
   uses: lycheeverse/lychee-action@v1.8.0
   with:
-    args: "--cache --max-cache-age 1d"
+    args: "--cache --max-cache-age 1d ."
 ```
 
 It will compare and save the cache based on the given key.
@@ -149,7 +149,7 @@ If you need more control over when caches are restored and saved, you can split 
 - name: Run lychee
   uses: lycheeverse/lychee-action@v1.8.0
   with:
-    args: "--cache --max-cache-age 1d"
+    args: "--cache --max-cache-age 1d ."
 
 - name: Save lychee cache
   uses: actions/cache/save@v3
