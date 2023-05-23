@@ -10,6 +10,11 @@ fi
 LYCHEE_TMP="$(mktemp)"
 GITHUB_WORKFLOW_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}?check_suite_focus=true"
 
+# If custom GitHub token is set, export it as environment variable
+if [ -n "${INPUT_TOKEN:-}" ]; then
+    export GITHUB_TOKEN="${INPUT_TOKEN}"
+fi
+
 ARGS="${INPUT_ARGS}"
 FORMAT=""
 # Backwards compatibility:

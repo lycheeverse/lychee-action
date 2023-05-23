@@ -55,3 +55,7 @@ jobs:
         uses: ./
         with:
           debug: true
+      - name: test custom GitHub token
+        uses: ./
+        with:
+          token: ${{ secrets.CUSTOM_TOKEN }}
