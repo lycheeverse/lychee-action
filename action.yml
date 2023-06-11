@@ -3,7 +3,7 @@ description: "Quickly check links in Markdown, HTML, and text files"
 inputs:
   args:
     description: "Lychee arguments (https://github.com/lycheeverse/lychee#commandline-parameters)"
-    default: "--verbose --no-progress './**/*.md' './**/*.html'"
+    default: "--verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'"
     required: false
   debug:
     description: "Enable debug output in action (set -x). Helpful for troubleshooting."
