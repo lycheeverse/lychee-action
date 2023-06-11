@@ -33,10 +33,17 @@ jobs:
             './**/*.html'
             './**/*.rst'
           fail: true
-      - name: test workflow inputs
+      - name: test workflow inputs - Markdown
         uses: ./
         with:
           args: -v fixtures/TEST.md
+          format: json
+          output: /tmp/foo.json
+          fail: true
+      - name: test workflow inputs - rST
+        uses: ./
+        with:
+          args: -v fixtures/TEST.rst
           format: json
           output: /tmp/foo.json
           fail: true
