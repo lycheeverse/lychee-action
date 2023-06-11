@@ -105,7 +105,7 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
   uses: lycheeverse/lychee-action@v1.8.0
   with:
     # Check all markdown and html files in repo (default)
-    args: --verbose --no-progress './**/*.md' './**/*.html'
+    args: --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
     # Use json as output format (instead of markdown)
     format: json
     # Use different output file path
