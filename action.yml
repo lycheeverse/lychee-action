@@ -18,7 +18,7 @@ inputs:
     default: "markdown"
     required: false
   jobSummary:
-    description: "Write Github job summary at the end of the job (written on Markdown output only)"
+    description: "Write GitHub job summary at the end of the job (written on Markdown output only)"
     default: true
     required: false
   lycheeVersion:
@@ -28,6 +28,10 @@ inputs:
   output:
     description: "Summary output file path"
     default: "lychee/out.md"
+    required: false
+  token:
+    description: 'Your GitHub Access Token, defaults to: {{ github.token }}'
+    default: ${{ github.token }}
     required: false
 outputs:
   exit_code:

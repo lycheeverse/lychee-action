@@ -33,8 +33,6 @@ jobs:
       - name: Link Checker
         id: lychee
         uses: lycheeverse/lychee-action@v1.8.0
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Create Issue From File
         if: env.lychee_exit_code != 0
@@ -44,8 +42,6 @@ jobs:
           content-filepath: ./lychee/out.md
           labels: report, automated issue
 ```
-
-(You don't need to configure the `GITHUB_TOKEN` yourself; it is automatically set by Github.)
 
 If you always want to use the latest features but avoid breaking changes, you can replace the version with
 `lycheeverse/lychee-action@v1`.
@@ -75,8 +71,6 @@ jobs:
         uses: lycheeverse/lychee-action@v1.8.0
         with:
           fail: true
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 ```
 
 ## Passing arguments
@@ -92,13 +86,16 @@ On top of that, the action also supports some additional arguments.
 | debug         | `false`                 | Enable debug output in action (set -x). Helpful for troubleshooting.             |
 | fail          | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0). |
 | format        | `markdown`, `json`      | Summary output format.                                                           |
-| jobSummary    | `false`                 | Write Github job summary (on Markdown output only).                              |
+| jobSummary    | `false`                 | Write GitHub job summary (on Markdown output only).                              |
 | lycheeVersion | `0.13.0`                | Overwrite the lychee version to be used.                                         |
 | output        | `lychee/results.md`     | Summary output file path.                                                        |
+| token         | `""`                    | Custom GitHub token to use for API calls.                                               |
 
 See [action.yml](./action.yml) for a full list of supported arguments and their default values.
 
-### Example of argument passing
+### Passing arguments
+
+Here is how to pass the arguments.
 
 ```yml
 - name: Link Checker
@@ -110,9 +107,16 @@ See [action.yml](./action.yml) for a full list of supported arguments and their 
     format: json
     # Use different output file path
     output: /tmp/foo.txt
+    # Use a custom GitHub token, which 
+    token: ${{ secrets.CUSTOM_TOKEN }}
     # Fail action on broken links
     fail: true
 ```
+
+(If you need a token that requires permissions that aren't available in the
+default `GITHUB_TOKEN`, you can create a [personal access
+token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
+and pass it to the action via the `token` parameter.)
 
 ## Utilising the cache feature
 
@@ -192,7 +196,7 @@ repository.
 ## Security and Updates
 
 It is recommended to pin lychee-action to a fixed version [for security
-reasons][security]. You can use dependabot to automatically keep your Github
+reasons][security]. You can use dependabot to automatically keep your GitHub
 actions up-to-date. This is a great way to pin lychee-action, while still
 receiving updates in the future. It's a relatively easy thing to do.
 
