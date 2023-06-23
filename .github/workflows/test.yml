@@ -10,18 +10,19 @@ jobs:
     continue-on-error: true
     name: Test the lychee link checker action
     steps:
-      # To use this repository's private action,
-      # we must check out the repository
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: test defaults
         uses: ./
         with:
           fail: true
+
       - name: test explicit lychee version
         uses: ./
         with:
           lycheeVersion: 0.9.0
+
       - name: test globs
         uses: ./
         with:
@@ -33,42 +34,51 @@ jobs:
             './**/*.html'
             './**/*.rst'
           fail: true
+
       - name: Install jq
-        run: sudo apt-get install jq     
+        run: sudo apt-get install jq
+
       - name: test workflow inputs - Markdown
         uses: ./
         with:
           args: -v fixtures/TEST.md
           format: json
-          output: /tmp/foo.json
+          output: ${{ github.workspace }}/foo_md.json
           fail: true
+
       - name: Validate JSON - Markdown
-        run: jq empty /tmp/foo.json 
+        run: jq empty ${{ github.workspace }}/foo_md.json
+
       - name: test workflow inputs - rST
         uses: ./
         with:
           args: -v fixtures/TEST.rst
           format: json
-          output: /tmp/foo.json
+          output: ${{ github.workspace }}/foo_rst.json
           fail: true
+
       - name: Validate JSON - rST
-        run: jq empty /tmp/foo.json 
+        run: jq empty ${{ github.workspace }}/foo_rst.json
+
       - name: directory
         uses: ./
         with:
           args: --exclude-mail .
           fail: true
+
       - name: test format override
         uses: ./
         with:
           args: --format markdown -v fixtures/TEST.md
           format: doesnotexist # gets ignored if format set in args
-          output: /tmp/foo.txt
+          output: ${{ github.workspace }}/foo.txt
           fail: true
+
       - name: test debug
         uses: ./
         with:
           debug: true
+
       - name: test custom GitHub token
         uses: ./
         with:
