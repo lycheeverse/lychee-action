@@ -29,8 +29,8 @@ if [ ! -f "${LYCHEE_TMP}" ]; then
     echo "No output. Check pipeline run to see if lychee panicked." > "${LYCHEE_TMP}"
 fi
 
-# If link errors were found, create a report in the designated directory
-if [ $exit_code -ne 0 ]; then
+# If we have any output, create a report in the designated directory
+if [ -f "${LYCHEE_TMP}" ]; then
     mkdir -p "$(dirname -- "${INPUT_OUTPUT}")"
     cat "${LYCHEE_TMP}" > "${INPUT_OUTPUT}"
 
@@ -52,8 +52,8 @@ fi
 # Pass lychee exit code to next step
 echo "lychee_exit_code=$exit_code" >> $GITHUB_ENV
 
-# If `fail` is set to `true`, propagate the real exit value to the workflow
-# runner. This will cause the pipeline to fail on exit != 0.
+# If `fail` is set to `true`, propagate the real exit code to the workflow
+# runner. This will cause the pipeline to fail on `exit != 0`.
 if [ "$INPUT_FAIL" = true ] ; then
     exit ${exit_code}
 fi
