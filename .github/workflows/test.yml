@@ -49,7 +49,7 @@ jobs:
       - name: Validate JSON - Markdown
         run: |
           if ! jq empty ${{ github.workspace }}/foo_md.json; then
-            echo "jq command failed"
+            echo "Output file does not exist or is not valid JSON"
             exit 1
           fi
 
@@ -64,7 +64,7 @@ jobs:
       - name: Validate JSON - rST
         run: |
           if ! jq empty ${{ github.workspace }}/foo_rst.json; then
-            echo "jq command failed"
+            echo "Output file does not exist or is not valid JSON"
             exit 1
           fi
 
