@@ -46,11 +46,12 @@ jobs:
           output: ${{ github.workspace }}/foo_md.json
           fail: true
 
-      - name: List files in workspace
-        run: ls -l ${{ github.workspace }}
-
       - name: Validate JSON - Markdown
-        run: jq empty ${{ github.workspace }}/foo_md.json
+        run: |
+          if ! jq empty ${{ github.workspace }}/foo_md.json; then
+            echo "jq command failed"
+            exit 1
+          fi
 
       - name: test workflow inputs - rST
         uses: ./
@@ -60,11 +61,12 @@ jobs:
           output: ${{ github.workspace }}/foo_rst.json
           fail: true
 
-      - name: List files in workspace
-        run: ls -l ${{ github.workspace }}
-        
       - name: Validate JSON - rST
-        run: jq empty ${{ github.workspace }}/foo_rst.json
+        run: |
+          if ! jq empty ${{ github.workspace }}/foo_rst.json; then
+            echo "jq command failed"
+            exit 1
+          fi
 
       - name: directory
         uses: ./
