@@ -87,7 +87,7 @@ On top of that, the action also supports some additional arguments.
 | fail          | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0). |
 | format        | `markdown`, `json`      | Summary output format.                                                           |
 | jobSummary    | `false`                 | Write GitHub job summary (on Markdown output only).                              |
-| lycheeVersion | `0.13.0`                | Overwrite the lychee version to be used.                                         |
+| lycheeVersion | `v0.13.0`, `nightly`    | Overwrite the lychee version to be used.                                         |
 | output        | `lychee/results.md`     | Summary output file path.                                                        |
 | token         | `""`                    | Custom GitHub token to use for API calls.                                               |
 
