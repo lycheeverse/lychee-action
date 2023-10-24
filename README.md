@@ -112,7 +112,7 @@ Here is how to pass the arguments.
   uses: lycheeverse/lychee-action@v1.8.0
   with:
     # Check all markdown and html files in repo (default)
-    args: --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
+    args: --base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
     # Use json as output format (instead of markdown)
     format: json
     # Use different output file path
@@ -143,7 +143,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
 - name: Run lychee
   uses: lycheeverse/lychee-action@v1.8.0
   with:
-    args: "--cache --max-cache-age 1d ."
+    args: "--base . --cache --max-cache-age 1d ."
 ```
 
 It will compare and save the cache based on the given key.
@@ -163,7 +163,7 @@ If you need more control over when caches are restored and saved, you can split 
 - name: Run lychee
   uses: lycheeverse/lychee-action@v1.8.0
   with:
-    args: "--cache --max-cache-age 1d ."
+    args: "--base . --cache --max-cache-age 1d ."
 
 - name: Save lychee cache
   uses: actions/cache/save@v3
