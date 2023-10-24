@@ -35,6 +35,18 @@ jobs:
             './**/*.rst'
           fail: true
 
+      - name: test --base argument
+        uses: ./
+        with:
+          args: >-
+            --base .
+            --verbose
+            --no-progress
+            './**/*.md'
+            './**/*.html'
+            './**/*.rst'
+          fail: true
+
       - name: Install jq
         run: sudo apt-get install jq
 
