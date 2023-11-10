@@ -80,7 +80,7 @@ You may want to add additional arguments to the above.  In particular if you're 
         uses: lycheeverse/lychee-action@v1.8.0
         with:
           fail: true
-          args: "--base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'"
+          args: --base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
 ```
 
 ## Passing arguments
