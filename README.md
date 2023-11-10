@@ -75,7 +75,7 @@ jobs:
 
 You may want to add additional arguments to the above.  In particular if you're testing a site directly from the file-system (as in the above), you'll likely want to set the argument `--base .` to ensure that **all links** in the files are tested.  You don't need to do this if you're testing a hosted site.
 
-```
+```yaml
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.8.0
         with:
