@@ -5,7 +5,9 @@ on:
   - pull_request
 
 env:
-  CUSTOM_OUTPUT_PATH: lychee/custom_output.md
+  CUSTOM_OUTPUT_RELATIVE_PATH: lychee/custom_output.md
+  CUSTOM_OUTPUT_ABSOLUTE_PATH: /tmp/report.md
+  CUSTOM_OUTPUT_DUMP_PATH: /tmp/dump.md
     
 jobs:
   lychee-action:
@@ -50,21 +52,56 @@ jobs:
             './**/*.rst'
           fail: true
 
-      - name: test custom output path - creation
+      - name: test custom output relative path - creation
         uses: ./
         with:
-          output: "${{ env.CUSTOM_OUTPUT_PATH }}"
+          output: "${{ env.CUSTOM_OUTPUT_RELATIVE_PATH }}"
           debug: true
           
-      - name: test custom output path - validation
+      - name: test custom output relative path - validation
         run: |
-          echo "Checking custom output file at ${{ env.CUSTOM_OUTPUT_PATH }}"
-          if [ ! -f "${{ env.CUSTOM_OUTPUT_PATH }}" ]; then
+          echo "Checking custom output file at ${{ env.CUSTOM_OUTPUT_RELATIVE_PATH }}"
+          if [ ! -f "${{ env.CUSTOM_OUTPUT_RELATIVE_PATH }}" ]; then
             echo "Not found"
             exit 1
           else
             echo "Found. Contents:"
-            cat "${{ env.CUSTOM_OUTPUT_PATH }}"
+            cat "${{ env.CUSTOM_OUTPUT_RELATIVE_PATH }}"
+          fi
+         
+      - name: test custom output absolute path - creation
+        uses: ./
+        with:
+          output: "${{ env.CUSTOM_OUTPUT_ABSOLUTE_PATH }}"
+          debug: true
+          
+      - name: test custom output absolute path - validation
+        run: |
+          echo "Checking custom output file at ${{ env.CUSTOM_OUTPUT_ABSOLUTE_PATH }}"
+          if [ ! -f "${{ env.CUSTOM_OUTPUT_ABSOLUTE_PATH }}" ]; then
+            echo "Not found"
+            exit 1
+          else
+            echo "Found. Contents:"
+            cat "${{ env.CUSTOM_OUTPUT_ABSOLUTE_PATH }}"
+          fi
+
+      - name: test dump with custom output path - creation
+        uses: ./
+        with:
+          args: --dump './**/*.md' './**/*.html' './**/*.rst'
+          output: "${{ env.CUSTOM_OUTPUT_DUMP_PATH }}"
+          debug: true
+          
+      - name: test dump with custom output path - validation
+        run: |
+          echo "Checking dump output file at ${{ env.CUSTOM_OUTPUT_DUMP_PATH }}"
+          if [ ! -f "${{ env.CUSTOM_OUTPUT_DUMP_PATH }}" ]; then
+            echo "Not found"
+            exit 1
+          else
+            echo "Found. Contents:"
+            cat "${{ env.CUSTOM_OUTPUT_DUMP_PATH }}"
           fi
 
       - name: Install jq
