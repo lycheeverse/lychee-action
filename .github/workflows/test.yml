@@ -4,6 +4,9 @@ on:
   - push
   - pull_request
 
+env:
+  CUSTOM_OUTPUT_PATH: lychee/custom_output.md
+    
 jobs:
   lychee-action:
     runs-on: ubuntu-latest
@@ -46,6 +49,23 @@ jobs:
             './**/*.html'
             './**/*.rst'
           fail: true
+
+      - name: test custom output path - creation
+        uses: ./
+        with:
+          output: "${{ env.CUSTOM_OUTPUT_PATH }}"
+          debug: true
+          
+      - name: test custom output path - validation
+        run: |
+          echo "Checking custom output file at ${{ env.CUSTOM_OUTPUT_PATH }}"
+          if [ ! -f "${{ env.CUSTOM_OUTPUT_PATH }}" ]; then
+            echo "Not found"
+            exit 1
+          else
+            echo "Found. Contents:"
+            cat "${{ env.CUSTOM_OUTPUT_PATH }}"
+          fi
 
       - name: Install jq
         run: sudo apt-get install jq
