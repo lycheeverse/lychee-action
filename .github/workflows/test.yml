@@ -21,7 +21,7 @@ jobs:
       - name: test explicit lychee version
         uses: ./
         with:
-          lycheeVersion: 0.9.0
+          lycheeVersion: v0.9.0
 
       - name: test globs
         uses: ./
