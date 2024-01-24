@@ -56,7 +56,7 @@ runs:
       id: lychee
       env:
         # https://github.com/actions/runner/issues/665
-        INPUT_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        INPUT_TOKEN: ${{ inputs.TOKEN }}
         INPUT_ARGS: ${{ inputs.ARGS }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
         INPUT_FAIL: ${{ inputs.FAIL }}
