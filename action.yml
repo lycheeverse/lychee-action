@@ -23,7 +23,7 @@ inputs:
     required: false
   lycheeVersion:
     description: "Use custom version of lychee link checker"
-    default: 0.14.1
+    default: 0.14.2
     required: false
   output:
     description: "Summary output file path"
