@@ -14,7 +14,7 @@ inputs:
     default: false
     required: false
   failIfEmpty:
-    description: "fail entire pipeline if no links were found"
+    description: "Fail entire pipeline if no links were found"
     default: true
     required: false
   format:
@@ -64,6 +64,7 @@ runs:
         INPUT_ARGS: ${{ inputs.ARGS }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
         INPUT_FAIL: ${{ inputs.FAIL }}
+        INPUT_FAILIFEMPTY: ${{ inputs.FAILIFEMPTY }}
         INPUT_FORMAT: ${{ inputs.FORMAT }}
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
         INPUT_OUTPUT: ${{ inputs.OUTPUT }}

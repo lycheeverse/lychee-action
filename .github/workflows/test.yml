@@ -8,7 +8,7 @@ env:
   CUSTOM_OUTPUT_RELATIVE_PATH: lychee/custom_output.md
   CUSTOM_OUTPUT_ABSOLUTE_PATH: /tmp/report.md
   CUSTOM_OUTPUT_DUMP_PATH: /tmp/dump.md
-    
+
 jobs:
   lychee-action:
     runs-on: ubuntu-latest
@@ -57,7 +57,7 @@ jobs:
         with:
           output: "${{ env.CUSTOM_OUTPUT_RELATIVE_PATH }}"
           debug: true
-          
+
       - name: test custom output relative path - validation
         run: |
           echo "Checking custom output file at ${{ env.CUSTOM_OUTPUT_RELATIVE_PATH }}"
@@ -68,13 +68,13 @@ jobs:
             echo "Found. Contents:"
             cat "${{ env.CUSTOM_OUTPUT_RELATIVE_PATH }}"
           fi
-         
+
       - name: test custom output absolute path - creation
         uses: ./
         with:
           output: "${{ env.CUSTOM_OUTPUT_ABSOLUTE_PATH }}"
           debug: true
-          
+
       - name: test custom output absolute path - validation
         run: |
           echo "Checking custom output file at ${{ env.CUSTOM_OUTPUT_ABSOLUTE_PATH }}"
@@ -92,7 +92,7 @@ jobs:
           args: --dump './**/*.md' './**/*.html' './**/*.rst'
           output: "${{ env.CUSTOM_OUTPUT_DUMP_PATH }}"
           debug: true
-          
+
       - name: test dump with custom output path - validation
         run: |
           echo "Checking dump output file at ${{ env.CUSTOM_OUTPUT_DUMP_PATH }}"
@@ -103,6 +103,27 @@ jobs:
             echo "Found. Contents:"
             cat "${{ env.CUSTOM_OUTPUT_DUMP_PATH }}"
           fi
+
+      - name: test failIfEmpty - no links in input should fail the pipeline
+        id: fail_if_empty_test
+        uses: ./
+        with:
+          args: --verbose --no-progress fixtures/empty.md
+          debug: true
+
+      # Explictly check the exit code of the previous step
+      # as it's expected to fail
+      - name: Check failIfEmpty
+        if: steps.fail_if_empty_test.outcome != 'failure'
+        run: |
+          echo "FailIfEmpty should have failed because no links were found."
+          exit 1
+
+      - name: test disable failIfEmpty - it's okay if no links are found
+        uses: ./
+        with:
+          args: --no-progress fixtures/empty.md
+          failIfEmpty: false
 
       - name: Install jq
         run: sudo apt-get install jq
