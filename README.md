@@ -46,43 +46,6 @@ jobs:
 If you always want to use the latest features but avoid breaking changes, you can replace the version with
 `lycheeverse/lychee-action@v1`.
 
-### Alternative approach:
-
-This will check all repository links during any git push event and for all pull
-requests. If there's an error, it will fail the action. This has the benefit of
-ensuring that during a Pull Request, no link is added that is broken and any
-existing link will be caught if they become broken. Save this under
-`.github/workflows/links-fail-fast.yml`:
-
-```yaml
-name: Links (Fail Fast)
-
-on:
-  push:
-  pull_request:
-
-jobs:
-  linkChecker:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.9.0
-        with:
-          fail: true
-```
-
-You may want to add additional arguments to the above. In particular, if you're testing a site directly from the file system (as in the above), you'll likely want to set the argument `--base .` to ensure that **all links** (including root-relative paths) in the files are tested. You don't need to do this if you're testing a hosted site.
-
-```yaml
-      - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.9.0
-        with:
-          fail: true
-          args: --base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
-```
-
 ## Passing arguments
 
 This action uses [lychee] for link checking.
@@ -119,8 +82,8 @@ Here is how to pass the arguments.
     output: /tmp/foo.txt
     # Use a custom GitHub token, which 
     token: ${{ secrets.CUSTOM_TOKEN }}
-    # Fail action on broken links
-    fail: true
+    # Don't fail action on broken links
+    fail: false
 ```
 
 (If you need a token that requires permissions that aren't available in the

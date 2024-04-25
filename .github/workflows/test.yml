@@ -21,8 +21,6 @@ jobs:
 
       - name: test defaults
         uses: ./
-        with:
-          fail: true
 
       - name: test explicit lychee version
         uses: ./
@@ -39,7 +37,6 @@ jobs:
             './**/*.md'
             './**/*.html'
             './**/*.rst'
-          fail: true
 
       - name: test --base argument
         uses: ./
@@ -51,7 +48,6 @@ jobs:
             './**/*.md'
             './**/*.html'
             './**/*.rst'
-          fail: true
 
       - name: test custom output relative path - creation
         uses: ./
@@ -136,7 +132,6 @@ jobs:
           args: -v fixtures/TEST.md
           format: json
           output: ${{ github.workspace }}/foo_md.json
-          fail: true
 
       - name: Validate JSON - Markdown
         run: |
@@ -151,7 +146,6 @@ jobs:
           args: -v fixtures/TEST.rst
           format: json
           output: ${{ github.workspace }}/foo_rst.json
-          fail: true
 
       - name: Validate JSON - rST
         run: |
@@ -164,7 +158,6 @@ jobs:
         uses: ./
         with:
           args: --exclude-mail .
-          fail: true
 
       - name: test format override
         uses: ./
@@ -172,7 +165,6 @@ jobs:
           args: --format markdown -v fixtures/TEST.md
           format: doesnotexist # gets ignored if format set in args
           output: ${{ github.workspace }}/foo.txt
-          fail: true
 
       - name: test debug
         uses: ./
