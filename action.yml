@@ -7,25 +7,15 @@ inputs:
     required: false
   debug:
     description: "Enable debug output in action (set -x). Helpful for troubleshooting."
-  format:
-    description: "output format (e.g. json)"
-    default: "markdown"
-    required: false
-  output:
-    description: "output file"
-    default: "lychee/out.md"
-    required: false
-  failIfEmpty:
-    description: "fail entire pipeline if no links were found"
-    default: true
-    required: false
-  failIfEmpty:
-    description: "fail entire pipeline if no links were found"
-    default: true
+    default: false
     required: false
   fail:
     description: "Fail entire pipeline on error (i.e. when lychee exit code is not 0)"
     default: false
+    required: false
+  failIfEmpty:
+    description: "fail entire pipeline if no links were found"
+    default: true
     required: false
   format:
     description: "Summary output format (e.g. json)"
@@ -44,7 +34,7 @@ inputs:
     default: "lychee/out.md"
     required: false
   token:
-    description: 'Your GitHub Access Token, defaults to: {{ github.token }}'
+    description: "Your GitHub Access Token, defaults to: {{ github.token }}"
     default: ${{ github.token }}
     required: false
 outputs:
