@@ -28,11 +28,11 @@ jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.8.0
+        uses: lycheeverse/lychee-action@v1.9.0
 
       - name: Create Issue From File
         if: env.lychee_exit_code != 0
@@ -65,12 +65,22 @@ jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.8.0
+        uses: lycheeverse/lychee-action@v1.9.0
         with:
           fail: true
+```
+
+You may want to add additional arguments to the above. In particular, if you're testing a site directly from the file system (as in the above), you'll likely want to set the argument `--base .` to ensure that **all links** (including root-relative paths) in the files are tested. You don't need to do this if you're testing a hosted site.
+
+```yaml
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1.9.0
+        with:
+          fail: true
+          args: --base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
 ```
 
 ## Passing arguments
@@ -99,10 +109,10 @@ Here is how to pass the arguments.
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1.8.0
+  uses: lycheeverse/lychee-action@v1.9.0
   with:
     # Check all markdown and html files in repo (default)
-    args: --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
+    args: --base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
     # Use json as output format (instead of markdown)
     format: json
     # Use different output file path
@@ -131,9 +141,9 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
     restore-keys: cache-lychee-
 
 - name: Run lychee
-  uses: lycheeverse/lychee-action@v1.8.0
+  uses: lycheeverse/lychee-action@v1.9.0
   with:
-    args: "--cache --max-cache-age 1d ."
+    args: "--base . --cache --max-cache-age 1d ."
 ```
 
 It will compare and save the cache based on the given key.
@@ -151,9 +161,9 @@ If you need more control over when caches are restored and saved, you can split 
     restore-keys: cache-lychee-
 
 - name: Run lychee
-  uses: lycheeverse/lychee-action@v1.8.0
+  uses: lycheeverse/lychee-action@v1.9.0
   with:
-    args: "--cache --max-cache-age 1d ."
+    args: "--base . --cache --max-cache-age 1d ."
 
 - name: Save lychee cache
   uses: actions/cache/save@v3
@@ -224,7 +234,7 @@ For example:
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@ec7614d7605b47efb08dc370f6d0a71884cba944 # for v1.8.0
+  uses: lycheeverse/lychee-action@22134d37a1fff6c2974df9c92a7c7e1e86a08f9c # for v1.9.0
 ```
 
 ## Credits
