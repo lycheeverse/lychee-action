@@ -101,6 +101,20 @@ jobs:
             cat "${{ env.CUSTOM_OUTPUT_DUMP_PATH }}"
           fi
 
+      - name: test output set in args and action input
+        id: output_set_in_args_and_action_input
+        uses: ./
+        with:
+          args: --output foo -
+          output: bar
+        continue-on-error: true
+
+      - name: test output set in args and action input should fail - validation
+        if: steps.output_set_in_args_and_action_input.outcome != 'failure'
+        run: |
+          echo "Output set in args and action input should have failed."
+          exit 1
+
       - name: test failIfEmpty - no links in input should fail the pipeline
         id: fail_if_empty_test
         uses: ./

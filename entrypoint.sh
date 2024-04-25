@@ -21,6 +21,12 @@ FORMAT=""
 # If `format` occurs in args, ignore the value from `INPUT_FORMAT`
 [[ "$ARGS" =~ "--format " ]] || FORMAT="--format ${INPUT_FORMAT}"
 
+# If `output` occurs in args and `INPUT_OUTPUT` is set, exit with an error 
+if [[ "$ARGS" =~ "--output " ]] && [ -n "${INPUT_OUTPUT:-}" ]; then
+    echo "Error: 'output' is set in args as well as in the action configuration. Please remove one of them."
+    exit 1
+fi
+
 # Execute lychee
 eval lychee ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
 exit_code=$?
