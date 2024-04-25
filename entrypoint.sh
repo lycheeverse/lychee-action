@@ -2,7 +2,7 @@
 set -uo pipefail
 
 # Enable optional debug output
-if [ "${INPUT_DEBUG}" = true ]; then
+if [ "${INPUT_DEBUG}" = "true" ]; then
   echo "Debug output enabled"
   set -x
 fi
@@ -31,11 +31,11 @@ fi
 
 # Overwrite the error code in case no links were found
 # and `fail-if-empty` is set to `true` (and it is by default)
-if [ "${INPUT_FAIL_IF_EMPTY}" = true ]; then
+if [ "${INPUT_FAILIFEMPTY:-false}" = "true" ]; then
     # This is a somewhat crude way to check the Markdown output of lychee
     if echo "${LYCHEE_TMP}" | grep -E 'Total\s+\|\s+0'; then
         echo "No links were found. This usually indicates a configuration error." >> "${LYCHEE_TMP}"
-        echo "If this was expected, set 'fail-if-empty: true' in the args." >> "${LYCHEE_TMP}"
+        echo "If this was expected, set 'fail-if-empty: false' in the args." >> "${LYCHEE_TMP}"
         exit_code=1
     fi
 fi
@@ -55,16 +55,16 @@ cat "${LYCHEE_TMP}"
 echo
 
 if [ "${INPUT_FORMAT}" == "markdown" ]; then
-  if [ "${INPUT_JOBSUMMARY}" = true ]; then
+  if [ "${INPUT_JOBSUMMARY}" = "true" ]; then
     cat "${LYCHEE_TMP}" > "${GITHUB_STEP_SUMMARY}"
   fi
 fi
 
 # Pass lychee exit code to next step
-echo "lychee_exit_code=$exit_code" >> $GITHUB_ENV
+echo "lychee_exit_code=$exit_code" >> "$GITHUB_ENV"
 
 # If `fail` is set to `true`, propagate the real exit code to the workflow
 # runner. This will cause the pipeline to fail on `exit != 0`.
-if [ "$INPUT_FAIL" = true ]; then
+if [ "${INPUT_FAIL}" = "true" ]; then
     exit ${exit_code}
 fi
