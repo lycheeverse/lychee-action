@@ -32,7 +32,7 @@ jobs:
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1.9.0
+        uses: lycheeverse/lychee-action@v1.10.0
 
       - name: Create Issue From File
         if: env.lychee_exit_code != 0
@@ -72,7 +72,7 @@ Here is how to pass the arguments.
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@v1.9.0
+  uses: lycheeverse/lychee-action@v1.10.0
   with:
     # Check all markdown and html files in repo (default)
     args: --base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
@@ -104,7 +104,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
     restore-keys: cache-lychee-
 
 - name: Run lychee
-  uses: lycheeverse/lychee-action@v1.9.0
+  uses: lycheeverse/lychee-action@v1.10.0
   with:
     args: "--base . --cache --max-cache-age 1d ."
 ```
@@ -124,7 +124,7 @@ If you need more control over when caches are restored and saved, you can split 
     restore-keys: cache-lychee-
 
 - name: Run lychee
-  uses: lycheeverse/lychee-action@v1.9.0
+  uses: lycheeverse/lychee-action@v1.10.0
   with:
     args: "--base . --cache --max-cache-age 1d ."
 
@@ -197,7 +197,7 @@ For example:
 
 ```yml
 - name: Link Checker
-  uses: lycheeverse/lychee-action@22134d37a1fff6c2974df9c92a7c7e1e86a08f9c # for v1.9.0
+  uses: lycheeverse/lychee-action@2b973e86fc7b1f6b36a93795fe2c9c6ae1118621 # for v1.10.0
 ```
 
 ## Credits
