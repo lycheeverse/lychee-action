@@ -19,6 +19,10 @@ inputs:
     description: "fail entire pipeline if no links were found"
     default: true
     required: false
+  failIfEmpty:
+    description: "fail entire pipeline if no links were found"
+    default: true
+    required: false
   fail:
     description: "Fail entire pipeline on error (i.e. when lychee exit code is not 0)"
     default: false
