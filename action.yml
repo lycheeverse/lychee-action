@@ -13,6 +13,10 @@ inputs:
     description: "Fail entire pipeline on error (i.e. when lychee exit code is not 0)"
     default: false
     required: false
+  failIfEmpty:
+    description: "Fail entire pipeline if no links were found"
+    default: true
+    required: false
   format:
     description: "Summary output format (e.g. json)"
     default: "markdown"
@@ -30,7 +34,7 @@ inputs:
     default: "lychee/out.md"
     required: false
   token:
-    description: 'Your GitHub Access Token, defaults to: {{ github.token }}'
+    description: "Your GitHub Access Token, defaults to: {{ github.token }}"
     default: ${{ github.token }}
     required: false
 outputs:
@@ -60,6 +64,7 @@ runs:
         INPUT_ARGS: ${{ inputs.ARGS }}
         INPUT_DEBUG: ${{ inputs.DEBUG }}
         INPUT_FAIL: ${{ inputs.FAIL }}
+        INPUT_FAILIFEMPTY: ${{ inputs.FAILIFEMPTY }}
         INPUT_FORMAT: ${{ inputs.FORMAT }}
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
         INPUT_OUTPUT: ${{ inputs.OUTPUT }}

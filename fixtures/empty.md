@@ -1,0 +1,1 @@
+This file contains no links. Used for checking `failIfEmpty` flag.
