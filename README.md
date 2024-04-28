@@ -43,9 +43,6 @@ jobs:
           labels: report, automated issue
 ```
 
-If you always want to use the latest features but avoid breaking changes, you can replace the version with
-`lycheeverse/lychee-action@v1`.
-
 ## Passing arguments
 
 This action uses [lychee] for link checking.
