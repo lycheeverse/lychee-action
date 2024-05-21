@@ -71,7 +71,7 @@ Here is how to pass the arguments.
 - name: Link Checker
   uses: lycheeverse/lychee-action@v1
   with:
-    # Check all markdown and html files in repo (default)
+    # Check all markdown, html and reStructuredText files in repo (default)
     args: --base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
     # Use json as output format (instead of markdown)
     format: json
