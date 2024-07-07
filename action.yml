@@ -53,7 +53,7 @@ runs:
         rm -rf lychee* || echo "No leftovers to clean up. Skipping."
         curl -sL "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.LYCHEEVERSION }}/lychee-x86_64-unknown-linux-gnu.tar.gz" | tar -xvzf -
         install -t "$HOME/.local/bin" -D lychee 
-        rm lychee
+rm -f lychee
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       shell: bash
     - name: Run lychee
