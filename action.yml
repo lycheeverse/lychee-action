@@ -1,3 +1,6 @@
+# note: keep asset names in sync with:
+# https://github.com/lycheeverse/lychee/blob/master/.github/workflows/release.yml
+
 name: "Lychee Broken Link Checker"
 description: "Quickly check links in Markdown, HTML, and text files"
 inputs:
