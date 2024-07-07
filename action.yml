@@ -47,10 +47,10 @@ runs:
     - name: Install lychee
       run: |
         # Cleanup artifacts from previous run in case it crashed
-        rm -rf "lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz" lychee
-        curl -sLO "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.LYCHEEVERSION }}/lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz"
-        tar -xvzf "lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz"
-        rm "lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz"
+        rm -rf lychee-x86_64-unknown-linux-gnu.tar.gz lychee
+        curl -sLO "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.LYCHEEVERSION }}/lychee-x86_64-unknown-linux-gnu.tar.gz"
+        tar -xvzf lychee-x86_64-unknown-linux-gnu.tar.gz
+        rm lychee-x86_64-unknown-linux-gnu.tar.gz
         install -t "$HOME/.local/bin" -D lychee 
         rm lychee
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
