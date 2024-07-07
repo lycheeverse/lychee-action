@@ -50,7 +50,7 @@ runs:
     - name: Install lychee
       run: |
         # Cleanup artifacts from previous run in case it crashed
-        rm -f lychee
+        rm -rf lychee* || echo "No leftovers to clean up. Skipping."
         curl -sL "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.LYCHEEVERSION }}/lychee-x86_64-unknown-linux-gnu.tar.gz" | tar xvz -
         install -t "$HOME/.local/bin" -D lychee 
         rm lychee
