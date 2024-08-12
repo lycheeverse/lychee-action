@@ -48,9 +48,10 @@ runs:
       run: |
         # Cleanup artifacts from previous run in case it crashed
         rm -rf "lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz" lychee
-        curl -sfLO "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.LYCHEEVERSION }}/lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz"
-        tar -xvzf "lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz"
-        rm "lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz"
+        filename='lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz'
+        curl -sfLO "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.LYCHEEVERSION }}/$filename"
+        tar -xvzf "$filename"
+        rm "$filename"
         install -t "$HOME/.local/bin" -D lychee
         rm lychee
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
