@@ -25,7 +25,17 @@ jobs:
       - name: test explicit lychee version
         uses: ./
         with:
-          lycheeVersion: v0.14.0
+          lycheeVersion: v0.15.1
+
+      - name: test nightly lychee version
+        uses: ./
+        with:
+          lycheeVersion: nightly
+
+      - name: test latest lychee version
+        uses: ./
+        with:
+          lycheeVersion: latest
 
       - name: test globs
         uses: ./
