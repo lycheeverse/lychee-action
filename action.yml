@@ -56,7 +56,7 @@ runs:
         tar -xvzf "$filename"
         rm "$filename"
         install -t "$HOME/.local/bin" -D lychee
-        rm lychee
+        rm -f lychee*
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       shell: bash
     - name: Run lychee
