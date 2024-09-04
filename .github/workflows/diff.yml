@@ -1,0 +1,48 @@
+name: Check links in diffs
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Dump all links from main
+        id: dump_links_from_main
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: |
+            --dump
+            --include-fragments
+            .
+          output: ./links-main.txt
+
+      - name: Check out feature branch
+        run: git checkout ${{ github.head_ref }}
+
+      - name: Append links-main.txt to .lycheeignore
+        run: cat links-main.txt >> .lycheeignore
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: |
+            --no-progress
+            --include-fragments
+            .
+          # Fail action on broken links
+          fail: true
+
+      - name: Suggestions
+        if: failure()
+        run: |
+          echo -e "\nPlease review the links reported in the Check links step above."
+          echo -e "If a link is valid but fails due to a CAPTCHA challenge, IP blocking, login requirements, etc.,
+          consider adding such links to .lycheeignore file to bypass future checks.\n"
+          exit 1
