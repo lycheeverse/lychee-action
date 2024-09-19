@@ -94,7 +94,7 @@ In order to mitigate issues regarding rate limiting or to reduce stress on exter
 
 ```yml
 - name: Restore lychee cache
-  uses: actions/cache@v3
+  uses: actions/cache@v4
   with:
     path: .lycheecache
     key: cache-lychee-${{ github.sha }}
@@ -114,7 +114,7 @@ If you need more control over when caches are restored and saved, you can split 
 ```yml
 - name: Restore lychee cache
   id: restore-cache
-  uses: actions/cache/restore@v3
+  uses: actions/cache/restore@v4
   with:
     path: .lycheecache
     key: cache-lychee-${{ github.sha }}
@@ -126,7 +126,7 @@ If you need more control over when caches are restored and saved, you can split 
     args: "--base . --cache --max-cache-age 1d ."
 
 - name: Save lychee cache
-  uses: actions/cache/save@v3
+  uses: actions/cache/save@v4
   if: always()
   with:
     path: .lycheecache
