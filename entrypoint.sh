@@ -69,6 +69,7 @@ fi
 
 # Pass lychee exit code to next step
 echo "lychee_exit_code=$exit_code" >> $GITHUB_ENV
+echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
 
 # If `fail` is set to `true` (and it is by default), propagate the real exit
 # value to the workflow runner. This will cause the pipeline to fail on 
