@@ -194,3 +194,29 @@ jobs:
         uses: ./
         with:
           token: ${{ secrets.CUSTOM_TOKEN }}
+
+      - name: Test exit code set in steps-output and as env "lychee_exit_code"
+        id: lychee_exit_code_test
+        uses: ./
+
+      - name: Check exit code in steps.outputs
+        run: |
+          echo "Lychee exit code: ${{ steps.lychee_exit_code_test.outputs.exit_code }}"
+          if [[ "${{ steps.lychee_exit_code_test.outputs.exit_code }}" == "0" ]]; then
+            echo "Lychee correctly failed with exit code 0"
+          else
+            echo "Unexpected exit code: ${{ steps.lychee_exit_code_test.outputs.exit_code }}"
+            echo "Expected exit code 0"
+            exit 1
+          fi
+
+      - name: Check exit code set as env "lychee_exit_code"
+        run: |
+          echo "Lychee exit code: ${{ env.lychee_exit_code }} & $lychee_exit_code"
+          if [[ "${{ env.lychee_exit_code }}" == "0" ]]; then
+            echo "Lychee correctly failed with exit code 0"
+          else
+            echo "Unexpected exit code: ${{ env.lychee_exit_code }}"
+            echo "Expected exit code 0"
+            exit 1
+          fi
