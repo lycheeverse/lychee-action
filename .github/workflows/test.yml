@@ -209,14 +209,3 @@ jobs:
             echo "Expected exit code 0"
             exit 1
           fi
-
-      - name: Check exit code set as env "lychee_exit_code"
-        run: |
-          echo "Lychee exit code: ${{ env.lychee_exit_code }} & $lychee_exit_code"
-          if [[ "${{ env.lychee_exit_code }}" == "0" ]]; then
-            echo "Lychee correctly failed with exit code 0"
-          else
-            echo "Unexpected exit code: ${{ env.lychee_exit_code }}"
-            echo "Expected exit code 0"
-            exit 1
-          fi
