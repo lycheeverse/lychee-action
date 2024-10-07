@@ -56,6 +56,8 @@ runs:
     - name: Determine lychee filename
       id: lychee-filename
       run: |
+        # Older releases (prior to 0.16.x) had the version number in the archive name.
+        # This determines the correct filename based on the version string.
         if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
           echo "filename=lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
         else
