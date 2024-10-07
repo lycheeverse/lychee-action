@@ -76,7 +76,7 @@ runs:
           elif [[ '${{ inputs.lycheeVersion }}' == 'nightly' ]]; then
             DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/nightly/${FILENAME}"
           else
-            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/lychee-${{ inputs.lycheeVersion }}/${FILENAME}"
+            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/${FILENAME}"
           fi
         fi
         echo "filename=${FILENAME}" >> $GITHUB_OUTPUT
