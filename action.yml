@@ -61,8 +61,8 @@ runs:
         rm -f "${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
-    - name: Determine lychee filename and download
-      id: lychee-download
+    - name: Download and extract lychee
+      id: lychee-setup
       run: |
         # Determine filename and download URL based on version
         if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
@@ -75,22 +75,18 @@ runs:
           elif [[ '${{ inputs.lycheeVersion }}' == 'latest' ]]; then
             DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/latest/download/${FILENAME}"
           else
-            # 0.16.x and onwards
             DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/lychee-${{ inputs.lycheeVersion }}/${FILENAME}"
           fi
         fi
 
-        # Download lychee
+        echo "Downloading from: ${DOWNLOAD_URL}"
         curl -sfLO "${DOWNLOAD_URL}"
+
+        echo "Extracting ${FILENAME}"
+        tar -xvzf "${FILENAME}"
 
         # Output filename for use in later steps
         echo "filename=${FILENAME}" >> $GITHUB_OUTPUT
-      shell: bash
-
-
-    - name: Extract lychee
-      run: |
-        tar -xvzf "${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
     - name: Install lychee
@@ -101,7 +97,7 @@ runs:
     - name: Clean up installation files
       run: |
         # Remove the downloaded archive and any unnecessary files after installation
-        rm -f "${{ steps.lychee-filename.outputs.filename }}"
+        rm -f "${{ steps.lychee-setup.outputs.filename }}"
         shopt -s extglob
         rm -f lychee*!(lychee-bin|lychee-lib)
       shell: bash
