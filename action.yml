@@ -53,26 +53,6 @@ runs:
         mkdir -p "$HOME/.local/bin"
       shell: bash
 
-    - name: Determine lychee filename and download URL
-      id: lychee-info
-      run: |
-        # Older releases (prior to 0.16.x) had the version number in the archive name.
-        # This determines the correct filename and download URL based on the version string.
-        if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
-          echo "filename=lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
-          echo "download_url=https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
-        else
-          echo "filename=lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
-          if [[ '${{ inputs.lycheeVersion }}' == 'latest' ]]; then
-            echo "download_url=https://github.com/lycheeverse/lychee/releases/latest/download/lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
-          elif [[ '${{ inputs.lycheeVersion }}' == 'nightly' ]]; then
-            echo "download_url=https://github.com/lycheeverse/lychee/releases/download/nightly/lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
-          else
-            echo "download_url=https://github.com/lycheeverse/lychee/releases/download/lychee-${{ inputs.lycheeVersion }}/lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
-          fi
-        fi
-      shell: bash
-
     - name: Clean up existing lychee files
       run: |
         # Remove any existing lychee binaries or archives to prevent conflicts
@@ -81,27 +61,38 @@ runs:
         rm -f "${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
-    - name: Download lychee
+    - name: Determine lychee download URL
+      id: get-url
       run: |
-        curl -sfLO "${{ steps.lychee-info.outputs.download_url }}"
+        # Older releases (prior to 0.16.x) had the version number in the archive name.
+        # This determines the correct filename and download URL based on the version string.
+        if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
+          FILENAME="lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz"
+          DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/${FILENAME}"
+        else
+          FILENAME="lychee-x86_64-unknown-linux-gnu.tar.gz"
+          if [[ '${{ inputs.lycheeVersion }}' == 'latest' ]]; then
+            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/latest/download/${FILENAME}"
+          elif [[ '${{ inputs.lycheeVersion }}' == 'nightly' ]]; then
+            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/nightly/${FILENAME}"
+          else
+            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/lychee-${{ inputs.lycheeVersion }}/${FILENAME}"
+          fi
+        fi
+        echo "filename=${FILENAME}" >> $GITHUB_OUTPUT
+        echo "download_url=${DOWNLOAD_URL}" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Download lychee
+      run: curl -sfLO "${{ steps.get-url.outputs.url }}"
       shell: bash
 
     - name: Extract lychee
-      run: |
-        tar -xvzf "${{ steps.lychee-filename.outputs.filename }}"
+      run: tar -xzf "${{ steps.get-url.outputs.filename }}"
       shell: bash
 
     - name: Install lychee
-      run: |
-        install -t "$HOME/.local/bin" -D lychee
-      shell: bash
-
-    - name: Clean up installation files
-      run: |
-        # Remove the downloaded archive and any unnecessary files after installation
-        rm -f "${{ steps.lychee-filename.outputs.filename }}"
-        shopt -s extglob
-        rm -f lychee*!(lychee-bin|lychee-lib)
+      run: install -t "$HOME/.local/bin" -D lychee
       shell: bash
 
     - name: Run Lychee
@@ -131,6 +122,14 @@ runs:
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
         INPUT_OUTPUT: ${{ inputs.OUTPUT }}
       shell: bash
+
+    - name: Cleanup
+      if: always()
+      run: |
+        rm -f "$HOME/.local/bin/lychee" "${{ steps.get-url.outputs.filename }}"
+        rm -rf lychee
+      shell: bash
+
 branding:
   icon: "external-link"
   color: "purple"
