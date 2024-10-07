@@ -53,23 +53,22 @@ runs:
         mkdir -p "$HOME/.local/bin"
       shell: bash
 
-    - name: Determine lychee filename
-      id: lychee-filename
+    - name: Determine lychee filename and download URL
+      id: lychee-info
       run: |
         # Older releases (prior to 0.16.x) had the version number in the archive name.
-        # This determines the correct filename based on the version string.
+        # This determines the correct filename and download URL based on the version string.
         if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
           echo "filename=lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
-          echo "tag=${{ inputs.lycheeVersion }}" >> $GITHUB_OUTPUT
+          echo "download_url=https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
         else
           echo "filename=lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
-          # Each crate in the workspace has its own tag, so we need to specify the tag for the binary.
-          # The binary is released under the 'lychee' tag, the library under 'lychee-lib'.
-          # For nightly builds, we use the 'nightly' tag.
-          if [[ '${{ inputs.lycheeVersion }}' == 'nightly' ]]; then
-            echo "tag=${{ inputs.lycheeVersion }}" >> $GITHUB_OUTPUT
+          if [[ '${{ inputs.lycheeVersion }}' == 'latest' ]]; then
+            echo "download_url=https://github.com/lycheeverse/lychee/releases/latest/download/lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
+          elif [[ '${{ inputs.lycheeVersion }}' == 'nightly' ]]; then
+            echo "download_url=https://github.com/lycheeverse/lychee/releases/download/nightly/lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
           else
-            echo "tag=lychee-${{ inputs.lycheeVersion }}" >> $GITHUB_OUTPUT
+            echo "download_url=https://github.com/lycheeverse/lychee/releases/download/lychee-${{ inputs.lycheeVersion }}/lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
           fi
         fi
       shell: bash
@@ -84,7 +83,7 @@ runs:
 
     - name: Download lychee
       run: |
-        curl -sfLO "https://github.com/lycheeverse/lychee/releases/download/${{ steps.lychee-filename.outputs.tag }}/${{ steps.lychee-filename.outputs.filename }}"
+        curl -sfLO "${{ steps.lychee-info.outputs.download_url }}"
       shell: bash
 
     - name: Extract lychee
