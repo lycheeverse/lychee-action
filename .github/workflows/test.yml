@@ -125,6 +125,28 @@ jobs:
           echo "Output set in args and action input should have failed."
           exit 1
 
+      - name: test fail
+        id: fail_test
+        uses: ./
+        with:
+          args: --verbose --no-progress foo.bar
+          debug: true
+        continue-on-error: true
+
+      # Explictly check the exit code of the previous step
+      # as it's expected to fail
+      - name: Check fail
+        if: steps.fail_test.outcome != 'failure'
+        run: |
+          echo "Fail should have failed because the url is invalid."
+          exit 1
+
+      - name: test disable fail - it's okay if we fail
+        uses: ./
+        with:
+          args: --no-progress foo.bar
+          fail: false
+
       - name: test failIfEmpty - no links in input should fail the pipeline
         id: fail_if_empty_test
         uses: ./
