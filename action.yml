@@ -53,6 +53,29 @@ runs:
         mkdir -p "$HOME/.local/bin"
       shell: bash
 
+    - name: Determine lychee filename
+      id: lychee-filename
+      run: |
+        # Older releases (prior to 0.16.x) had the version number in the archive name.
+        # This determines the correct filename based on the version string.
+        if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
+          echo "filename=lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
+          echo "tag=${{ inputs.lycheeVersion }}" >> $GITHUB_OUTPUT
+        else
+          echo "filename=lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
+          # Each crate in the workspace has its own tag, so we need to specify the tag for the binary.
+          # The binary is released under the 'lychee' tag, the library under 'lychee-lib'.
+          # For nightly builds, we use the 'nightly' tag.
+          if [[ '${{ inputs.lycheeVersion }}' == 'nightly' ]]; then
+            echo "tag=${{ inputs.lycheeVersion }}" >> $GITHUB_OUTPUT
+          elif [[ '${{ inputs.lycheeVersion }}' == 'latest' ]]; then
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          else
+            echo "tag=lychee-${{ inputs.lycheeVersion }}" >> $GITHUB_OUTPUT
+          fi
+        fi
+      shell: bash
+
     - name: Clean up existing lychee files
       run: |
         # Remove any existing lychee binaries or archives to prevent conflicts
@@ -61,38 +84,27 @@ runs:
         rm -f "${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
-    - name: Determine lychee download URL
-      id: get-url
-      run: |
-        # Older releases (prior to 0.16.x) had the version number in the archive name.
-        # This determines the correct filename and download URL based on the version string.
-        if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
-          FILENAME="lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz"
-          DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/${FILENAME}"
-        else
-          FILENAME="lychee-x86_64-unknown-linux-gnu.tar.gz"
-          if [[ '${{ inputs.lycheeVersion }}' == 'latest' ]]; then
-            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/latest/download/${FILENAME}"
-          elif [[ '${{ inputs.lycheeVersion }}' == 'nightly' ]]; then
-            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/nightly/${FILENAME}"
-          else
-            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/${FILENAME}"
-          fi
-        fi
-        echo "filename=${FILENAME}" >> $GITHUB_OUTPUT
-        echo "download_url=${DOWNLOAD_URL}" >> $GITHUB_OUTPUT
-      shell: bash
-
     - name: Download lychee
-      run: curl -sfLO "${{ steps.get-url.outputs.url }}"
+      run: |
+        curl -sfLO "https://github.com/lycheeverse/lychee/releases/download/${{ steps.lychee-filename.outputs.tag }}/${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
     - name: Extract lychee
-      run: tar -xzf "${{ steps.get-url.outputs.filename }}"
+      run: |
+        tar -xvzf "${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
     - name: Install lychee
-      run: install -t "$HOME/.local/bin" -D lychee
+      run: |
+        install -t "$HOME/.local/bin" -D lychee
+      shell: bash
+
+    - name: Clean up installation files
+      run: |
+        # Remove the downloaded archive and any unnecessary files after installation
+        rm -f "${{ steps.lychee-filename.outputs.filename }}"
+        shopt -s extglob
+        rm -f lychee*!(lychee-bin|lychee-lib)
       shell: bash
 
     - name: Run Lychee
@@ -122,14 +134,6 @@ runs:
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
         INPUT_OUTPUT: ${{ inputs.OUTPUT }}
       shell: bash
-
-    - name: Cleanup
-      if: always()
-      run: |
-        rm -f "$HOME/.local/bin/lychee" "${{ steps.get-url.outputs.filename }}"
-        rm -rf lychee
-      shell: bash
-
 branding:
   icon: "external-link"
   color: "purple"
