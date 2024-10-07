@@ -32,6 +32,11 @@ jobs:
         with:
           lycheeVersion: nightly
 
+      - name: test latest lychee version
+        uses: ./
+        with:
+          lycheeVersion: latest
+
       - name: test globs
         uses: ./
         with:
