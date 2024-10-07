@@ -53,7 +53,7 @@ runs:
         mkdir -p "$HOME/.local/bin"
       shell: bash
 
-    - name: Determine Lychee filename
+    - name: Determine lychee filename
       id: lychee-filename
       run: |
         if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
@@ -63,29 +63,38 @@ runs:
         fi
       shell: bash
 
-    - name: Download Lychee
+    - name: Clean up existing lychee files
+      run: |
+        # Remove any existing lychee binaries or archives to prevent conflicts
+        rm -f "$HOME/.local/bin/lychee"
+        rm -f lychee
+        rm -f "${{ steps.lychee-filename.outputs.filename }}"
+      shell: bash
+
+    - name: Download lychee
       run: |
         curl -sfLO "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
-    - name: Extract Lychee
+    - name: Extract lychee
       run: |
         tar -xvzf "${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
-    - name: Install Lychee
+    - name: Install lychee
       run: |
         install -t "$HOME/.local/bin" -D lychee
       shell: bash
 
     - name: Clean up installation files
       run: |
+        # Remove the downloaded archive and any unnecessary files after installation
         rm -f "${{ steps.lychee-filename.outputs.filename }}"
         shopt -s extglob
         rm -f lychee*!(lychee-bin|lychee-lib)
       shell: bash
 
-    - name: Run Lychee
+    - name: Run lychee
       id: lychee
       run: ${{ github.action_path }}/entrypoint.sh
       env:
@@ -99,7 +108,6 @@ runs:
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
         INPUT_OUTPUT: ${{ inputs.OUTPUT }}
       shell: bash
-
 branding:
   icon: "external-link"
   color: "purple"
