@@ -84,7 +84,7 @@ runs:
 
     - name: Download lychee
       run: |
-        curl -sfLO "https://github.com/lycheeverse/lychee/releases/download/${{ steps.lychee-filename.outputs.tag }}/${{ steps.lychee-filename.outputs.filename }}"
+        curl -sfLO "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
     - name: Extract lychee
