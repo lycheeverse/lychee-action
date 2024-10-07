@@ -67,7 +67,7 @@ runs:
       run: |
         # Remove any existing lychee binaries or archives to prevent conflicts
         rm -f "$HOME/.local/bin/lychee"
-        rm -f lychee
+        rm -rf lychee
         rm -f "${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
 
