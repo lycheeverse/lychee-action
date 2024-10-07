@@ -1,5 +1,6 @@
 name: "Lychee Broken Link Checker"
 description: "Quickly check links in Markdown, HTML, and text files"
+
 inputs:
   args:
     description: "Lychee arguments (https://github.com/lycheeverse/lychee#commandline-parameters)"
@@ -37,32 +38,80 @@ inputs:
     description: "Your GitHub Access Token, defaults to: {{ github.token }}"
     default: ${{ github.token }}
     required: false
+
 outputs:
   exit_code:
     description: "The exit code returned from Lychee"
-    value: ${{ steps.lychee.outputs.exit_code }}
+    value: ${{ steps.run-lychee.outputs.exit_code }}
+
 runs:
   using: "composite"
   steps:
+    - name: Set up environment
+      run: |
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        mkdir -p "$HOME/.local/bin"
+      shell: bash
+
+    - name: Determine lychee filename
+      id: lychee-filename
+      run: |
+        # Older releases (prior to 0.16.x) had the version number in the archive name.
+        # This determines the correct filename based on the version string.
+        if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
+          echo "filename=lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
+        else
+          echo "filename=lychee-x86_64-unknown-linux-gnu.tar.gz" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
+    - name: Clean up existing lychee files
+      run: |
+        # Remove any existing lychee binaries or archives to prevent conflicts
+        rm -f "$HOME/.local/bin/lychee"
+        rm -rf lychee
+        rm -f "${{ steps.lychee-filename.outputs.filename }}"
+      shell: bash
+
+    - name: Download lychee
+      run: |
+        curl -sfLO "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/${{ steps.lychee-filename.outputs.filename }}"
+      shell: bash
+
+    - name: Extract lychee
+      run: |
+        tar -xvzf "${{ steps.lychee-filename.outputs.filename }}"
+      shell: bash
+
     - name: Install lychee
       run: |
-        # Cleanup artifacts from previous run in case it crashed
-        rm -rf "lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz" lychee
-        case '${{ inputs.LYCHEEVERSION }}' in
-        v0.0*|v0.1[0-5].*) filename='lychee-${{ inputs.LYCHEEVERSION }}-x86_64-unknown-linux-gnu.tar.gz';;
-        *) filename='lychee-x86_64-unknown-linux-gnu.tar.gz'
-        esac
-        curl -sfLO "https://github.com/lycheeverse/lychee/releases/download/${{ inputs.LYCHEEVERSION }}/$filename"
-        tar -xvzf "$filename"
-        rm "$filename"
         install -t "$HOME/.local/bin" -D lychee
+      shell: bash
+
+    - name: Clean up installation files
+      run: |
+        # Remove the downloaded archive and any unnecessary files after installation
+        rm -f "${{ steps.lychee-filename.outputs.filename }}"
         shopt -s extglob
         rm -f lychee*!(lychee-bin|lychee-lib)
-        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       shell: bash
-    - name: Run lychee
-      run: ${{ github.action_path }}/entrypoint.sh
-      id: lychee
+
+    - name: Run Lychee
+      id: run-lychee
+      run: |
+        # This step runs lychee and captures its exit code.
+        # We use 'set +e' to prevent the script from exiting immediately if lychee fails.
+        # This allows us to capture the exit code and pass it both to GitHub Actions (via GITHUB_OUTPUT)
+        # and to the shell (via the final 'exit $EXIT_CODE').
+        # This ensures that:
+        # 1. The step fails if lychee fails
+        # 2. The exit code is available as an output for subsequent steps
+        # 3. The exit code is properly propagated to the workflow
+        set +e
+        ${{ github.action_path }}/entrypoint.sh
+        EXIT_CODE=$?
+        echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+        exit $EXIT_CODE
       env:
         # https://github.com/actions/runner/issues/665
         INPUT_TOKEN: ${{ inputs.TOKEN }}
