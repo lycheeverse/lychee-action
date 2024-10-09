@@ -73,9 +73,6 @@ echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
 # If `fail` is set to `true` (and it is by default), propagate the real exit
 # value to the workflow runner. This will cause the pipeline to fail on 
 # `exit != # 0`.
-# Otherwise, always exit cleanly with status code 0.
 if [ "$INPUT_FAIL" = true ] ; then
     exit ${exit_code}
-else
-    exit 0
 fi
