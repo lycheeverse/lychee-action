@@ -99,7 +99,7 @@ runs:
         # Remove the downloaded archive and any unnecessary files after installation
         rm -f "${{ steps.lychee-setup.outputs.filename }}"
         shopt -s extglob
-        rm -f lychee*!(lychee-bin|lychee-lib)
+        rm -f lychee!(*-bin|*-lib|*.toml)
       shell: bash
 
     - name: Run Lychee
