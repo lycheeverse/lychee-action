@@ -133,7 +133,7 @@ jobs:
           debug: true
         continue-on-error: true
 
-      # Explictly check the exit code of the previous step
+      # Explicitly check the exit code of the previous step
       # as it's expected to fail
       - name: Check failIfEmpty
         if: steps.fail_if_empty_test.outcome != 'failure'
