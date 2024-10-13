@@ -6,7 +6,7 @@
 Quickly check links in Markdown, HTML, and text files using [lychee].
 
 When used in conjunction with [Create Issue From File], issues will be
-opened when the action finds link problems.
+opened when the action finds link problems (make sure to specify the `issues: write` permission in the [workflow](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#permissions) or the [job](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions)).
 
 ## Usage
 
@@ -27,6 +27,8 @@ on:
 jobs:
   linkChecker:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write # required for peter-evans/create-issue-from-file
     steps:
       - uses: actions/checkout@v4
 
