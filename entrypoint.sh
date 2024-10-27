@@ -32,7 +32,7 @@ eval lychee ${FORMAT} --output ${LYCHEE_TMP} ${ARGS}
 exit_code=$?
 
 # Overwrite the exit code in case no links were found
-# and `fail-if-empty` is set to `true` (and it is by default)
+# and `failIfEmpty` is set to `true` (and it is by default)
 if [ "${INPUT_FAILIFEMPTY}" = "true" ]; then
     # Explicitly set INPUT_FAIL to true to ensure the script fails
     # if no links are found
@@ -40,7 +40,7 @@ if [ "${INPUT_FAILIFEMPTY}" = "true" ]; then
     # This is a somewhat crude way to check the Markdown output of lychee
     if grep -E 'Total\s+\|\s+0' "${LYCHEE_TMP}"; then
         echo "No links were found. This usually indicates a configuration error." >> "${LYCHEE_TMP}"
-        echo "If this was expected, set 'fail-if-empty: false' in the args." >> "${LYCHEE_TMP}"
+        echo "If this was expected, set 'failIfEmpty: false' in the args." >> "${LYCHEE_TMP}"
         exit_code=1
     fi
 fi
