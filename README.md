@@ -6,7 +6,7 @@
 Quickly check links in Markdown, HTML, and text files using [lychee].
 
 When used in conjunction with [Create Issue From File], issues will be
-opened when the action finds link problems.
+opened when the action finds link problems (make sure to specify the `issues: write` permission in the [workflow](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#permissions) or the [job](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions)).
 
 ## Usage
 
@@ -27,6 +27,8 @@ on:
 jobs:
   linkChecker:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write # required for peter-evans/create-issue-from-file
     steps:
       - uses: actions/checkout@v4
 
@@ -50,16 +52,17 @@ lychee arguments can be passed to the action via the `args` parameter.
 
 On top of that, the action also supports some additional arguments.
 
-| Argument      | Examples                | Description                                                                      |
-| ------------- | ----------------------- | -------------------------------------------------------------------------------- |
+| Argument      | Examples                | Description                                                                     |
+| ------------- | ----------------------- | ------------------------------------------------------------------------------- |
 | args          | `--cache`, `--insecure` | See [lychee's documentation][lychee-args] for all arguments and values          |
 | debug         | `false`                 | Enable debug output in action (set -x). Helpful for troubleshooting             |
 | fail          | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0) |
+| failIfEmpty   | `false`                 | Fail entire pipeline if no links were found                                     |
 | format        | `markdown`, `json`      | Summary output format                                                           |
 | jobSummary    | `false`                 | Write GitHub job summary (on Markdown output only)                              |
 | lycheeVersion | `v0.15.0`, `nightly`    | Overwrite the lychee version to be used                                         |
 | output        | `lychee/results.md`     | Summary output file path                                                        |
-| token         | `""`                    | Custom GitHub token to use for API calls                                               |
+| token         | `""`                    | Custom GitHub token to use for API calls                                        |
 
 See [action.yml](./action.yml) for a full list of supported arguments and their default values.
 
@@ -77,7 +80,7 @@ Here is how to pass the arguments.
     format: json
     # Use different output file path
     output: /tmp/foo.txt
-    # Use a custom GitHub token, which 
+    # Use a custom GitHub token, which
     token: ${{ secrets.CUSTOM_TOKEN }}
     # Don't fail action on broken links
     fail: false
@@ -111,6 +114,7 @@ So in this setup, as long as a user triggers the CI run from the same commit, it
 For restoring the cache, the most recent available one is used (commit hash doesn't matter).
 
 If you need more control over when caches are restored and saved, you can split the cache step and e.g. ensure to always save the cache (also when the link check step fails):
+
 ```yml
 - name: Restore lychee cache
   id: restore-cache

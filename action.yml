@@ -65,17 +65,17 @@ runs:
       id: lychee-setup
       run: |
         # Determine filename and download URL based on version
-        if [[ '${{ inputs.lycheeVersion }}' =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
-          FILENAME="lychee-${{ inputs.lycheeVersion }}-x86_64-unknown-linux-gnu.tar.gz"
-          DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/${{ inputs.lycheeVersion }}/${FILENAME}"
+        if [[ "${LYCHEE_VERSION}" =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
+          FILENAME="lychee-${LYCHEE_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+          DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/${LYCHEE_VERSION}/${FILENAME}"
         else
           FILENAME="lychee-x86_64-unknown-linux-gnu.tar.gz"
-          if [[ '${{ inputs.lycheeVersion }}' == 'nightly' ]]; then
+          if [[ "${LYCHEE_VERSION}" == 'nightly' ]]; then
             DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/nightly/${FILENAME}"
-          elif [[ '${{ inputs.lycheeVersion }}' == 'latest' ]]; then
+          elif [[ "${LYCHEE_VERSION}" == 'latest' ]]; then
             DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/latest/download/${FILENAME}"
           else
-            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/lychee-${{ inputs.lycheeVersion }}/${FILENAME}"
+            DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/lychee-${LYCHEE_VERSION}/${FILENAME}"
           fi
         fi
 
@@ -87,6 +87,8 @@ runs:
 
         # Output filename for use in later steps
         echo "filename=${FILENAME}" >> $GITHUB_OUTPUT
+      env:
+        LYCHEE_VERSION: ${{ inputs.lycheeVersion }}
       shell: bash
 
     - name: Install lychee
