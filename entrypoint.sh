@@ -1,6 +1,13 @@
 #!/bin/bash -l
 set -uo pipefail
 
+# We use ‘set +e’ to prevent the script from exiting immediately if lychee fails.
+# This ensures that:
+# 1. Lychee exit code can be captured and passed to subsequent steps via `$GITHUB_OUTPUT`.
+# 2. This step’s outcome (success/failure) can be controlled according to inputs
+#    by manually calling the ‘exit’ command.
+set +e
+
 # Enable optional debug output
 if [ "${INPUT_DEBUG}" = true ]; then
   echo "Debug output enabled"
@@ -29,19 +36,17 @@ fi
 
 # Execute lychee
 eval lychee ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
-exit_code=$?
+LYCHEE_EXIT_CODE=$?
 
-# Overwrite the exit code in case no links were found
-# and `failIfEmpty` is set to `true` (and it is by default)
+# If no links were found and `failIfEmpty` is set to `true` (and it is by default),
+# fail with an error later, but leave lychee exit code untouched.
+should_fail_because_empty=false
 if [ "${INPUT_FAILIFEMPTY}" = "true" ]; then
-    # Explicitly set INPUT_FAIL to true to ensure the script fails
-    # if no links are found
-    INPUT_FAIL=true
     # This is a somewhat crude way to check the Markdown output of lychee
     if grep -E 'Total\s+\|\s+0' "${LYCHEE_TMP}"; then
         echo "No links were found. This usually indicates a configuration error." >> "${LYCHEE_TMP}"
         echo "If this was expected, set 'failIfEmpty: false' in the args." >> "${LYCHEE_TMP}"
-        exit_code=1
+        should_fail_because_empty=true
     fi
 fi
 
@@ -67,12 +72,16 @@ if [ "${INPUT_FORMAT}" == "markdown" ]; then
   fi
 fi
 
-# Pass lychee exit code to next step
-echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
+# Pass lychee exit code to subsequent steps
+echo "exit_code=$LYCHEE_EXIT_CODE" >> "$GITHUB_OUTPUT"
 
-# If `fail` is set to `true` (and it is by default), propagate the real exit
-# value to the workflow runner. This will cause the pipeline to fail on 
-# `exit != # 0`.
-if [ "$INPUT_FAIL" = true ] ; then
-    exit ${exit_code}
+# Determine the outcome of this step
+# Exiting with a nonzero value will fail the pipeline, but the specific value
+# does not matter. (GitHub does not share it with subsequent steps for composite actions.)
+if [ "$should_fail_because_empty" = true ] ; then
+  # If we decided previously to fail because no links were found, fail
+  exit 1
+elif [ "$INPUT_FAIL" = true ] ; then
+  # If `fail` is set to `true` (and it is by default), propagate lychee exit code
+  exit ${LYCHEE_EXIT_CODE}
 fi
