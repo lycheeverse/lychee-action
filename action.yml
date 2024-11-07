@@ -106,20 +106,7 @@ runs:
 
     - name: Run Lychee
       id: run-lychee
-      run: |
-        # This step runs lychee and captures its exit code.
-        # We use 'set +e' to prevent the script from exiting immediately if lychee fails.
-        # This allows us to capture the exit code and pass it both to GitHub Actions (via GITHUB_OUTPUT)
-        # and to the shell (via the final 'exit $EXIT_CODE').
-        # This ensures that:
-        # 1. The step fails if lychee fails
-        # 2. The exit code is available as an output for subsequent steps
-        # 3. The exit code is properly propagated to the workflow
-        set +e
-        ${{ github.action_path }}/entrypoint.sh
-        EXIT_CODE=$?
-        echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
-        exit $EXIT_CODE
+      run: ${{ github.action_path }}/entrypoint.sh
       env:
         # https://github.com/actions/runner/issues/665
         INPUT_TOKEN: ${{ inputs.TOKEN }}

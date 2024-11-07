@@ -125,6 +125,28 @@ jobs:
           echo "Output set in args and action input should have failed."
           exit 1
 
+      - name: test fail - a lychee error should fail the pipeline
+        id: fail_test
+        uses: ./
+        with:
+          args: --verbose --no-progress foo.bar
+          debug: true
+        continue-on-error: true
+
+      # Explicitly check the exit code of the previous step
+      # as it's expected to fail
+      - name: Check fail
+        if: steps.fail_test.outcome != 'failure'
+        run: |
+          echo "Fail should have failed because the URL is invalid."
+          exit 1
+
+      - name: test disable fail - it's okay if lychee throws an error
+        uses: ./
+        with:
+          args: --no-progress foo.bar
+          fail: false
+
       - name: test failIfEmpty - no links in input should fail the pipeline
         id: fail_if_empty_test
         uses: ./
@@ -146,6 +168,40 @@ jobs:
         with:
           args: --no-progress fixtures/empty.md
           failIfEmpty: false
+
+      - name: test disable failIfEmpty - a lychee error should still fail the pipeline
+        id: fail_but_not_failIfEmpty_test
+        uses: ./
+        with:
+          args: --verbose --no-progress foo.bar
+          failIfEmpty: false
+          debug: true
+        continue-on-error: true
+
+      # Explicitly check the exit code of the previous step
+      # as it's expected to fail
+      - name: Check fail when failIfEmpty is disabled
+        if: steps.fail_but_not_failIfEmpty_test.outcome != 'failure'
+        run: |
+          echo "Fail should have failed because the URL is invalid, even though failIfEmpty is disabled."
+          exit 1
+
+      - name: test disable fail - no links in input should still fail the pipeline
+        id: failIfEmpty_but_not_fail_test
+        uses: ./
+        with:
+          args: --verbose --no-progress fixtures/empty.md
+          fail: false
+          debug: true
+        continue-on-error: true
+
+      # Explicitly check the exit code of the previous step
+      # as it's expected to fail
+      - name: Check failIfEmpty when fail is disabled
+        if: steps.failIfEmpty_but_not_fail_test.outcome != 'failure'
+        run: |
+          echo "FailIfEmpty should have failed because no links were found, even though fail is disabled."
+          exit 1
 
       - name: Install jq
         run: sudo apt-get install jq

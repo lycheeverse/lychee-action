@@ -37,7 +37,7 @@ jobs:
         uses: lycheeverse/lychee-action@v2
 
       - name: Create Issue From File
-        if: env.exit_code != 0
+        if: ${{ steps.lychee.outputs.exit_code }} != 0
         uses: peter-evans/create-issue-from-file@v5
         with:
           title: Link Checker Report
