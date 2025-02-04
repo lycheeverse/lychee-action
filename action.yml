@@ -64,12 +64,13 @@ runs:
     - name: Download and extract lychee
       id: lychee-setup
       run: |
+        ARCH=$(uname -m)
         # Determine filename and download URL based on version
         if [[ "${LYCHEE_VERSION}" =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
-          FILENAME="lychee-${LYCHEE_VERSION}-x86_64-unknown-linux-gnu.tar.gz"
+          FILENAME="lychee-${LYCHEE_VERSION}-${ARCH}-unknown-linux-gnu.tar.gz"
           DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/${LYCHEE_VERSION}/${FILENAME}"
         else
-          FILENAME="lychee-x86_64-unknown-linux-gnu.tar.gz"
+          FILENAME="lychee-${ARCH}-unknown-linux-gnu.tar.gz"
           if [[ "${LYCHEE_VERSION}" == 'nightly' ]]; then
             DOWNLOAD_URL="https://github.com/lycheeverse/lychee/releases/download/nightly/${FILENAME}"
           elif [[ "${LYCHEE_VERSION}" == 'latest' ]]; then
