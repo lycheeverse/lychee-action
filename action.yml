@@ -64,7 +64,7 @@ runs:
     - name: Download and extract lychee
       id: lychee-setup
       run: |
-        ARCH=$(uname --machine)
+        ARCH=$(uname -m)
         # Determine filename and download URL based on version
         if [[ "${LYCHEE_VERSION}" =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
           FILENAME="lychee-${LYCHEE_VERSION}-${ARCH}-unknown-linux-gnu.tar.gz"
