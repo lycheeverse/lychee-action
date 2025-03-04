@@ -34,6 +34,18 @@ if [[ "$ARGS" =~ "--output " ]] && [ -n "${INPUT_OUTPUT:-}" ]; then
     exit 1
 fi
 
+# If `--mode` occurs in args and `INPUT_CHECKBOX` is set, exit with an error 
+# Use `--mode` instead of `--mode task` to ensure that the checkbox is not getting overwritten
+if [[ "$ARGS" =~ "--mode" ]] && [ -n "${INPUT_CHECKBOX:-}" ]; then
+  echo "Error: '--mode' is set in args but 'checkbox' is set in the action configuration. Please remove one of them to avoid conflicts."
+  exit 1
+fi
+
+# Add `--mode task` to args if `INPUT_CHECKBOX` is true
+if [[ "${INPUT_CHECKBOX}" = true ]]; then
+  ARGS="${ARGS} --mode task"
+fi
+
 # Execute lychee
 eval lychee ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
 LYCHEE_EXIT_CODE=$?
