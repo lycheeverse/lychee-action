@@ -287,6 +287,7 @@ jobs:
       - name: test explicit lychee version
         uses: ./
         with:
+          checkbox: false # not supported in v0.15.1
           lycheeVersion: v0.15.1
 
       - name: test nightly lychee version

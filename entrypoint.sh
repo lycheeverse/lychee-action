@@ -44,7 +44,12 @@ fi
 
 CHECKBOX=""
 if [ "${INPUT_CHECKBOX}" = true ]; then
-  CHECKBOX="--mode task"
+  # Check if the version is higher than 0.18.1
+  if [ "$(lychee --version | head -n1 | cut -d" " -f4)" -lt 0.18.1 ]; then
+    echo "WARNING: 'checkbox' is not supported in lychee versions lower than 0.18.1. Continuing without 'checkbox'."
+  else
+    CHECKBOX="--mode task"
+  fi
 fi
 
 # Execute lychee
