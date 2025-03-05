@@ -28,6 +28,7 @@ FORMAT=""
 # If `format` occurs in args, ignore the value from `INPUT_FORMAT`
 [[ "$ARGS" =~ "--format " ]] || FORMAT="--format ${INPUT_FORMAT}"
 
+
 # If `output` occurs in args and `INPUT_OUTPUT` is set, exit with an error 
 if [[ "$ARGS" =~ "--output " ]] && [ -n "${INPUT_OUTPUT:-}" ]; then
     echo "Error: 'output' is set in args as well as in the action configuration. Please remove one of them."
@@ -41,13 +42,13 @@ if [[ "$ARGS" =~ "--mode" ]] && [ -n "${INPUT_CHECKBOX:-}" ]; then
   exit 1
 fi
 
-# Add `--mode task` to args if `INPUT_CHECKBOX` is true
-if [[ "${INPUT_CHECKBOX}" = true ]]; then
-  ARGS="${ARGS} --mode task"
+CHECKBOX=""
+if [ "${INPUT_CHECKBOX}" = true ]; then
+  CHECKBOX="--mode task"
 fi
 
 # Execute lychee
-eval lychee ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
+eval lychee ${CHECKBOX} ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
 LYCHEE_EXIT_CODE=$?
 
 # If no links were found and `failIfEmpty` is set to `true` (and it is by default),
