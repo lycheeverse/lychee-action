@@ -28,14 +28,32 @@ FORMAT=""
 # If `format` occurs in args, ignore the value from `INPUT_FORMAT`
 [[ "$ARGS" =~ "--format " ]] || FORMAT="--format ${INPUT_FORMAT}"
 
+
 # If `output` occurs in args and `INPUT_OUTPUT` is set, exit with an error 
 if [[ "$ARGS" =~ "--output " ]] && [ -n "${INPUT_OUTPUT:-}" ]; then
     echo "Error: 'output' is set in args as well as in the action configuration. Please remove one of them."
     exit 1
 fi
 
+# If `--mode` occurs in args and `INPUT_CHECKBOX` is set, exit with an error 
+# Use `--mode` instead of `--mode task` to ensure that the checkbox is not getting overwritten
+if [[ "$ARGS" =~ "--mode" ]] && [ -n "${INPUT_CHECKBOX:-}" ]; then
+  echo "Error: '--mode' is set in args but 'checkbox' is set in the action configuration. Please remove one of them to avoid conflicts."
+  exit 1
+fi
+
+CHECKBOX=""
+if [ "${INPUT_CHECKBOX}" = true ]; then
+  # Check if the version is higher than 0.18.1
+  if [ "$(lychee --version | head -n1 | cut -d" " -f4)" -lt 0.18.1 ]; then
+    echo "WARNING: 'checkbox' is not supported in lychee versions lower than 0.18.1. Continuing without 'checkbox'."
+  else
+    CHECKBOX="--mode task"
+  fi
+fi
+
 # Execute lychee
-eval lychee ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
+eval lychee ${CHECKBOX} ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
 LYCHEE_EXIT_CODE=$?
 
 # If no links were found and `failIfEmpty` is set to `true` (and it is by default),
