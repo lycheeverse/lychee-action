@@ -28,11 +28,15 @@ inputs:
     required: false
   lycheeVersion:
     description: "Use custom version of lychee link checker"
-    default: v0.18.0
+    default: v0.18.1
     required: false
   output:
     description: "Summary output file path"
     default: "lychee/out.md"
+    required: false
+  checkbox:
+    description: "Add Markdown Styled Checkboxes to the output"
+    default: true
     required: false
   token:
     description: "Your GitHub Access Token, defaults to: {{ github.token }}"
@@ -117,6 +121,7 @@ runs:
         INPUT_FAILIFEMPTY: ${{ inputs.FAILIFEMPTY }}
         INPUT_FORMAT: ${{ inputs.FORMAT }}
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
+        INPUT_CHECKBOX: ${{ inputs.CHECKBOX }}
         INPUT_OUTPUT: ${{ inputs.OUTPUT }}
       shell: bash
 branding:
