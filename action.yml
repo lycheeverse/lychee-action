@@ -42,6 +42,10 @@ inputs:
     description: "Your GitHub Access Token, defaults to: {{ github.token }}"
     default: ${{ github.token }}
     required: false
+  workingDirectory:
+    description: "Directory to run lychee in"
+    default: "."
+    required: false
 
 outputs:
   exit_code:
@@ -111,6 +115,7 @@ runs:
 
     - name: Run Lychee
       id: run-lychee
+      working-directory: ${{ inputs.workingDirectory }}
       run: ${{ github.action_path }}/entrypoint.sh
       env:
         # https://github.com/actions/runner/issues/665

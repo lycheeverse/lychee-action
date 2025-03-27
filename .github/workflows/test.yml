@@ -60,6 +60,22 @@ jobs:
             './**/*.html'
             './**/*.rst'
 
+      - name: test working directory functionality
+        uses: ./
+        with:
+          workingDirectory: fixtures/subdir
+          args: --dump-inputs '*'
+          output: ${{ github.workspace }}/working_dir_inputs.txt
+
+      - name: test working directory output
+        run: |
+          line_count=$(wc -l < ${{ github.workspace }}/working_dir_inputs.txt)
+          if ! grep -q "test-working-dir.md" ${{ github.workspace }}/working_dir_inputs.txt || [ "$line_count" -ne 2 ]; then
+            echo "Working directory test failed. Output:"
+            cat ${{ github.workspace }}/working_dir_inputs.txt
+            exit 1
+          fi
+
       - name: test custom output relative path - creation
         uses: ./
         with:
