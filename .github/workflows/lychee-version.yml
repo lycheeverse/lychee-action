@@ -1,4 +1,4 @@
-name: "Check Lychee Version and Create PR"
+name: "Update Lychee Default Version"
 
 on:
   schedule:
