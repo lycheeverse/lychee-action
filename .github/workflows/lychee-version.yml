@@ -12,7 +12,7 @@ jobs:
 
     outputs:
       mismatch: ${{ steps.compare-versions.outputs.mismatch }}
-      action_lychee_version: ${{ steps.get-action-lychee-version.outputs.action_lychee_version }}
+      action_lychee_version: ${{ steps.get-action-lychee-version.outputs.result }}
       release_version: ${{ steps.get-lychee-release.outputs.release_version }}
 
     name: Check lychee version
@@ -31,21 +31,15 @@ jobs:
 
       - name: Extract lycheeVersion from action.yml
         id: get-action-lychee-version
-        run: |
-          echo "Extracting lycheeVersion from action.yml..."
-          lychee_version=$(awk '/lycheeVersion:/ {getline; getline; print}' action.yml | grep -Eo 'v[0-9]+\.[0-9]+\.[0-9]+')
-          if [ -z "$lychee_version" ]; then
-            echo "Error: Failed to extract lycheeVersion from action.yml"
-            exit 1
-          fi
-          echo "Extracted lycheeVersion: $lychee_version"
-          echo "action_lychee_version=$lychee_version" >> $GITHUB_OUTPUT
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq '.inputs.lycheeVersion.default' action.yml
 
       - name: Compare versions
         id: compare-versions
         run: |
           echo "Comparing versions..."
-          action_lychee_version="${{ steps.get-action-lychee-version.outputs.action_lychee_version }}"
+          action_lychee_version="${{ steps.get-action-lychee-version.outputs.result }}"
           release_version="${{ steps.get-lychee-release.outputs.release_version }}"
           echo "Action lychee version: $action_lychee_version"
           echo "Latest release version: $release_version"
