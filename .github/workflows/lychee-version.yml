@@ -88,10 +88,13 @@ jobs:
           git push origin $update_branch_name
           echo "Branch $update_branch_name created and pushed successfully."
 
+      - name: Debug Default Branch
+        run: |
+          echo "Default branch is: ${{ github.event.repository.default_branch }}"
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           base: ${{ github.event.repository.default_branch }}
           branch: $update_branch_name
           title: "Update lycheeVersion to $release_version"
