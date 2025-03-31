@@ -74,7 +74,7 @@ jobs:
           echo "Creating a new branch for the update..."
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git checkout -b update-lychee-version
+          git checkout -b update-lychee-$release_version
           echo "Updating action.yml with the new lychee version..."
           sed -i "s/$action_lychee_version/$release_version/" action.yml
           git commit -am "Update lycheeVersion to $release_version"
