@@ -71,9 +71,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create branch for update
-        run: |
-          echo "Updating action.yml with the new lychee version..."
-          sed -i "s/$action_lychee_version/$release_version/" action.yml
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq -i '.inputs.lycheeVersion.default = env.release_version' action.yml
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
