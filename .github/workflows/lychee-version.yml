@@ -9,6 +9,7 @@ jobs:
   check-lychee-version:
     runs-on: ubuntu-latest
 
+    name: Check lychee version
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -41,6 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     if: steps.compare-versions.outputs.mismatch == 'true'
 
+    name: Create PR to update lychee version
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
