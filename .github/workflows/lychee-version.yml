@@ -22,21 +22,30 @@ jobs:
       - name: Get current lychee release version
         id: get-lychee-release
         run: |
+          echo "Fetching the latest lychee release version..."
           release=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
+          echo "Latest release version fetched: $release"
           echo "release_version=$release" >> $GITHUB_OUTPUT
 
       - name: Extract lycheeVersion from action.yml
         id: get-action-lychee-version
         run: |
+          echo "Extracting lycheeVersion from action.yml..."
           lychee_version=$(sed -n 's/.*lycheeVersion:\s*default:\s*\(v[0-9.]*\).*/\1/p' action.yml)
+          echo "Extracted lycheeVersion: $lychee_version"
           echo "action_lychee_version=$lychee_version" >> $GITHUB_OUTPUT
 
       - name: Compare versions
         id: compare-versions
         run: |
+          echo "Comparing versions..."
+          echo "Action lychee version: $action_lychee_version"
+          echo "Latest release version: $release_version"
           if [ "$action_lychee_version" != "$release_version" ]; then
+            echo "Versions do not match. Setting mismatch to true."
             echo "mismatch=true" >> $GITHUB_OUTPUT
           else
+            echo "Versions match. Setting mismatch to false."
             echo "mismatch=false" >> $GITHUB_OUTPUT
           fi
 
@@ -55,11 +64,14 @@ jobs:
 
       - name: Create branch for update
         run: |
+          echo "Creating a new branch for the update..."
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git checkout -b update-lychee-version
+          echo "Updating action.yml with the new lychee version..."
           sed -i "s/$action_lychee_version/$release_version/" action.yml
           git commit -am "Update lycheeVersion to $release_version"
+          echo "Pushing the branch to the repository..."
           git push origin update-lychee-version
 
       - name: Create Pull Request
