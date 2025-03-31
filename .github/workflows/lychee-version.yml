@@ -84,8 +84,8 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           base: ${{ github.event.repository.default_branch }}
-          branch: $update_branch_name
-          title: "Update lycheeVersion to $release_version"
+          branch: ${{ env.update_branch_name }}
+          title: "Update lycheeVersion to  ${{ env.release_version }}"
           body: "This PR updates the lycheeVersion to the latest release version $release_version."
-          labels: "automated pr"
+          labels: "automated-pr"
           assignees: arteiii
