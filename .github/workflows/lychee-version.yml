@@ -32,13 +32,13 @@ jobs:
         id: get-action-lychee-version
         run: |
           echo "Extracting lycheeVersion from action.yml..."
-          lychee_version=$(grep -E '^  lycheeVersion:\s*default:\s*v[0-9]+\.[0-9]+\.[0-9]+' action.yml | sed -E 's/.*lycheeVersion:\s*default:\s*(v[0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+          lychee_version=$(awk '/lycheeVersion:/ {getline; getline; print}' action.yml | grep -Eo 'v[0-9]+\.[0-9]+\.[0-9]+')
           if [ -z "$lychee_version" ]; then
             echo "Error: Failed to extract lycheeVersion from action.yml"
             exit 1
           fi
           echo "Extracted lycheeVersion: $lychee_version"
-          echo "action_lychee_version=$lychee_version" >> "$GITHUB_OUTPUT"
+          echo "action_lychee_version=$lychee_version" >> $GITHUB_OUTPUT
 
       - name: Compare versions
         id: compare-versions
