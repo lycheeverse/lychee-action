@@ -1,0 +1,65 @@
+name: "Check Lychee Version and Create PR"
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # every Sunday
+  workflow_dispatch:
+
+jobs:
+  check-lychee-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get current lychee release version
+        id: get-lychee-release
+        run: |
+          release=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
+          echo "release_version=$release" >> $GITHUB_ENV
+
+      - name: Extract lycheeVersion from action.yml
+        id: get-action-lychee-version
+        run: |
+          lychee_version=$(grep -Po '(?<=lycheeVersion:\s*default:\s*)v[0-9.]*' action.yml)
+          echo "action_lychee_version=$lychee_version" >> $GITHUB_ENV
+
+      - name: Compare versions
+        id: compare-versions
+        run: |
+          if [ "$action_lychee_version" != "$release_version" ]; then
+            echo "Mismatch detected: action.yml lycheeVersion ($action_lychee_version) does not match latest release ($release_version)"
+            echo "## Update lycheeVersion to $release_version" > update-lychee-version.md
+            exit 0
+          else
+            echo "Versions match: $action_lychee_version"
+          fi
+
+  create-pr:
+    needs: check-lychee-version
+    runs-on: ubuntu-latest
+    if: steps.compare-versions.outputs.mismatch == 'true'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create branch for update
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git checkout -b update-lychee-version
+          sed -i "s/$action_lychee_version/$release_version/" action.yml
+          git commit -am "Update lycheeVersion to $release_version"
+          git push origin update-lychee-version
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-lychee-version
+          title: "Update lycheeVersion to $release_version"
+          body: "This PR updates the lycheeVersion to the latest release version $release_version."
+          labels: "automated pr"
+          assignees: arteiii
