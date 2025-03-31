@@ -1,8 +1,12 @@
+name: Test cache
+
 on:
-  - repository_dispatch
-  - workflow_dispatch
-  - push
-  - pull_request
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+  repository_dispatch:
 
 jobs:
   lychee-action:

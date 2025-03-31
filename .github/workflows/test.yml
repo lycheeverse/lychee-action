@@ -1,3 +1,5 @@
+name: Test lychee-action
+
 on:
   push:
     branches:
