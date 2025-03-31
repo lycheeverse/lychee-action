@@ -73,7 +73,7 @@ jobs:
       - name: Create branch for update
         uses: mikefarah/yq@master
         with:
-          cmd: yq -i '.inputs.lycheeVersion.default = env.release_version' action.yml
+          cmd: yq -i '.inputs.lycheeVersion.default =  ${{ env.release_version }}' action.yml
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
