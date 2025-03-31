@@ -31,16 +31,15 @@ jobs:
         run: |
           if [ "$action_lychee_version" != "$release_version" ]; then
             echo "Mismatch detected: action.yml lycheeVersion ($action_lychee_version) does not match latest release ($release_version)"
-            echo "## Update lycheeVersion to $release_version" > update-lychee-version.md
-            exit 0
+            echo "mismatch=true" >> $GITHUB_ENV
           else
-            echo "Versions match: $action_lychee_version"
+            echo "mismatch=false" >> $GITHUB_ENV
           fi
 
   create-pr:
     needs: check-lychee-version
     runs-on: ubuntu-latest
-    if: steps.compare-versions.outputs.mismatch == 'true'
+    if: env.mismatch == 'true'
 
     name: Create PR to update lychee version
     steps:
