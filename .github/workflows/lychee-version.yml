@@ -54,7 +54,7 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git checkout -b update-lychee-version
-          sed -i "s/$action_lychee_version/$release_version/" action.yml
+          sed -i "s/${{ github.env.action_lychee_version }}/${{ github.env.release_version }}/" action.yml
           git commit -am "Update lycheeVersion to $release_version"
           git push origin update-lychee-version
 
