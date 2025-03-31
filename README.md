@@ -54,18 +54,18 @@ lychee arguments can be passed to the action via the `args` parameter.
 
 On top of that, the action also supports some additional arguments.
 
-| Argument         | Examples                | Description                                                                     |
-| ---------------- | ----------------------- | ------------------------------------------------------------------------------- |
-| args             | `--cache`, `--insecure` | See [lychee's documentation][lychee-args] for all arguments and values          |
-| debug            | `false`                 | Enable debug output in action (set -x). Helpful for troubleshooting             |
-| fail             | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0) |
-| failIfEmpty      | `false`                 | Fail entire pipeline if no links were found                                     |
-| format           | `markdown`, `json`      | Summary output format                                                           |
-| jobSummary       | `false`                 | Write GitHub job summary (on Markdown output only)                              |
-| lycheeVersion    | `v0.15.0`, `nightly`    | Overwrite the lychee version to be used                                         |
-| output           | `lychee/results.md`     | Summary output file path                                                        |
-| token            | `""`                    | Custom GitHub token to use for API calls                                        |
-| workingDirectory | `.`, `path/to/subdir/`  | Custom working directory to run lychee in                                       |
+| Argument         | Examples                | Description                                                                             |
+| ---------------- | ----------------------- | --------------------------------------------------------------------------------------- |
+| args             | `--cache`, `--insecure` | See [lychee's documentation][lychee-args] for all arguments and values                  |
+| debug            | `false`                 | Enable debug output in action (set -x). Helpful for troubleshooting                     |
+| fail             | `false`                 | Fail workflow run on error (i.e. when [lychee exit code][lychee-exit] is not 0)         |
+| failIfEmpty      | `false`                 | Fail entire pipeline if no links were found                                             |
+| format           | `markdown`, `json`      | Summary output format                                                                   |
+| jobSummary       | `false`                 | Write GitHub job summary (on Markdown output only)                                      |
+| lycheeVersion    | `v0.15.0`, `nightly`    | Overwrite the lychee version to be used                                                 |
+| output           | `lychee/results.md`     | Summary output file path                                                                |
+| token            | `""`                    | Custom GitHub token to use for API calls                                                |
+| workingDirectory | `.`, `path/to/subdir/`  | Custom working directory to run lychee in. This affects where `output.md` gets created. |
 
 See [action.yml](./action.yml) for a full list of supported arguments and their default values.
 
@@ -87,7 +87,8 @@ Here is how to pass the arguments.
     token: ${{ secrets.CUSTOM_TOKEN }}
     # Don't fail action on broken links
     fail: false
-    # Run lychee in a different directory
+    # Run lychee in a different directory.
+    # Note: This changes the lychee output directory as well.
     workingDirectory: website/subdir
 ```
 
