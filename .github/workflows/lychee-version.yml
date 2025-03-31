@@ -24,6 +24,7 @@ jobs:
         run: |
           echo "Fetching the latest lychee release version..."
           release=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
+          release=${release#lychee-} # Strip the 'lychee-' prefix
           echo "Latest release version fetched: $release"
           echo "release_version=$release" >> $GITHUB_OUTPUT
 
@@ -31,7 +32,11 @@ jobs:
         id: get-action-lychee-version
         run: |
           echo "Extracting lycheeVersion from action.yml..."
-          lychee_version=$(sed -n 's/.*lycheeVersion:\s*default:\s*\(v[0-9.]*\).*/\1/p' action.yml)
+          lychee_version=$(grep -Po '(?<=lycheeVersion:\s*default:\s*)v[0-9.]+' action.yml)
+          if [ -z "$lychee_version" ]; then
+            echo "Error: Failed to extract lycheeVersion from action.yml"
+            exit 1
+          fi
           echo "Extracted lycheeVersion: $lychee_version"
           echo "action_lychee_version=$lychee_version" >> $GITHUB_OUTPUT
 
