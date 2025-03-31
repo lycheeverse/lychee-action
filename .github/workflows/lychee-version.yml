@@ -37,6 +37,7 @@ jobs:
             echo "::set-output name=mismatch::true"
           else
             echo "mismatch=false" >> $GITHUB_ENV
+          fi
 
   create-pr:
     needs: check-lychee-version
