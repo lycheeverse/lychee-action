@@ -11,6 +11,8 @@ jobs:
 
     outputs:
       mismatch: ${{ steps.compare-versions.outputs.mismatch }}
+      action_lychee_version: ${{ steps.get-action-lychee-version.outputs.action_lychee_version }}
+      release_version: ${{ steps.get-lychee-release.outputs.release_version }}
 
     name: Check lychee version
     steps:
@@ -21,22 +23,21 @@ jobs:
         id: get-lychee-release
         run: |
           release=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
-          echo "release_version=$release" >> $GITHUB_ENV
+          echo "release_version=$release" >> $GITHUB_OUTPUT
 
       - name: Extract lycheeVersion from action.yml
         id: get-action-lychee-version
         run: |
           lychee_version=$(sed -n 's/.*lycheeVersion:\s*default:\s*\(v[0-9.]*\).*/\1/p' action.yml)
-          echo "action_lychee_version=$lychee_version" >> $GITHUB_ENV
+          echo "action_lychee_version=$lychee_version" >> $GITHUB_OUTPUT
 
       - name: Compare versions
         id: compare-versions
         run: |
           if [ "$action_lychee_version" != "$release_version" ]; then
-            echo "mismatch=true" >> $GITHUB_ENV
-            echo "::set-output name=mismatch::true"
+            echo "mismatch=true" >> $GITHUB_OUTPUT
           else
-            echo "mismatch=false" >> $GITHUB_ENV
+            echo "mismatch=false" >> $GITHUB_OUTPUT
           fi
 
   create-pr:
@@ -45,6 +46,9 @@ jobs:
     if: needs.check-lychee-version.outputs.mismatch == 'true'
 
     name: Create PR to update lychee version
+    env:
+      action_lychee_version: ${{ needs.check-lychee-version.outputs.action_lychee_version }}
+      release_version: ${{ needs.check-lychee-version.outputs.release_version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -54,7 +58,7 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git checkout -b update-lychee-version
-          sed -i "s/${{ github.env.action_lychee_version }}/${{ github.env.release_version }}/" action.yml
+          sed -i "s/$action_lychee_version/$release_version/" action.yml
           git commit -am "Update lycheeVersion to $release_version"
           git push origin update-lychee-version
 
