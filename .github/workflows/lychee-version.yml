@@ -9,6 +9,9 @@ jobs:
   check-lychee-version:
     runs-on: ubuntu-latest
 
+    outputs:
+      mismatch: ${{ steps.compare-versions.outputs.mismatch }}
+
     name: Check lychee version
     steps:
       - name: Checkout repository
@@ -30,16 +33,15 @@ jobs:
         id: compare-versions
         run: |
           if [ "$action_lychee_version" != "$release_version" ]; then
-            echo "Mismatch detected: action.yml lycheeVersion ($action_lychee_version) does not match latest release ($release_version)"
             echo "mismatch=true" >> $GITHUB_ENV
+            echo "::set-output name=mismatch::true"
           else
             echo "mismatch=false" >> $GITHUB_ENV
-          fi
 
   create-pr:
     needs: check-lychee-version
     runs-on: ubuntu-latest
-    if: env.mismatch == 'true'
+    if: needs.check-lychee-version.outputs.mismatch == 'true'
 
     name: Create PR to update lychee version
     steps:
