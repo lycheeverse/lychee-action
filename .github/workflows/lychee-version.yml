@@ -44,9 +44,11 @@ jobs:
         id: compare-versions
         run: |
           echo "Comparing versions..."
-          echo "Action lychee version: $lychee_version"
+          action_lychee_version="${{ steps.get-action-lychee-version.outputs.action_lychee_version }}"
+          release_version="${{ steps.get-lychee-release.outputs.release_version }}"
+          echo "Action lychee version: $action_lychee_version"
           echo "Latest release version: $release_version"
-          if [ "$lychee_version" != "$release_version" ]; then
+          if [ "$action_lychee_version" != "$release_version" ]; then
             echo "Versions do not match. Setting mismatch to true."
             echo "mismatch=true" >> $GITHUB_OUTPUT
           else
