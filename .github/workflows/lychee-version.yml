@@ -83,3 +83,4 @@ jobs:
           body: "This PR updates the lycheeVersion to the latest release version ${{ env.release_version }} ."
           labels: "automated-pr"
           assignees: mre
+          reviewers: Arteiii,thomas-zahner
