@@ -1,0 +1,86 @@
+name: "Update Lychee Default Version"
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # every Sunday
+  workflow_dispatch:
+  repository_dispatch:
+
+jobs:
+  check-lychee-version:
+    runs-on: ubuntu-latest
+
+    outputs:
+      mismatch: ${{ steps.compare-versions.outputs.mismatch }}
+      action_lychee_version: ${{ steps.get-action-lychee-version.outputs.result }}
+      release_version: ${{ steps.get-lychee-release.outputs.release_version }}
+
+    name: Check lychee version
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get current lychee release version
+        id: get-lychee-release
+        run: |
+          echo "Fetching the latest lychee release version..."
+          release=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
+          release=${release#lychee-} # Strip the 'lychee-' prefix
+          echo "Latest release version fetched: $release"
+          echo "release_version=$release" >> $GITHUB_OUTPUT
+
+      - name: Extract lycheeVersion from action.yml
+        id: get-action-lychee-version
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq '.inputs.lycheeVersion.default' action.yml
+
+      - name: Compare versions
+        id: compare-versions
+        run: |
+          echo "Comparing versions..."
+          action_lychee_version="${{ steps.get-action-lychee-version.outputs.result }}"
+          release_version="${{ steps.get-lychee-release.outputs.release_version }}"
+          echo "Action lychee version: $action_lychee_version"
+          echo "Latest release version: $release_version"
+          if [ "$action_lychee_version" != "$release_version" ]; then
+            echo "Versions do not match. Setting mismatch to true."
+            echo "mismatch=true" >> $GITHUB_OUTPUT
+          else
+            echo "Versions match. Setting mismatch to false."
+            echo "mismatch=false" >> $GITHUB_OUTPUT
+          fi
+
+  create-pr:
+    permissions:
+      contents: write
+      pull-requests: write
+
+    needs: check-lychee-version
+    runs-on: ubuntu-latest
+    if: needs.check-lychee-version.outputs.mismatch == 'true'
+
+    name: Create PR to update lychee version
+    env:
+      action_lychee_version: ${{ needs.check-lychee-version.outputs.action_lychee_version }}
+      release_version: ${{ needs.check-lychee-version.outputs.release_version }}
+      update_branch_name: "update-lychee-${{ needs.check-lychee-version.outputs.release_version }}"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update lycheeVersion in action.yml
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq -i '.inputs.lycheeVersion.default = "${{ env.release_version }}"' action.yml
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: ${{ env.update_branch_name }}
+          title: "Update lycheeVersion to  ${{ env.release_version }}"
+          body: "This PR updates the lycheeVersion to the latest release version ${{ env.release_version }} ."
+          labels: "automated-pr"
+          assignees: mre
+          reviewers: Arteiii,thomas-zahner

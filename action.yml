@@ -1,6 +1,5 @@
 name: "Lychee Broken Link Checker"
 description: "Quickly check links in Markdown, HTML, and text files"
-
 inputs:
   args:
     description: "Lychee arguments (https://github.com/lycheeverse/lychee#commandline-parameters)"
@@ -46,12 +45,10 @@ inputs:
     description: "Directory to run lychee in"
     default: "."
     required: false
-
 outputs:
   exit_code:
     description: "The exit code returned from Lychee"
     value: ${{ steps.run-lychee.outputs.exit_code }}
-
 runs:
   using: "composite"
   steps:
@@ -60,7 +57,6 @@ runs:
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
         mkdir -p "$HOME/.local/bin"
       shell: bash
-
     - name: Clean up existing lychee files
       run: |
         # Remove any existing lychee binaries or archives to prevent conflicts
@@ -68,7 +64,6 @@ runs:
         rm -rf lychee
         rm -f "${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
-
     - name: Download and extract lychee
       id: lychee-setup
       run: |
@@ -99,12 +94,10 @@ runs:
       env:
         LYCHEE_VERSION: ${{ inputs.lycheeVersion }}
       shell: bash
-
     - name: Install lychee
       run: |
         install -t "$HOME/.local/bin" -D lychee
       shell: bash
-
     - name: Clean up installation files
       run: |
         # Remove the downloaded archive and any unnecessary files after installation
@@ -112,7 +105,6 @@ runs:
         shopt -s extglob
         rm -f lychee!(*-bin|*-lib|*.toml)
       shell: bash
-
     - name: Run Lychee
       id: run-lychee
       working-directory: ${{ inputs.workingDirectory }}
