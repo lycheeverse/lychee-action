@@ -82,4 +82,4 @@ jobs:
           title: "Update lycheeVersion to  ${{ env.release_version }}"
           body: "This PR updates the lycheeVersion to the latest release version ${{ env.release_version }} ."
           labels: "automated-pr"
-          assignees: arteiii
+          assignees: mre
