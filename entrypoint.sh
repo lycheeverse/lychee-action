@@ -44,9 +44,11 @@ fi
 
 CHECKBOX=""
 if [ "${INPUT_CHECKBOX}" = true ]; then
-  # Check if the version is higher than 0.18.1
-  if [ "$(lychee --version | head -n1 | cut -d" " -f4)" -lt 0.18.1 ]; then
-    echo "WARNING: 'checkbox' is not supported in lychee versions lower than 0.18.1. Continuing without 'checkbox'."
+  # Warn if the version is lower than 0.18.1
+  function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
+  lychee_version="$(lychee --version | head -n1 | cut -d" " -f2)"
+  if version_lt "$lychee_version" "0.18.1"; then
+    echo "WARNING: 'checkbox' is not supported in lychee versions lower than 0.18.1 (current is $lychee_version). Continuing without 'checkbox'."
   else
     CHECKBOX="--mode task"
   fi
