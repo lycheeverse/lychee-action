@@ -57,16 +57,19 @@ runs:
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
         mkdir -p "$HOME/.local/bin"
       shell: bash
-    - name: Clean up existing lychee files
+    - name: Clean up existing lychee binary
       run: |
-        # Remove any existing lychee binaries or archives to prevent conflicts
+        # Remove any existing lychee binary to prevent conflicts
         rm -f "$HOME/.local/bin/lychee"
-        rm -rf lychee
-        rm -f "${{ steps.lychee-filename.outputs.filename }}"
       shell: bash
-    - name: Download and extract lychee
+    - name: Download and extract lychee in temp directory
       id: lychee-setup
       run: |
+        # Create a temporary directory for downloads and extraction
+        TEMP_DIR="${RUNNER_TEMP}/lychee-download"
+        mkdir -p "${TEMP_DIR}"
+        cd "${TEMP_DIR}"
+        
         ARCH=$(uname -m)
         # Determine filename and download URL based on version
         if [[ "${LYCHEE_VERSION}" =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
@@ -89,21 +92,15 @@ runs:
         echo "Extracting ${FILENAME}"
         tar -xvzf "${FILENAME}"
 
-        # Output filename for use in later steps
-        echo "filename=${FILENAME}" >> $GITHUB_OUTPUT
+        # Output temp directory for use in later steps
+        echo "temp_dir=${TEMP_DIR}" >> $GITHUB_OUTPUT
       env:
         LYCHEE_VERSION: ${{ inputs.lycheeVersion }}
       shell: bash
     - name: Install lychee
       run: |
-        install -t "$HOME/.local/bin" -D lychee
-      shell: bash
-    - name: Clean up installation files
-      run: |
-        # Remove the downloaded archive and any unnecessary files after installation
-        rm -f "${{ steps.lychee-setup.outputs.filename }}"
-        shopt -s extglob
-        rm -f lychee!(*-bin|*-lib|*.toml)
+        # Install lychee from the temporary directory
+        install -t "$HOME/.local/bin" -D "${{ steps.lychee-setup.outputs.temp_dir }}/lychee"
       shell: bash
     - name: Run Lychee
       id: run-lychee
