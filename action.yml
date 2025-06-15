@@ -27,7 +27,7 @@ inputs:
     required: false
   lycheeVersion:
     description: "Use custom version of lychee link checker"
-    default: v0.18.1
+    default: v0.19.0
     required: false
   output:
     description: "Summary output file path"
@@ -69,7 +69,7 @@ runs:
         TEMP_DIR="${RUNNER_TEMP}/lychee-download"
         mkdir -p "${TEMP_DIR}"
         cd "${TEMP_DIR}"
-        
+
         ARCH=$(uname -m)
         # Determine filename and download URL based on version
         if [[ "${LYCHEE_VERSION}" =~ ^v0\.0|^v0\.1[0-5]\. ]]; then
