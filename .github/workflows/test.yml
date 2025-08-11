@@ -19,7 +19,7 @@ jobs:
     name: Test the lychee link checker action
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: test defaults
         uses: ./
@@ -296,7 +296,7 @@ jobs:
     name: Basic check for ARM-based runners
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: test defaults
         uses: ./
