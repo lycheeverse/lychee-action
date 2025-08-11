@@ -44,7 +44,6 @@ jobs:
         uses: ./
         with:
           args: >-
-            --exclude-mail
             --verbose
             --no-progress
             './**/*.md'
@@ -256,7 +255,7 @@ jobs:
       - name: directory
         uses: ./
         with:
-          args: --exclude-mail .
+          args: .
 
       - name: test format override
         uses: ./
