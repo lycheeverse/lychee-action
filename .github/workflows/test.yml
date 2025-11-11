@@ -50,11 +50,11 @@ jobs:
             './**/*.html'
             './**/*.rst'
 
-      - name: test --base argument
+      - name: test --root-dir argument
         uses: ./
         with:
           args: >-
-            --base .
+            --root-dir "$(pwd)"
             --verbose
             --no-progress
             './**/*.md'
