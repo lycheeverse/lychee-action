@@ -15,7 +15,7 @@ jobs:
     name: Test cache
     steps:
       - name: Restore lychee cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .lycheecache
           key: cache-lychee-${{ github.sha }}
