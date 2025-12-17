@@ -57,6 +57,20 @@ runs:
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
         mkdir -p "$HOME/.local/bin"
       shell: bash
+
+    - name: Check if caching is enabled in lychee args
+      id: cache-check
+      run: |
+        # Check if --cache flag is present in lychee args
+        if [[ "${{ inputs.args }}" == *"--cache"* ]]; then
+          echo "Lychee --cache flag detected, enabling .lycheecache caching"
+          echo "cache_enabled=true" >> $GITHUB_OUTPUT
+        else
+          echo "Lychee --cache flag not detected, .lycheecache will not be cached"
+          echo "cache_enabled=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
     - name: Clean up existing lychee binary
       run: |
         # Remove any existing lychee binary to prevent conflicts
@@ -102,6 +116,16 @@ runs:
         # Install lychee from the temporary directory
         install -t "$HOME/.local/bin" -D "${{ steps.lychee-setup.outputs.temp_dir }}/lychee"
       shell: bash
+
+    - name: Restore lychee cache
+      id: restore-cache
+      if: steps.cache-check.outputs.cache_enabled == 'true'
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ inputs.workingDirectory }}/.lycheecache
+        key: cache-lychee-${{ github.sha }}
+        restore-keys: cache-lychee-
+
     - name: Run Lychee
       id: run-lychee
       working-directory: ${{ inputs.workingDirectory }}
@@ -118,6 +142,14 @@ runs:
         INPUT_CHECKBOX: ${{ inputs.CHECKBOX }}
         INPUT_OUTPUT: ${{ inputs.OUTPUT }}
       shell: bash
+
+    - name: Save lychee cache
+      if: steps.cache-check.outputs.cache_enabled == 'true' && !cancelled()
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ inputs.workingDirectory }}/.lycheecache
+        key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+
 branding:
   icon: "external-link"
   color: "purple"
