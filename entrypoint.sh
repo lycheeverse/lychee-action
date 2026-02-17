@@ -90,7 +90,7 @@ if [ "${INPUT_FORMAT}" == "markdown" ]; then
   if [ "${INPUT_JOBSUMMARY}" = true ]; then
     cat "${LYCHEE_TMP}" > "${GITHUB_STEP_SUMMARY}"
     # Log a message with the URL to the Summary report
-    echo "Summary report available at: ${SUMMARY_URL}"
+    echo "::notice::Summary report available at: ${SUMMARY_URL}"
   fi
 fi
 
