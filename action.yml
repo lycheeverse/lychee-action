@@ -117,6 +117,7 @@ runs:
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
         INPUT_CHECKBOX: ${{ inputs.CHECKBOX }}
         INPUT_OUTPUT: ${{ inputs.OUTPUT }}
+        SUMMARY_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#summary-${{ job.check_run_id }}
       shell: bash
 branding:
   icon: "external-link"
