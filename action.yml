@@ -27,7 +27,7 @@ inputs:
     required: false
   lycheeVersion:
     description: "Use custom version of lychee link checker"
-    default: v0.23.0
+    default: v0.24.1
     required: false
   output:
     description: "Summary output file path"
@@ -67,7 +67,7 @@ runs:
       run: |
         # Create a temporary directory for downloads and extraction
         TEMP_DIR="${RUNNER_TEMP}/lychee-download"
-        mkdir -p "${TEMP_DIR}"
+        rm -rf "${TEMP_DIR}" && mkdir -p "${TEMP_DIR}"
         cd "${TEMP_DIR}"
 
         ARCH=$(uname -m)
@@ -91,6 +91,16 @@ runs:
 
         echo "Extracting ${FILENAME}"
         tar -xvzf "${FILENAME}"
+        rm -rv "${FILENAME}"
+
+        # Detect if lychee binary is in a subfolder within the tar.gz
+        if ! [[ -f "${TEMP_DIR}/lychee" ]]; then
+          TEMP_DIR="$(echo "${TEMP_DIR}"/lychee-*)"  # need `echo` to evaluate glob
+        fi
+        if ! [[ -f "${TEMP_DIR}/lychee" ]]; then
+          echo "Cannot find lychee binary in $TEMP_DIR. Did the archive structure change?" >&2
+          exit 1
+        fi
 
         # Output temp directory for use in later steps
         echo "temp_dir=${TEMP_DIR}" >> $GITHUB_OUTPUT
