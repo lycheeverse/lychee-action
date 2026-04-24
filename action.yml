@@ -91,6 +91,7 @@ runs:
 
         echo "Extracting ${FILENAME}"
         tar -xvzf "${FILENAME}"
+        rm -rv "${FILENAME}"
 
         # Detect if lychee binary is in a subfolder within the tar.gz
         if ! [[ -f "${TEMP_DIR}/lychee" ]]; then
