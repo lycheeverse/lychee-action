@@ -67,7 +67,7 @@ runs:
       run: |
         # Create a temporary directory for downloads and extraction
         TEMP_DIR="${RUNNER_TEMP}/lychee-download"
-        mkdir -p "${TEMP_DIR}"
+        rm -rf "${TEMP_DIR}" && mkdir -p "${TEMP_DIR}"
         cd "${TEMP_DIR}"
 
         ARCH=$(uname -m)
