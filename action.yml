@@ -94,7 +94,7 @@ runs:
 
         # Detect if lychee binary is in a subfolder within the tar.gz
         if ! [[ -f "${TEMP_DIR}/lychee" ]]; then
-          TEMP_DIR="${TEMP_DIR}"/lychee-*
+          TEMP_DIR="$(echo "${TEMP_DIR}"/lychee-*)"  # need `echo` to evaluate glob
         fi
         if ! [[ -f "${TEMP_DIR}/lychee" ]]; then
           echo "Cannot find lychee binary in $TEMP_DIR. Did the archive structure change?" >&2
