@@ -92,15 +92,6 @@ runs:
         echo "Extracting ${FILENAME}"
         tar -xvzf "${FILENAME}"
 
-        # Detect if lychee binary is in a subfolder within the tar.gz
-        if ! [[ -f "${TEMP_DIR}/lychee" ]]; then
-          TEMP_DIR="${TEMP_DIR}"/lychee-*
-        fi
-        if ! [[ -f "${TEMP_DIR}/lychee" ]]; then
-          echo "Cannot find lychee binary in $TEMP_DIR. Did the archive structure change?" >&2
-          exit 1
-        fi
-
         # Output temp directory for use in later steps
         echo "temp_dir=${TEMP_DIR}" >> $GITHUB_OUTPUT
       env:
