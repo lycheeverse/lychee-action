@@ -25,7 +25,13 @@ jobs:
         run: |
           echo "Fetching the latest lychee release version..."
           release=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
-          release=${release#lychee-} # Strip the 'lychee-' prefix
+          release=${release#lychee-}
+
+          if [ -z "$release" ] || [ "$release" == "null" ]; then
+            echo "Error: Could not fetch release version"
+            exit 1
+          fi
+          
           echo "Latest release version fetched: $release"
           echo "release_version=$release" >> $GITHUB_OUTPUT
 
