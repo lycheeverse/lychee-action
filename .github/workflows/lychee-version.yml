@@ -24,11 +24,16 @@ jobs:
         id: get-lychee-release
         run: |
           echo "Fetching the latest lychee release version..."
-          release=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
-          release=${release#lychee-}
+          release=$(curl -sSf https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
+          release=${release#lychee-}  # Strip the 'lychee-' prefix
 
+          # Exit if the release version is empty or invalid
           if [ -z "$release" ] || [ "$release" == "null" ]; then
-            echo "Error: Could not fetch release version"
+            echo "::error::Failed to fetch the latest lychee release."
+            echo "::group::Troubleshooting Steps"
+            echo "1. Check GitHub API status. (https://www.githubstatus.com/)"
+            echo "2. Manual verification: https://github.com/lycheeverse/lychee/releases"
+            echo "::endgroup::"
             exit 1
           fi
           
