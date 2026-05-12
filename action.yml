@@ -61,11 +61,6 @@ runs:
         echo "$RUNNER_TEMP/lychee/bin" >> "$GITHUB_PATH"
         mkdir -p "$RUNNER_TEMP/lychee/bin"
       shell: bash
-    - name: Clean up existing lychee binary
-      run: |
-        # Remove any existing lychee binary to prevent conflicts
-        rm -f "$RUNNER_TEMP/lychee/bin/lychee"
-      shell: bash
     - name: Download and extract lychee in temp directory
       id: lychee-setup
       run: |
