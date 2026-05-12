@@ -54,13 +54,12 @@ runs:
   steps:
     - name: Set up environment
       run: |
-        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-        mkdir -p "$HOME/.local/bin"
-      shell: bash
-    - name: Clean up existing lychee binary
-      run: |
-        # Remove any existing lychee binary to prevent conflicts
-        rm -f "$HOME/.local/bin/lychee"
+        # Install into $RUNNER_TEMP (not $HOME) so the install path is stable
+        # across composite steps. On some runners $HOME is overridden per step
+        # (e.g. actions/checkout temporarily sets it), which made the PATH
+        # entry from one step and the install in another step diverge.
+        echo "$RUNNER_TEMP/lychee/bin" >> "$GITHUB_PATH"
+        mkdir -p "$RUNNER_TEMP/lychee/bin"
       shell: bash
     - name: Download and extract lychee in temp directory
       id: lychee-setup
@@ -110,7 +109,7 @@ runs:
     - name: Install lychee
       run: |
         # Install lychee from the temporary directory
-        install -t "$HOME/.local/bin" -D "${{ steps.lychee-setup.outputs.temp_dir }}/lychee"
+        install -t "$RUNNER_TEMP/lychee/bin" -D "${{ steps.lychee-setup.outputs.temp_dir }}/lychee"
       shell: bash
     - name: Run Lychee
       id: run-lychee
