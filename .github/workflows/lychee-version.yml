@@ -18,7 +18,7 @@ jobs:
     name: Check lychee version
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Get current lychee release version
         id: get-lychee-release
@@ -79,7 +79,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Update lycheeVersion in action.yml
         uses: mikefarah/yq@master
