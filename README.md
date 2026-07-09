@@ -64,6 +64,8 @@ On top of that, the action also supports some additional arguments.
 | jobSummary       | `false`                 | Write GitHub job summary (on Markdown output only)                                      |
 | lycheeVersion    | `v0.15.0`, `nightly`    | Overwrite the lychee version to be used                                                 |
 | output           | `lychee/results.md`     | Summary output file path                                                                |
+| cache            | `true`                  | Enable lychee's request cache and persist it with GitHub Actions cache                  |
+| cachePath        | `.lycheecache`          | Cache file path, relative to `workingDirectory`                                         |
 | token            | `""`                    | Custom GitHub token to use for API calls                                                |
 | workingDirectory | `.`, `path/to/subdir/`  | Custom working directory to run lychee in. This affects where `output.md` gets created. |
 
@@ -97,34 +99,36 @@ default `GITHUB_TOKEN`, you can create a [personal access
 token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
 and pass it to the action via the `token` parameter.)
 
-## Utilising the cache feature
+## Using the cache feature
 
-In order to mitigate issues regarding rate limiting or to reduce stress on external resources, one can setup lychee's cache similar to this:
+To reduce rate limiting and avoid repeated checks against the same URLs, enable the built-in cache:
 
 ```yml
-- name: Restore lychee cache
-  uses: actions/cache@v4
-  with:
-    path: .lycheecache
-    key: cache-lychee-${{ github.sha }}
-    restore-keys: cache-lychee-
-
 - name: Run lychee
   uses: lycheeverse/lychee-action@v2
   with:
-    args: "--root-dir "$(pwd)" --cache --max-cache-age 1d ."
+    cache: true
+    args: --root-dir "$(pwd)" --max-cache-age 1d .
 ```
 
-It will compare and save the cache based on the given key.
-So in this setup, as long as a user triggers the CI run from the same commit, it will be the same key. The first run will save the cache, subsequent runs will not update it (because it's the same commit hash).
-For restoring the cache, the most recent available one is used (commit hash doesn't matter).
+This turns on lychee's request cache and stores the cache file with GitHub Actions cache. By default, the cache lives at `.lycheecache` relative to `workingDirectory`. Use `cachePath` to choose a different relative path:
 
-If you need more control over when caches are restored and saved, you can split the cache step and e.g. ensure to always save the cache (also when the link check step fails):
+```yml
+- name: Run lychee
+  uses: lycheeverse/lychee-action@v2
+  with:
+    cache: true
+    cachePath: website/.lycheecache
+```
+
+When `cache: true` is set, don't also pass `--cache` or `--cache-path` in `args`; the action adds the lychee cache flag for you. If you prefer to manage caching yourself, leave `cache` disabled and pass lychee's cache flags manually.
+
+For custom cache keys or finer control over restore and save behavior, use `actions/cache` directly:
 
 ```yml
 - name: Restore lychee cache
   id: restore-cache
-  uses: actions/cache/restore@v4
+  uses: actions/cache/restore@v6
   with:
     path: .lycheecache
     key: cache-lychee-${{ github.sha }}
@@ -133,11 +137,11 @@ If you need more control over when caches are restored and saved, you can split 
 - name: Run lychee
   uses: lycheeverse/lychee-action@v2
   with:
-    args: "--root-dir "$(pwd)" --cache --max-cache-age 1d ."
+    args: --root-dir "$(pwd)" --cache --max-cache-age 1d .
 
 - name: Save lychee cache
-  uses: actions/cache/save@v4
-  if: always()
+  uses: actions/cache/save@v6
+  if: steps.restore-cache.outputs.cache-hit != 'true' && !cancelled()
   with:
     path: .lycheecache
     key: ${{ steps.restore-cache.outputs.cache-primary-key }}

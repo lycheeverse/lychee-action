@@ -7,15 +7,15 @@ inputs:
     required: false
   debug:
     description: "Enable debug output in action (set -x). Helpful for troubleshooting."
-    default: false
+    default: "false"
     required: false
   fail:
     description: "Fail entire pipeline on error (i.e. when lychee exit code is not 0)"
-    default: true
+    default: "true"
     required: false
   failIfEmpty:
     description: "Fail entire pipeline if no links were found"
-    default: true
+    default: "true"
     required: false
   format:
     description: "Summary output format (e.g. json)"
@@ -23,7 +23,7 @@ inputs:
     required: false
   jobSummary:
     description: "Write GitHub job summary at the end of the job (written on Markdown output only)"
-    default: true
+    default: "true"
     required: false
   lycheeVersion:
     description: "Use custom version of lychee link checker"
@@ -35,11 +35,19 @@ inputs:
     required: false
   checkbox:
     description: "Add Markdown Styled Checkboxes to the output"
-    default: true
+    default: "true"
+    required: false
+  cache:
+    description: "Enable lychee's request cache and persist it with GitHub Actions cache"
+    default: "false"
+    required: false
+  cachePath:
+    description: "Path to lychee's cache file, relative to workingDirectory"
+    default: ".lycheecache"
     required: false
   token:
     description: "Your GitHub Access Token, defaults to: {{ github.token }}"
-    default: ${{ github.token }}
+    default: "${{ github.token }}"
     required: false
   workingDirectory:
     description: "Directory to run lychee in"
@@ -111,6 +119,35 @@ runs:
         # Install lychee from the temporary directory
         install -t "$RUNNER_TEMP/lychee/bin" -D "${{ steps.lychee-setup.outputs.temp_dir }}/lychee"
       shell: bash
+    - name: Validate lychee cache inputs
+      if: inputs.cache == 'true'
+      run: |
+        if [[ " ${INPUT_ARGS} " =~ [[:space:]]--cache([=[:space:]]|$) ]]; then
+          echo "Error: 'cache' is enabled in the action configuration but '--cache' is also set in args. Please remove '--cache' from args or set 'cache: false'."
+          exit 1
+        fi
+        if [[ " ${INPUT_ARGS} " =~ [[:space:]]--cache-path([=[:space:]]|$) ]]; then
+          echo "Error: 'cache' is enabled in the action configuration but '--cache-path' is also set in args. Please use the 'cachePath' action input instead."
+          exit 1
+        fi
+        if [[ "${INPUT_CACHEPATH}" = /* ]]; then
+          echo "Error: cachePath must be relative to workingDirectory."
+          exit 1
+        fi
+      env:
+        INPUT_ARGS: ${{ inputs.args }}
+        INPUT_CACHEPATH: ${{ inputs.cachePath }}
+      shell: bash
+    - name: Restore lychee cache
+      id: restore-cache
+      if: inputs.cache == 'true'
+      uses: actions/cache/restore@v6
+      with:
+        path: ${{ inputs.workingDirectory }}/${{ inputs.cachePath }}
+        key: cache-lychee-${{ github.repository }}-${{ github.job }}-${{ github.sha }}
+        restore-keys: |
+          cache-lychee-${{ github.repository }}-${{ github.job }}-
+          cache-lychee-${{ github.repository }}-
     - name: Run Lychee
       id: run-lychee
       working-directory: ${{ inputs.workingDirectory }}
@@ -125,9 +162,17 @@ runs:
         INPUT_FORMAT: ${{ inputs.FORMAT }}
         INPUT_JOBSUMMARY: ${{ inputs.JOBSUMMARY }}
         INPUT_CHECKBOX: ${{ inputs.CHECKBOX }}
+        INPUT_CACHE: ${{ inputs.CACHE }}
+        INPUT_CACHEPATH: ${{ inputs.CACHEPATH }}
         INPUT_OUTPUT: ${{ inputs.OUTPUT }}
         SUMMARY_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#summary-${{ job.check_run_id }}
       shell: bash
+    - name: Save lychee cache
+      if: inputs.cache == 'true' && steps.restore-cache.outputs.cache-hit != 'true' && !cancelled()
+      uses: actions/cache/save@v6
+      with:
+        path: ${{ inputs.workingDirectory }}/${{ inputs.cachePath }}
+        key: ${{ steps.restore-cache.outputs.cache-primary-key }}
 branding:
   icon: "external-link"
   color: "purple"

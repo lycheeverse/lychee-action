@@ -143,6 +143,20 @@ jobs:
           echo "Output set in args and action input should have failed."
           exit 1
 
+      - name: test cache set in args and action input
+        id: cache_set_in_args_and_action_input
+        uses: ./
+        with:
+          args: --cache fixtures/empty.md
+          cache: true
+        continue-on-error: true
+
+      - name: test cache set in args and action input should fail - validation
+        if: steps.cache_set_in_args_and_action_input.outcome != 'failure'
+        run: |
+          echo "Cache set in args and action input should have failed."
+          exit 1
+
       - name: test fail - a lychee error should fail the pipeline
         id: fail_test
         uses: ./

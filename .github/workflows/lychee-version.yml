@@ -36,7 +36,7 @@ jobs:
             echo "::endgroup::"
             exit 1
           fi
-          
+
           echo "Latest release version fetched: $release"
           echo "release_version=$release" >> $GITHUB_OUTPUT
 
