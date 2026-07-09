@@ -18,14 +18,25 @@ jobs:
     name: Check lychee version
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Get current lychee release version
         id: get-lychee-release
         run: |
           echo "Fetching the latest lychee release version..."
-          release=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
-          release=${release#lychee-} # Strip the 'lychee-' prefix
+          release=$(curl -sSf https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)
+          release=${release#lychee-}  # Strip the 'lychee-' prefix
+
+          # Exit if the release version is empty or invalid
+          if [ -z "$release" ] || [ "$release" == "null" ]; then
+            echo "::error::Failed to fetch the latest lychee release."
+            echo "::group::Troubleshooting Steps"
+            echo "1. Check GitHub API status. (https://www.githubstatus.com/)"
+            echo "2. Manual verification: https://github.com/lycheeverse/lychee/releases"
+            echo "::endgroup::"
+            exit 1
+          fi
+
           echo "Latest release version fetched: $release"
           echo "release_version=$release" >> $GITHUB_OUTPUT
 
@@ -68,7 +79,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Update lycheeVersion in action.yml
         uses: mikefarah/yq@master
@@ -76,7 +87,7 @@ jobs:
           cmd: yq -i '.inputs.lycheeVersion.default = "${{ env.release_version }}"' action.yml
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: ${{ env.update_branch_name }}
           title: "Update lycheeVersion to  ${{ env.release_version }}"

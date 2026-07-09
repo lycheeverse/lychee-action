@@ -30,7 +30,7 @@ jobs:
     permissions:
       issues: write # required for peter-evans/create-issue-from-file
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Link Checker
         id: lychee
@@ -64,6 +64,8 @@ On top of that, the action also supports some additional arguments.
 | jobSummary       | `false`                 | Write GitHub job summary (on Markdown output only)                                      |
 | lycheeVersion    | `v0.15.0`, `nightly`    | Overwrite the lychee version to be used                                                 |
 | output           | `lychee/results.md`     | Summary output file path                                                                |
+| cache            | `true`                  | Enable lychee's request cache and persist it with GitHub Actions cache                  |
+| cachePath        | `.lycheecache`          | Cache file path, relative to `workingDirectory`                                         |
 | token            | `""`                    | Custom GitHub token to use for API calls                                                |
 | workingDirectory | `.`, `path/to/subdir/`  | Custom working directory to run lychee in. This affects where `output.md` gets created. |
 
@@ -78,7 +80,7 @@ Here is how to pass the arguments.
   uses: lycheeverse/lychee-action@v2
   with:
     # Check all markdown, html and reStructuredText files in repo (default)
-    args: --base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
+    args: --root-dir "$(pwd)" --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
     # Use json as output format (instead of markdown)
     format: json
     # Use different output file path
@@ -99,27 +101,29 @@ and pass it to the action via the `token` parameter.)
 
 ## Utilising the cache feature
 
-In order to mitigate issues regarding rate limiting or to reduce stress on external resources, one can setup lychee's cache similar to this:
+In order to mitigate issues regarding rate limiting or to reduce stress on external resources, enable the built-in cache:
 
 ```yml
-- name: Restore lychee cache
-  uses: actions/cache@v4
-  with:
-    path: .lycheecache
-    key: cache-lychee-${{ github.sha }}
-    restore-keys: cache-lychee-
-
 - name: Run lychee
   uses: lycheeverse/lychee-action@v2
   with:
-    args: "--base . --cache --max-cache-age 1d ."
+    cache: true
+    args: "--root-dir "$(pwd)" --max-cache-age 1d ."
 ```
 
-It will compare and save the cache based on the given key.
-So in this setup, as long as a user triggers the CI run from the same commit, it will be the same key. The first run will save the cache, subsequent runs will not update it (because it's the same commit hash).
-For restoring the cache, the most recent available one is used (commit hash doesn't matter).
+This enables lychee's request cache and persists the cache file with GitHub Actions cache. By default, the cache is stored at `.lycheecache` relative to `workingDirectory`. You can choose a different relative path with `cachePath`:
 
-If you need more control over when caches are restored and saved, you can split the cache step and e.g. ensure to always save the cache (also when the link check step fails):
+```yml
+- name: Run lychee
+  uses: lycheeverse/lychee-action@v2
+  with:
+    cache: true
+    cachePath: website/.lycheecache
+```
+
+When `cache: true` is set, don't also pass `--cache` or `--cache-path` in `args`; the action adds those lychee flags for you. If you prefer to manage caching yourself, leave `cache` disabled and pass lychee's cache flags manually.
+
+For custom cache keys or more control over when caches are restored and saved, use `actions/cache` directly:
 
 ```yml
 - name: Restore lychee cache
@@ -133,7 +137,7 @@ If you need more control over when caches are restored and saved, you can split 
 - name: Run lychee
   uses: lycheeverse/lychee-action@v2
   with:
-    args: "--base . --cache --max-cache-age 1d ."
+    args: "--root-dir "$(pwd)" --cache --max-cache-age 1d ."
 
 - name: Save lychee cache
   uses: actions/cache/save@v4

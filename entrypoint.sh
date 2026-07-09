@@ -28,6 +28,31 @@ FORMAT=""
 # If `format` occurs in args, ignore the value from `INPUT_FORMAT`
 [[ "$ARGS" =~ "--format " ]] || FORMAT="--format ${INPUT_FORMAT}"
 
+CACHE=""
+if [ "${INPUT_CACHE}" = true ]; then
+  if [[ "$ARGS" =~ "--cache" ]]; then
+    echo "Error: 'cache' is enabled in the action configuration but '--cache' is also set in args. Please remove '--cache' from args or set 'cache: false'."
+    exit 1
+  fi
+  if [[ "$ARGS" =~ "--cache-path" ]]; then
+    echo "Error: 'cache' is enabled in the action configuration but '--cache-path' is also set in args. Please use the 'cachePath' action input instead."
+    exit 1
+  fi
+  if [[ "${INPUT_CACHEPATH}" = /* ]]; then
+    echo "Error: cachePath must be relative to workingDirectory."
+    exit 1
+  fi
+  if [ "${INPUT_CACHEPATH}" != ".lycheecache" ]; then
+    if [ -e ".lycheecache" ] && [ ! -L ".lycheecache" ]; then
+      echo "Error: cannot use cachePath='${INPUT_CACHEPATH}' because .lycheecache already exists. Please remove .lycheecache or set cachePath: .lycheecache."
+      exit 1
+    fi
+    mkdir -p "$(dirname -- "${INPUT_CACHEPATH}")"
+    touch "${INPUT_CACHEPATH}"
+    ln -sf "${INPUT_CACHEPATH}" .lycheecache
+  fi
+  CACHE="--cache"
+fi
 
 # If `output` occurs in args and `INPUT_OUTPUT` is set, exit with an error 
 if [[ "$ARGS" =~ "--output " ]] && [ -n "${INPUT_OUTPUT:-}" ]; then
@@ -55,7 +80,7 @@ if [ "${INPUT_CHECKBOX}" = true ]; then
 fi
 
 # Execute lychee
-eval lychee ${CHECKBOX} ${FORMAT} --output ${LYCHEE_TMP} ${ARGS} 
+eval lychee ${CHECKBOX} ${CACHE} ${FORMAT} --output ${LYCHEE_TMP} ${ARGS}
 LYCHEE_EXIT_CODE=$?
 
 # If no links were found and `failIfEmpty` is set to `true` (and it is by default),
@@ -89,6 +114,8 @@ echo
 if [ "${INPUT_FORMAT}" == "markdown" ]; then
   if [ "${INPUT_JOBSUMMARY}" = true ]; then
     cat "${LYCHEE_TMP}" > "${GITHUB_STEP_SUMMARY}"
+    # Log a message with the URL to the Summary report
+    echo "::notice::Summary report available at: ${SUMMARY_URL}"
   fi
 fi
 

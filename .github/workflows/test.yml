@@ -19,7 +19,7 @@ jobs:
     name: Test the lychee link checker action
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: test defaults
         uses: ./
@@ -44,18 +44,17 @@ jobs:
         uses: ./
         with:
           args: >-
-            --exclude-mail
             --verbose
             --no-progress
             './**/*.md'
             './**/*.html'
             './**/*.rst'
 
-      - name: test --base argument
+      - name: test --root-dir argument
         uses: ./
         with:
           args: >-
-            --base .
+            --root-dir "$(pwd)"
             --verbose
             --no-progress
             './**/*.md'
@@ -142,6 +141,20 @@ jobs:
         if: steps.output_set_in_args_and_action_input.outcome != 'failure'
         run: |
           echo "Output set in args and action input should have failed."
+          exit 1
+
+      - name: test cache set in args and action input
+        id: cache_set_in_args_and_action_input
+        uses: ./
+        with:
+          args: --cache fixtures/empty.md
+          cache: true
+        continue-on-error: true
+
+      - name: test cache set in args and action input should fail - validation
+        if: steps.cache_set_in_args_and_action_input.outcome != 'failure'
+        run: |
+          echo "Cache set in args and action input should have failed."
           exit 1
 
       - name: test fail - a lychee error should fail the pipeline
@@ -253,10 +266,64 @@ jobs:
             exit 1
           fi
 
+      - name: test sitemap input extraction
+        uses: ./
+        with:
+          args: --dump --verbose fixtures/sitemap.xml
+          output: ${{ github.workspace }}/sitemap_inputs.txt
+
+      - name: Validate sitemap input extraction
+        run: |
+          if ! grep -q "https://example.com/docs/" ${{ github.workspace }}/sitemap_inputs.txt; then
+            echo "Expected sitemap URL was not extracted. Output:"
+            cat ${{ github.workspace }}/sitemap_inputs.txt
+            exit 1
+          fi
+          if ! grep -q "https://example.com/about/" ${{ github.workspace }}/sitemap_inputs.txt; then
+            echo "Expected sitemap URL was not extracted. Output:"
+            cat ${{ github.workspace }}/sitemap_inputs.txt
+            exit 1
+          fi
+
+      - name: test text fragment input extraction
+        uses: ./
+        with:
+          args: --dump --verbose fixtures/text-fragments.md
+          output: ${{ github.workspace }}/text_fragment_inputs.txt
+
+      - name: Validate text fragment input extraction
+        run: |
+          if ! grep -q "https://example.com/#:~:text=Example%20Domain" ${{ github.workspace }}/text_fragment_inputs.txt; then
+            echo "Expected text-fragment URL was not extracted. Output:"
+            cat ${{ github.workspace }}/text_fragment_inputs.txt
+            exit 1
+          fi
+
+      - name: test JUnit output
+        uses: ./
+        with:
+          args: --no-progress fixtures/broken-link.md
+          format: junit
+          output: ${{ github.workspace }}/junit.xml
+          fail: false
+
+      - name: Validate JUnit output
+        run: |
+          if ! grep -q "<testsuite" ${{ github.workspace }}/junit.xml; then
+            echo "JUnit output did not contain a testsuite element. Output:"
+            cat ${{ github.workspace }}/junit.xml
+            exit 1
+          fi
+          if ! grep -q "example.invalid" ${{ github.workspace }}/junit.xml; then
+            echo "JUnit output did not contain the broken URL. Output:"
+            cat ${{ github.workspace }}/junit.xml
+            exit 1
+          fi
+
       - name: directory
         uses: ./
         with:
-          args: --exclude-mail .
+          args: .
 
       - name: test format override
         uses: ./
@@ -297,7 +364,7 @@ jobs:
     name: Basic check for ARM-based runners
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: test defaults
         uses: ./
