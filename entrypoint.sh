@@ -30,11 +30,11 @@ FORMAT=""
 
 CACHE=""
 if [ "${INPUT_CACHE}" = true ]; then
-  if [[ "$ARGS" =~ "--cache" ]]; then
+  if [[ " $ARGS " =~ [[:space:]]--cache([=[:space:]]|$) ]]; then
     echo "Error: 'cache' is enabled in the action configuration but '--cache' is also set in args. Please remove '--cache' from args or set 'cache: false'."
     exit 1
   fi
-  if [[ "$ARGS" =~ "--cache-path" ]]; then
+  if [[ " $ARGS " =~ [[:space:]]--cache-path([=[:space:]]|$) ]]; then
     echo "Error: 'cache' is enabled in the action configuration but '--cache-path' is also set in args. Please use the 'cachePath' action input instead."
     exit 1
   fi

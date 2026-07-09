@@ -99,19 +99,19 @@ default `GITHUB_TOKEN`, you can create a [personal access
 token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
 and pass it to the action via the `token` parameter.)
 
-## Utilising the cache feature
+## Using the cache feature
 
-In order to mitigate issues regarding rate limiting or to reduce stress on external resources, enable the built-in cache:
+To reduce rate limiting and avoid repeated checks against the same URLs, enable the built-in cache:
 
 ```yml
 - name: Run lychee
   uses: lycheeverse/lychee-action@v2
   with:
     cache: true
-    args: "--root-dir "$(pwd)" --max-cache-age 1d ."
+    args: --root-dir "$(pwd)" --max-cache-age 1d .
 ```
 
-This enables lychee's request cache and persists the cache file with GitHub Actions cache. By default, the cache is stored at `.lycheecache` relative to `workingDirectory`. You can choose a different relative path with `cachePath`:
+This turns on lychee's request cache and stores the cache file with GitHub Actions cache. By default, the cache lives at `.lycheecache` relative to `workingDirectory`. Use `cachePath` to choose a different relative path:
 
 ```yml
 - name: Run lychee
@@ -121,14 +121,14 @@ This enables lychee's request cache and persists the cache file with GitHub Acti
     cachePath: website/.lycheecache
 ```
 
-When `cache: true` is set, don't also pass `--cache` or `--cache-path` in `args`; the action adds those lychee flags for you. If you prefer to manage caching yourself, leave `cache` disabled and pass lychee's cache flags manually.
+When `cache: true` is set, don't also pass `--cache` or `--cache-path` in `args`; the action adds the lychee cache flag for you. If you prefer to manage caching yourself, leave `cache` disabled and pass lychee's cache flags manually.
 
-For custom cache keys or more control over when caches are restored and saved, use `actions/cache` directly:
+For custom cache keys or finer control over restore and save behavior, use `actions/cache` directly:
 
 ```yml
 - name: Restore lychee cache
   id: restore-cache
-  uses: actions/cache/restore@v4
+  uses: actions/cache/restore@v6
   with:
     path: .lycheecache
     key: cache-lychee-${{ github.sha }}
@@ -137,11 +137,11 @@ For custom cache keys or more control over when caches are restored and saved, u
 - name: Run lychee
   uses: lycheeverse/lychee-action@v2
   with:
-    args: "--root-dir "$(pwd)" --cache --max-cache-age 1d ."
+    args: --root-dir "$(pwd)" --cache --max-cache-age 1d .
 
 - name: Save lychee cache
-  uses: actions/cache/save@v4
-  if: always()
+  uses: actions/cache/save@v6
+  if: steps.restore-cache.outputs.cache-hit != 'true' && !cancelled()
   with:
     path: .lycheecache
     key: ${{ steps.restore-cache.outputs.cache-primary-key }}
