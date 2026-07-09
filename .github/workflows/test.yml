@@ -252,6 +252,60 @@ jobs:
             exit 1
           fi
 
+      - name: test sitemap input extraction
+        uses: ./
+        with:
+          args: --dump --verbose fixtures/sitemap.xml
+          output: ${{ github.workspace }}/sitemap_inputs.txt
+
+      - name: Validate sitemap input extraction
+        run: |
+          if ! grep -q "https://example.com/docs/" ${{ github.workspace }}/sitemap_inputs.txt; then
+            echo "Expected sitemap URL was not extracted. Output:"
+            cat ${{ github.workspace }}/sitemap_inputs.txt
+            exit 1
+          fi
+          if ! grep -q "https://example.com/about/" ${{ github.workspace }}/sitemap_inputs.txt; then
+            echo "Expected sitemap URL was not extracted. Output:"
+            cat ${{ github.workspace }}/sitemap_inputs.txt
+            exit 1
+          fi
+
+      - name: test text fragment input extraction
+        uses: ./
+        with:
+          args: --dump --verbose fixtures/text-fragments.md
+          output: ${{ github.workspace }}/text_fragment_inputs.txt
+
+      - name: Validate text fragment input extraction
+        run: |
+          if ! grep -q "https://example.com/#:~:text=Example%20Domain" ${{ github.workspace }}/text_fragment_inputs.txt; then
+            echo "Expected text-fragment URL was not extracted. Output:"
+            cat ${{ github.workspace }}/text_fragment_inputs.txt
+            exit 1
+          fi
+
+      - name: test JUnit output
+        uses: ./
+        with:
+          args: --no-progress fixtures/broken-link.md
+          format: junit
+          output: ${{ github.workspace }}/junit.xml
+          fail: false
+
+      - name: Validate JUnit output
+        run: |
+          if ! grep -q "<testsuite" ${{ github.workspace }}/junit.xml; then
+            echo "JUnit output did not contain a testsuite element. Output:"
+            cat ${{ github.workspace }}/junit.xml
+            exit 1
+          fi
+          if ! grep -q "example.invalid" ${{ github.workspace }}/junit.xml; then
+            echo "JUnit output did not contain the broken URL. Output:"
+            cat ${{ github.workspace }}/junit.xml
+            exit 1
+          fi
+
       - name: directory
         uses: ./
         with:
